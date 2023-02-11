@@ -1,0 +1,36 @@
+// add any prefered css here 
+// this is a sample from an initial design to help easy onboarding, 
+// its just like bootstrapping
+
+
+html > body {
+  margin: 0 !important;
+}
+
+button.link {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+
+.text-default-color {
+  color: #536878;
+}
+
+.or-line {
+  border: 0.1px solid grey;
+  width: 30%;
+  margin: auto;
+}
+.bold-underlined {
+  font-weight: 600;
+  text-decoration: underline;
+}
+.force_blue{
+  color: darkblue;
+}
+
+.increase-search-field-width {
+  min-width: 380px;
+}

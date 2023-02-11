@@ -1,0 +1,163 @@
+<template>
+  <v-card class="d-flex flex-column flex-md-row pa-6 mb-6" elevation="1">
+    <div class="align-self-center mb-5 mb-md-0">
+      <!-- avatar div -->
+      <image-input v-model="avatar">
+        <div slot="activator" class="pl-3">
+          <v-avatar
+            v-if="!avatar"
+            v-ripple
+            color="accent"
+            size="100px"
+            class="grey lighten-3 mb-3"
+          >
+            <v-icon color="white" x-large>mdi-account</v-icon>
+            <!-- <span>Click to add avatar</span> -->
+          </v-avatar>
+          <v-avatar v-else v-ripple size="100px" class="mb-3">
+            <img :src="avatar.imageURL" alt="avatar" />
+          </v-avatar>
+        </div>
+      </image-input>
+      <v-slide-x-transition>
+        <div v-if="avatar && saved === false">
+          <v-btn small class="primary" :loading="saving" @click="uploadImage">
+            {{ $t('saveAvatarText') }}
+          </v-btn>
+        </div>
+      </v-slide-x-transition>
+    </div>
+
+    <div class="mx-md-7">
+      <p>
+        <span class="text-subtitle-2 text-capitalize"
+          >{{ $t('nameText') }}:&nbsp;</span
+        >
+        <span class="text-body-2">{{ fullName }}</span>
+      </p>
+      <p>
+        <span class="text-subtitle-2 text-capitalize">
+          {{ $t('company') }}:&nbsp;</span
+        ><span class="text-body-2">{{ company }}</span>
+      </p>
+      <p>
+        <span class="text-subtitle-2 text-capitalize">
+          {{ $t('emailAdressText') }}:&nbsp;</span
+        >
+        <span class="text-body-2">{{ employeeDetails.company_email }}</span>
+      </p>
+    </div>
+
+    <div class="mx-md-7">
+      <p>
+        <span class="text-subtitle-2 text-capitalize">
+          {{ $t('employeeTypeText') }}:&nbsp;</span
+        >
+        <span class="text-body-2"> {{ employeeDetails.employee_type }}</span>
+      </p>
+      <p>
+        <span class="text-subtitle-2 text-capitalize"
+          >{{ $t('roleTextTranslate') }}:&nbsp;</span
+        >
+        <span class="text-body-2">
+          {{ employeeDetails.employee_position }}
+        </span>
+      </p>
+
+      <p>
+        <span class="text-subtitle-2 text-capitalize"
+          >{{ $t('hireDate') }}:&nbsp;</span
+        >
+        <span class="text-body-2">
+          {{ employee.join_date }}
+        </span>
+      </p>
+    </div>
+  </v-card>
+</template>
+
+<script>
+import ImageInput from './ImageInput.vue';
+
+export default {
+  components: {
+    ImageInput,
+  },
+  props: {
+    employee: {
+      type: Object,
+      required: true,
+    },
+  },
+
+  data: () => ({
+    drawer: null,
+    avatar: null,
+    saving: false,
+    saved: false,
+  }),
+
+  computed: {
+    employeeDetails() {
+      return this.employee || {};
+    },
+    fullName() {
+      return (
+        this.employeeDetails.first_name + ' ' + this.employeeDetails.last_name
+      );
+    },
+    company() {
+      return this.employeeDetails.company.name || '';
+    },
+  },
+
+  watch: {
+    avatar: {
+      handler: function () {
+        this.saved = false;
+      },
+      deep: true,
+    },
+  },
+
+  methods: {
+    uploadImage() {
+      this.saving = true;
+      this.$emit('show-feedback', {
+        status: 'submitting',
+        message: 'uploading avatar',
+      });
+
+      // api call
+      console.log('avatar', this.avatar);
+      this.$http
+        .post(`mmauth/api/image/upload/`, this.avatar, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(() => {
+          this.$emit('show-feedback', {
+            status: 'success',
+            message: 'Avatar import successful.',
+          });
+        })
+        .catch(() => {
+          this.$emit('show-feedback', {
+            status: 'fail',
+            message: 'Avatar upload failed.',
+          });
+        })
+        .finally(() => {});
+
+      setTimeout(() => this.savedAvatar(), 1000);
+    },
+    savedAvatar() {
+      this.saving = false;
+      this.saved = true;
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped></style>

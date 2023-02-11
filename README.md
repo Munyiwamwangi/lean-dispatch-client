@@ -1,7 +1,9 @@
-# lean-dispatch-client
+# mmgrupp-bonus-management-client
 
 ## Project setup
 ```
+nvm use v10.24.1
+
 yarn install
 ```
 
