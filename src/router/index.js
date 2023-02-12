@@ -25,8 +25,10 @@ const ResetPassword = () =>
 const Dashboard = () =>
   import(/* webpackChunkName: "Dashboard" */ "../views/admin/Dashboard.vue");
 
-const MyBonuses = () =>
-  import(/* webpackChunkName: "MyBonuses" */ "../views/MyBonuses.vue");
+const AccountManagement = () =>
+  import(
+    /* webpackChunkName: "AccountManagement" */ "../views/account-management/AccountManagement.vue"
+  );
 
 // const HrSettings = () =>
 //   import(/* webpackChunkName: "HrSettings" */ '../views/hr/settings.vue');
@@ -91,10 +93,6 @@ const BonusRequestView = () =>
     /* webpackChunkName: "bonus requests" */ "../views/BonusRequestView.vue"
   );
 
-const EmployeeDashboard = () =>
-  import(
-    /* webpackChunkName: "employee dashboard" */ "../views/EmployeeDashboard.vue"
-  );
 const UserGroups = () =>
   import(
     /* webpackChunkName: "user groups" */ "../views/admin/user-access-management/users.groups.vue"
@@ -123,17 +121,9 @@ const singleUserPermissionDetails = () =>
 const routes = [
   {
     path: "/",
-    redirect: "/home",
+    redirect: "/dashboard",
   },
-  {
-    path: "/home",
-    name: "home",
-    meta: {
-      title: "MM Grupp - Employee Dashboard",
-      requiresAuth: true,
-    },
-    component: EmployeeDashboard,
-  },
+
   {
     path: "/login",
     name: "login",
@@ -169,9 +159,9 @@ const routes = [
     },
   },
   {
-    path: "/my/bonuses",
-    name: "hr-bonuses",
-    component: MyBonuses,
+    path: "/accounts",
+    name: "accounts",
+    component: AccountManagement,
     meta: {
       title: "MM Grupp - My Bonuses",
       requiresAuth: true,
@@ -299,7 +289,7 @@ const routes = [
   {
     path: "/bonus/tracker",
     name: "employee-bonus-tracker",
-    component: MyBonuses,
+    component: AccountManagement,
     meta: {
       title: "MM Grupp - Employee Bonus Tracker",
       requiresAuth: true,

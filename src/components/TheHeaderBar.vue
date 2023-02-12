@@ -1,9 +1,6 @@
 <template>
   <v-app-bar light color="white" app elevation="1">
     <v-app-bar-nav-icon @click="toggleSidebar"></v-app-bar-nav-icon>
-    <v-avatar color="accent d-none d-md-flex" size="48" class="ml-3">
-      <span class="white--text text-body-2">LD</span>
-    </v-avatar>
 
     <v-spacer></v-spacer>
 

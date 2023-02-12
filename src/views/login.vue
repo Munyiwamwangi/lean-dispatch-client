@@ -10,15 +10,10 @@
               md="6"
               class="first-col hidden-xs-and-up hidden-sm-and-down"
             >
-              <div class="align_horizontal_left">
-                <Language> </Language>
-              </div>
               <div class="center">
                 <v-row>
                   <v-card-text class="white--text text-uppercase">
-                    <h1 class="text-center">
-                      {{ $t('welcome') }} {{ $t('bonusManagementPortal') }}
-                    </h1>
+                    <h1 class="text-center">Welcome to lean dispatch</h1>
                   </v-card-text>
                   <hr class="horizontal-underline" />
                 </v-row>
@@ -37,10 +32,10 @@
                   <h1
                     class="text-center text-default-color mt-4 mb-3 text-capitalize"
                   >
-                    {{ $t('loginToYourAccount') }}
+                    Login
                   </h1>
                   <h4 class="text-center mb-3 mt-3">
-                    {{ $t('fillDetailsToAccessAccount') }}
+                    {{ $t("fillDetailsToAccessAccount") }}
                   </h4>
                   <v-row align="center" justify="center">
                     <v-col cols="12" sm="8">
@@ -82,7 +77,7 @@
                         >
                           <template v-slot:label>
                             <div>
-                              {{ $t('acceptAll') }}
+                              {{ $t("acceptAll") }}
                               <v-tooltip>
                                 <template v-slot:activator="{ on }">
                                   <a
@@ -91,7 +86,7 @@
                                     @click.stop
                                     v-on="on"
                                   >
-                                    {{ $t('termsAndConditions') }}
+                                    {{ $t("termsAndConditions") }}
                                   </a>
                                 </template>
                               </v-tooltip>
@@ -111,13 +106,13 @@
                         :loading="loading"
                       >
                         <h2 class="text-capitalize">
-                          {{ $t('loginText') }}
+                          {{ $t("loginText") }}
                         </h2>
                       </v-btn>
 
                       <div class="mt-2 text-center bold-underlined">
                         <router-link to="/forgot-password">
-                          {{ $t('forgotPassword') }}
+                          {{ $t("forgotPassword") }}
                         </router-link>
                       </div>
 
@@ -125,7 +120,7 @@
                         class="d-flex justify-space-between align-center mx-10 mb-8 mt-5"
                       >
                         <hr class="or-line" />
-                        <h5 class="text-center">{{ $t('or') }}</h5>
+                        <h5 class="text-center">{{ $t("or") }}</h5>
                         <hr class="or-line" />
                       </div>
 
@@ -148,13 +143,8 @@
 </template>
 
 <script>
-import Language from '../../src/components/language.vue';
-
 export default {
-  name: 'login',
-  components: {
-    Language,
-  },
+  name: "login",
 
   data() {
     return {
@@ -164,16 +154,16 @@ export default {
       passwordShow: false,
       users: null,
 
-      email: '',
+      email: "",
       emailRules: [
-        (v) => !!v || this.$t('emailIputHint'),
-        (v) => /.+@.+\..+/.test(v) || this.$t('emailmustBeValidText'),
+        (v) => !!v || this.$t("emailIputHint"),
+        (v) => /.+@.+\..+/.test(v) || this.$t("emailmustBeValidText"),
       ],
-      password: '',
+      password: "",
       passwordRules: [
-        (v) => !!v || this.$t('passwordInputHint1'),
+        (v) => !!v || this.$t("passwordInputHint1"),
         (v) =>
-          (v && v.length >= 6) || this.$t('minimalPasswordCharacterErrortext'),
+          (v && v.length >= 6) || this.$t("minimalPasswordCharacterErrortext"),
       ],
 
       // form essentials
@@ -184,7 +174,7 @@ export default {
 
   computed: {
     showError() {
-      const error = this.$store.getters['getError'].error;
+      const error = this.$store.getters["getError"].error;
       if (!error) {
         this.formErrors.push[1];
       }
@@ -193,9 +183,9 @@ export default {
   },
 
   watch: {
-    emailRules: 'validateForm',
-    email: 'validateForm',
-    password: 'validateForm',
+    emailRules: "validateForm",
+    email: "validateForm",
+    password: "validateForm",
   },
 
   methods: {
@@ -216,22 +206,22 @@ export default {
       if (this.$refs.form.validate()) {
         this.loading = true;
         this.$store
-          .dispatch('login', data)
+          .dispatch("login", data)
           .then(() => {
-            this.$store.dispatch('setError', {
-              text: 'successfully logged in',
-              color: 'success lighten-1',
+            this.$store.dispatch("setError", {
+              text: "successfully logged in",
+              color: "success lighten-1",
             });
             this.loading = false;
           })
           .catch(() => {
             this.emailRules = [
               ...this.emailRules,
-              (v) => v === 'invalid' || 'Invalid email or password',
+              (v) => v === "invalid" || "Invalid email or password",
             ];
             this.passwordRules = [
               ...this.passwordRules,
-              (v) => v === 'invalid' || 'Invalid email or password',
+              (v) => v === "invalid" || "Invalid email or password",
             ];
           })
           .finally(() => {
@@ -248,7 +238,7 @@ export default {
 
     // reset password
     passReset() {
-      this.$router.push({ name: 'password-reset' }).catch(() => {});
+      this.$router.push({ name: "password-reset" }).catch(() => {});
     },
   },
 };
