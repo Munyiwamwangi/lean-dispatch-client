@@ -80,18 +80,10 @@ const EmployeeSettings = () =>
 const MyAccount = () =>
   import(/* webpackChunkName: "my account" */ "../views/my-account.vue");
 
-const BonusRequestsList = () =>
-  import(
-    /* webpackChunkName: "bonus requests" */ "../views/BonusRequestsList.vue"
-  );
-
-const BonusRequests = () =>
-  import(/* webpackChunkName: "bonus requests" */ "../views/BonusRequests.vue");
-
-const BonusRequestView = () =>
-  import(
-    /* webpackChunkName: "bonus requests" */ "../views/BonusRequestView.vue"
-  );
+// const BonusRequestsList = () =>
+//   import(
+//     /* webpackChunkName: "bonus requests" */ "../views/BonusRequestsList.vue"
+//   );
 
 const UserGroups = () =>
   import(
@@ -313,34 +305,7 @@ const routes = [
       requiresAuth: true,
     },
   },
-  {
-    path: "/bonus/requests",
-    component: BonusRequests,
-    children: [
-      {
-        path: "list",
-        name: "bonus-requests",
-        component: BonusRequestsList,
-        meta: {
-          title: "MM Grupp - List Bonus Requests",
-          requiresAuth: true,
-          hr: true,
-          approver: true,
-        },
-      },
-      {
-        path: "view",
-        name: "bonus-request",
-        component: BonusRequestView,
-        meta: {
-          title: "MM Grupp - Bonus Request View",
-          requiresAuth: true,
-          hr: true,
-          approver: true,
-        },
-      },
-    ],
-  },
+
   {
     path: "/admin/groups",
     name: "user-groups",

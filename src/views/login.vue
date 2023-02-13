@@ -88,7 +88,6 @@
                       </div>
 
                       <v-btn
-                        x-large
                         rounded
                         block
                         :disabled="!valid"
@@ -107,20 +106,6 @@
                           {{ $t("forgotPassword") }}
                         </router-link>
                       </div>
-
-                      <!-- <div
-                        class="d-flex justify-space-between align-center mx-10 mb-8 mt-5"
-                      >
-                        <hr class="or-line" />
-                        <h5 class="text-center">{{ $t("or") }}</h5>
-                        <hr class="or-line" />
-                      </div>
-
-                      <div class="d-flex align-center">
-                        <v-btn class="place-center" fab @click="googleLogin()">
-                          <v-icon color="red">fab fa-google</v-icon>
-                        </v-btn>
-                      </div> -->
                     </v-col>
                   </v-row>
                 </v-card-text>

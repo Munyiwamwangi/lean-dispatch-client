@@ -1,90 +1,15 @@
 <template>
-  <div>
-    <v-toolbar color="#f8f8f8" dense>
-      <v-toolbar-title class="secondary--text text-subtitle-2 text-capitalize">
-        Accounts
-      </v-toolbar-title>
-    </v-toolbar>
-
-    <v-spacer></v-spacer>
-
-    <v-tabs v-model="tab">
-      <v-tab class="ml-4 text-uppercase">Orders</v-tab>
-      <v-tab class="ml-4 text-uppercase">Vendors</v-tab>
-      <v-tab class="ml-4 text-uppercase">Drivers</v-tab>
-      <v-tab class="ml-4 text-uppercase">Customers</v-tab>
-
-      <!-- audit log -->
-
-      <v-tab-item>
-        <OrdersComponent
-          :tab="tab"
-          :filter-drawer.sync="filterDrawer"
-          :trail="LoginTrailLogDetail"
-          :loading="loading"
-          @show-feedback="showFeedback"
-        ></OrdersComponent>
-      </v-tab-item>
-
-      <v-tab-item>
-        <VendorsComponent
-          :tab="tab"
-          :filter-drawer.sync="filterDrawer"
-          :trail="LoginTrailLogDetail"
-          :loading="loading"
-          @show-feedback="showFeedback"
-        ></VendorsComponent>
-      </v-tab-item>
-
-      <v-tab-item>
-        <DriversComponent
-          :tab="tab"
-          :trail="auditLogDetail"
-          :loading="loading"
-          :filter-drawer.sync="filterDrawer"
-          @show-feedback="showFeedback"
-        ></DriversComponent>
-      </v-tab-item>
-      <!-- login trail  -->
-      <v-tab-item>
-        <CustomersComponent
-          :tab="tab"
-          :filter-drawer.sync="filterDrawer"
-          :trail="LoginTrailLogDetail"
-          :loading="loading"
-          @show-feedback="showFeedback"
-        ></CustomersComponent>
-      </v-tab-item>
-    </v-tabs>
-
-    <FeedbackSnackBar
-      :show-snack.sync="feedbackSnackShowing"
-      :snack-text="feedbackSnackText"
-      :snack-color="feedbackSnackColor"
-    ></FeedbackSnackBar>
-  </div>
+  <div>Account Management</div>
 </template>
 
 <script>
-import DriversComponent from "../../components/account-management/Drivers.vue";
-import OrdersComponent from "../../components/account-management/Orders.vue";
-import VendorsComponent from "../../components/account-management/Vendors.vue";
-import CustomersComponent from "../../components/account-management/Customers.vue";
-
 import { mapGetters } from "vuex";
-import FeedbackSnackBar from "@/components/FeedbackSnackBar";
 
 export default {
   name: "LogsView",
   drawer: null,
   filterDrawer: false,
-  components: {
-    DriversComponent,
-    OrdersComponent,
-    VendorsComponent,
-    CustomersComponent,
-    FeedbackSnackBar,
-  },
+  components: {},
 
   data() {
     return {
@@ -118,8 +43,8 @@ export default {
   },
 
   created() {
-    this.$store.dispatch("logs/loadLoginTrail");
-    this.$store.dispatch("logs/loadAuditTrail");
+    // this.$store.dispatch("logs/loadLoginTrail");
+    // this.$store.dispatch("logs/loadAuditTrail");
   },
 
   methods: {
