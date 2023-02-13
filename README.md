@@ -1,4 +1,4 @@
-# mmgrupp-bonus-management-client
+# lean-dispatch-client
 
 ## Project setup
 ```

@@ -9,7 +9,7 @@
     <v-spacer></v-spacer>
 
     <v-tabs v-model="tab">
-      <v-tab class="ml-4 text-uppercase">Logistics.co</v-tab>
+      <v-tab class="ml-4 text-uppercase">Orders</v-tab>
       <v-tab class="ml-4 text-uppercase">Vendors</v-tab>
       <v-tab class="ml-4 text-uppercase">Drivers</v-tab>
       <v-tab class="ml-4 text-uppercase">Customers</v-tab>
@@ -17,13 +17,13 @@
       <!-- audit log -->
 
       <v-tab-item>
-        <LogisticsComponent
+        <OrdersComponent
           :tab="tab"
           :filter-drawer.sync="filterDrawer"
           :trail="LoginTrailLogDetail"
           :loading="loading"
           @show-feedback="showFeedback"
-        ></LogisticsComponent>
+        ></OrdersComponent>
       </v-tab-item>
 
       <v-tab-item>
@@ -67,7 +67,7 @@
 
 <script>
 import DriversComponent from "../../components/account-management/Drivers.vue";
-import LogisticsComponent from "../../components/account-management/Logistics.vue";
+import OrdersComponent from "../../components/account-management/Orders.vue";
 import VendorsComponent from "../../components/account-management/Vendors.vue";
 import CustomersComponent from "../../components/account-management/Customers.vue";
 
@@ -80,7 +80,7 @@ export default {
   filterDrawer: false,
   components: {
     DriversComponent,
-    LogisticsComponent,
+    OrdersComponent,
     VendorsComponent,
     CustomersComponent,
     FeedbackSnackBar,

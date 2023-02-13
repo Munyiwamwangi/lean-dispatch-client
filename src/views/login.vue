@@ -29,25 +29,19 @@
                 @submit.prevent="submit"
               >
                 <v-card-text>
-                  <h1
-                    class="text-center text-default-color mt-4 mb-3 text-capitalize"
-                  >
-                    Login
-                  </h1>
-                  <h4 class="text-center mb-3 mt-3">
-                    {{ $t("fillDetailsToAccessAccount") }}
-                  </h4>
+                  <v-row no-gutters justify="center">
+                    <h1 class="accent--text">Login</h1>
+                  </v-row>
+
                   <v-row align="center" justify="center">
                     <v-col cols="12" sm="8">
                       <v-text-field
-                        ref="email"
                         v-model="email"
+                        ref="email"
                         :rules="emailRules"
-                        required
                         :label="$t('emailAdressLabel')"
-                        prepend-inner-icon="mdi-account"
-                        outlined
-                        rounded
+                        required
+                        prepend-inner-icon="person"
                         color="blue"
                         autocomplete="false"
                         class="mt-8"
@@ -55,18 +49,16 @@
                       <v-text-field
                         ref="password"
                         v-model="password"
-                        required
                         :rules="passwordRules"
-                        outlined
                         :label="$t('passwordInputFieldPlaceHolder')"
-                        rounded
-                        color="blue"
-                        autocomplete="false"
                         :type="passwordShow ? 'text' : 'password'"
-                        placeholder="Password"
-                        prepend-inner-icon="mdi-key"
                         :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
                         @click:append="passwordShow = !passwordShow"
+                        required
+                        color="blue"
+                        autocomplete="false"
+                        placeholder="Password"
+                        prepend-inner-icon="key"
                       />
 
                       <div class="mainCheckBox">
@@ -116,7 +108,7 @@
                         </router-link>
                       </div>
 
-                      <div
+                      <!-- <div
                         class="d-flex justify-space-between align-center mx-10 mb-8 mt-5"
                       >
                         <hr class="or-line" />
@@ -128,7 +120,7 @@
                         <v-btn class="place-center" fab @click="googleLogin()">
                           <v-icon color="red">fab fa-google</v-icon>
                         </v-btn>
-                      </div>
+                      </div> -->
                     </v-col>
                   </v-row>
                 </v-card-text>
@@ -250,9 +242,6 @@ export default {
   background-color: #536878;
 }
 
-.text-default-color {
-  color: #536878;
-}
 hr.horizontal-underline {
   border: 3px solid white;
   width: 20%;

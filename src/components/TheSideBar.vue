@@ -1,25 +1,35 @@
 <template>
   <v-navigation-drawer v-model="drawerShowing" app class="mainBox">
-    <v-card class="mainBox justify-center">
-      <v-list>
-        <v-list-item class="px-2">
-          <v-list-item-avatar>
-            <v-img
-              src="https://randomuser.me/api/portraits/women/85.jpg"
-            ></v-img>
-          </v-list-item-avatar>
-        </v-list-item>
+    <v-container class="">
+      <v-row align="center" no-gutters>
+        <v-col>
+          <div class="pa-2 ma-2">
+            <v-card class="mainBox">
+              <v-list-item class="px-2">
+                <v-row align="center" no-gutters> </v-row>
+                <v-list-item-avatar>
+                  <v-img
+                    src="https://randomuser.me/api/portraits/women/85.jpg"
+                  ></v-img>
+                </v-list-item-avatar>
+                <v-row align="center" no-gutters> </v-row>
+              </v-list-item>
 
-        <v-list-item link>
-          <v-list-item-content>
-            <v-list-item-title class="text-h6">
-              Sandra Odera
-            </v-list-item-title>
-            <v-list-item-subtitle>sandra_a88@gmail.com</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-card>
+              <v-list-item link>
+                <v-list-item-content>
+                  <v-list-item-title class="text-h6 text-center">
+                    Sandra Odera
+                  </v-list-item-title>
+                  <v-list-item-subtitle class="text-center"
+                    >sandra_a88@gmail.com</v-list-item-subtitle
+                  >
+                </v-list-item-content>
+              </v-list-item>
+            </v-card>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
 
     <v-divider></v-divider>
 
@@ -28,15 +38,10 @@
         <div v-for="(item, i) in items" :key="i">
           <v-list-item :to="{ name: item.name }" class="item">
             <v-list-item-icon>
-              <v-icon color="black">{{ item.icon }} </v-icon>
+              <v-icon v-text="item.icon"></v-icon>
             </v-list-item-icon>
-
             <v-list-item-content>
-              <v-list-item-title
-                class="font-weight-bold text-capitalize"
-                v-text="$t(item.text)"
-              >
-              </v-list-item-title>
+              <v-list-item-title v-text="item.text"></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </div>
@@ -138,6 +143,10 @@ export default {
 }
 .item {
   transition: 0.3s;
+}
+
+.cont:hover {
+  color: white;
 }
 .cont:hover > :not(:hover) {
   opacity: 0.4;
