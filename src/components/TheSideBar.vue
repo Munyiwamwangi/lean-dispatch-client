@@ -38,10 +38,15 @@
         <div v-for="(item, i) in items" :key="i">
           <v-list-item :to="{ name: item.name }" class="item">
             <v-list-item-icon>
-              <v-icon v-text="item.icon"></v-icon>
+              <v-icon>{{ item.icon }} </v-icon>
             </v-list-item-icon>
+
             <v-list-item-content>
-              <v-list-item-title v-text="item.text"></v-list-item-title>
+              <v-list-item-title
+                class="font-weight-bold text-capitalize"
+                v-text="$t(item.text)"
+              >
+              </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </div>
@@ -63,21 +68,20 @@ export default {
     items: [
       {
         text: "Dashboard",
-        icon: "mdi-view-dashboard",
+        icon: "dashboard",
         name: "hr-dashboard",
-        page: "/hr/dashboard",
         employee: true,
         hr: true,
       },
       {
         text: "Account Management",
-        icon: "mdi-account",
+        icon: "dashboard",
         name: "accounts",
         employee: true,
       },
       {
-        text: "Order Management",
-        icon: "mdi-account-multiple",
+        text: "login page",
+        icon: "flag",
         name: "login",
         employee: true,
       },
