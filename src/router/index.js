@@ -12,14 +12,18 @@ Vue.use(VueRouter);
 // this generates a separate chunk (about.[hash].js) for this route
 // which is lazy-loaded when the route is visited.
 const Login = () =>
-  import(/* webpackChunkName: "login" */ "../views/login.vue");
+  import(
+    /* webpackChunkName: "login" */ "../views/account-management/login.vue"
+  );
 
 const ForgotPassword = () =>
-  import(/* webpackChunkName: "login" */ "../views/forgot-password.vue");
+  import(
+    /* webpackChunkName: "login" */ "../views/account-management/forgot-password.vue"
+  );
 
 const ResetPassword = () =>
   import(
-    /* webpackChunkName: "reset-password" */ "../views/reset-password.vue"
+    /* webpackChunkName: "reset-password" */ "../views/account-management/reset-password.vue"
   );
 
 const Dashboard = () =>
@@ -33,52 +37,37 @@ const AccountManagement = () =>
 // const HrSettings = () =>
 //   import(/* webpackChunkName: "HrSettings" */ '../views/hr/settings.vue');
 
-const HrSettingsLandingPage = () =>
-  import(
-    /* webpackChunkName: "HrSettingsLandingPage" */ "../views/admin/settings/SettingsLanding.vue"
-  );
+// const HrSettingsLandingPage = () =>
+//   import(
+//     /* webpackChunkName: "HrSettingsLandingPage" */ "../views/admin/settings/SettingsLanding.vue"
+//   );
 
-const SettingsPlaceHolder = () =>
-  import(
-    /* webpackChunkName: "SettingsPlaceHolder" */ "../views/admin/settings/SettingsPlaceHolder.vue"
-  );
-const PackagesSettingsDash = () =>
-  import(
-    /* webpackChunkName: "PackagesSettingsDash" */ "../views/admin/settings/PackagesSettingsDash.vue"
-  );
+// const SettingsPlaceHolder = () =>
+//   import(
+//     /* webpackChunkName: "SettingsPlaceHolder" */ "../views/admin/settings/SettingsPlaceHolder.vue"
+//   );
+// const PackagesSettingsDash = () =>
+//   import(
+//     /* webpackChunkName: "PackagesSettingsDash" */ "../views/admin/settings/PackagesSettingsDash.vue"
+//   );
 
-const BonusSettingsDash = () =>
-  import(
-    /* webpackChunkName: "BonusSettingsDash" */ "../views/admin/settings/BonusSettingsDash.vue"
-  );
+// const BonusSettingsDash = () =>
+//   import(
+//     /* webpackChunkName: "BonusSettingsDash" */ "../views/admin/settings/BonusSettingsDash.vue"
+//   );
 
-const WelcomeMessageSettingsDash = () =>
-  import(
-    /* webpackChunkName: "WelcomeMessageSettingsDash" */ "../views/admin/settings/WelcomeMessageSettingsDash.vue"
-  );
+// const WelcomeMessageSettingsDash = () =>
+//   import(
+//     /* webpackChunkName: "WelcomeMessageSettingsDash" */ "../views/admin/settings/WelcomeMessageSettingsDash.vue"
+//   );
 
-const EmployeeList = () =>
-  import(
-    /* webpackChunkName: "EmployeeList" */ "../views/admin/employee-list.vue"
-  );
+// const EmployeeSettings = () =>
+//   import(
+//     /* webpackChunkName: "EmployeeSettings" */ "../views/employee/settings.vue"
+//   );
 
-const HRBonusTracker = () =>
-  import(
-    /* webpackChunkName: "HRBonusTracker" */ "../views/admin/bonus-tracker.vue"
-  );
-
-const EmployeeBonuses = () =>
-  import(
-    /* webpackChunkName: "EmployeeBonuses" */ "../views/admin/employee-bonuses.vue"
-  );
-
-const EmployeeSettings = () =>
-  import(
-    /* webpackChunkName: "EmployeeSettings" */ "../views/employee/settings.vue"
-  );
-
-const MyAccount = () =>
-  import(/* webpackChunkName: "my account" */ "../views/my-account.vue");
+// const MyAccount = () =>
+//   import(/* webpackChunkName: "my account" */ "../views/my-account.vue");
 
 // const BonusRequestsList = () =>
 //   import(
@@ -161,90 +150,90 @@ const routes = [
       approver: true,
     },
   },
-  {
-    path: "/settings",
-    name: "hr-settings",
-    component: SettingsPlaceHolder,
-    meta: {
-      title: "MM Grupp - HR Settings",
-      requiresAuth: true,
-      hr: true,
-    },
-    children: [
-      {
-        path: "",
-        name: "hr-settings",
-        component: HrSettingsLandingPage,
-        meta: {
-          title: "MM Grupp - HR Settings ",
-          requiresAuth: true,
-          hr: true,
-        },
-      },
-      {
-        path: "packages",
-        name: "manage-bonuses",
-        component: PackagesSettingsDash,
-        meta: {
-          title: "MM Grupp - Employee Bonus Settings ",
-          requiresAuth: true,
-          hr: true,
-        },
-      },
-      {
-        path: "bonuses",
-        name: "manage-packages",
-        component: BonusSettingsDash,
-        meta: {
-          title: "MM Grupp - Employee Package Settings ",
-          requiresAuth: true,
-          hr: true,
-        },
-      },
-      {
-        path: "messaging",
-        name: "welcome-messages",
-        component: WelcomeMessageSettingsDash,
-        meta: {
-          title: "MM Grupp - Employee Welcome Message Setting ",
-          requiresAuth: true,
-          hr: true,
-        },
-      },
-    ],
-  },
-  {
-    path: "/bonus/tracker",
-    name: "bonus-tracker",
-    component: EmployeeList,
-    meta: {
-      title: "MM Grupp - Bonus Tracker",
-      requiresAuth: true,
-      hr: true,
-    },
-    children: [
-      {
-        path: "",
-        name: "employees-bonus-tracker",
-        component: HRBonusTracker,
-        meta: {
-          title: "MM Grupp - Employee Bonus Tracker",
-          requiresAuth: true,
-          hr: true,
-        },
-      },
-      {
-        path: "employee/:id",
-        name: "hr-employee-bonuses",
-        component: EmployeeBonuses,
-        meta: {
-          title: "MM Grupp - Employee Bonus Tracker",
-          requiresAuth: true,
-          hr: true,
-        },
-      },
-    ],
-  },
+  // {
+  //   path: "/settings",
+  //   name: "hr-settings",
+  //   component: SettingsPlaceHolder,
+  //   meta: {
+  //     title: "MM Grupp - HR Settings",
+  //     requiresAuth: true,
+  //     hr: true,
+  //   },
+  //   children: [
+  //     {
+  //       path: "",
+  //       name: "hr-settings",
+  //       component: HrSettingsLandingPage,
+  //       meta: {
+  //         title: "MM Grupp - HR Settings ",
+  //         requiresAuth: true,
+  //         hr: true,
+  //       },
+  //     },
+  //     {
+  //       path: "packages",
+  //       name: "manage-bonuses",
+  //       component: PackagesSettingsDash,
+  //       meta: {
+  //         title: "MM Grupp - Employee Bonus Settings ",
+  //         requiresAuth: true,
+  //         hr: true,
+  //       },
+  //     },
+  //     {
+  //       path: "bonuses",
+  //       name: "manage-packages",
+  //       component: BonusSettingsDash,
+  //       meta: {
+  //         title: "MM Grupp - Employee Package Settings ",
+  //         requiresAuth: true,
+  //         hr: true,
+  //       },
+  //     },
+  //     {
+  //       path: "messaging",
+  //       name: "welcome-messages",
+  //       component: WelcomeMessageSettingsDash,
+  //       meta: {
+  //         title: "MM Grupp - Employee Welcome Message Setting ",
+  //         requiresAuth: true,
+  //         hr: true,
+  //       },
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: "/bonus/tracker",
+  //   name: "bonus-tracker",
+  //   component: EmployeeList,
+  //   meta: {
+  //     title: "MM Grupp - Bonus Tracker",
+  //     requiresAuth: true,
+  //     hr: true,
+  //   },
+  //   children: [
+  //     {
+  //       path: "",
+  //       name: "employees-bonus-tracker",
+  //       component: HRBonusTracker,
+  //       meta: {
+  //         title: "MM Grupp - Employee Bonus Tracker",
+  //         requiresAuth: true,
+  //         hr: true,
+  //       },
+  //     },
+  //     {
+  //       path: "employee/:id",
+  //       name: "hr-employee-bonuses",
+  //       component: EmployeeBonuses,
+  //       meta: {
+  //         title: "MM Grupp - Employee Bonus Tracker",
+  //         requiresAuth: true,
+  //         hr: true,
+  //       },
+  //     },
+  //   ],
+  // },
 
   {
     path: "/admin/groups",
@@ -284,24 +273,6 @@ const routes = [
     component: AccountManagement,
     meta: {
       title: "MM Grupp - Employee Bonus Tracker",
-      requiresAuth: true,
-    },
-  },
-  {
-    path: "/settings",
-    name: "employee-settings",
-    component: EmployeeSettings,
-    meta: {
-      title: "MM Grupp - Employee Settings",
-      requiresAuth: true,
-    },
-  },
-  {
-    path: "/my-account",
-    name: "my-account",
-    component: MyAccount,
-    meta: {
-      title: "MM Grupp - My Account",
       requiresAuth: true,
     },
   },

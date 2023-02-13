@@ -73,12 +73,12 @@ export default {
         employee: true,
         hr: true,
       },
-      {
-        text: "Account Management",
-        icon: "dashboard",
-        name: "accounts",
-        employee: true,
-      },
+      // {
+      //   text: "Account Management",
+      //   icon: "dashboard",
+      //   name: "accounts",
+      //   employee: true,
+      // },
       {
         text: "login page",
         icon: "flag",
@@ -93,13 +93,6 @@ export default {
       //   approver: true,
       // },
 
-      // {
-      //   text: 'Approvals',
-      //   icon: 'mdi-clipboard-list-outline',
-      //   name: 'employees-bonus-tracker',
-      //   hr: true,
-      //   employee: false,
-      // },
       // {
       //   text: 'Calendar',
       //   icon: 'mdi-file-sign',
