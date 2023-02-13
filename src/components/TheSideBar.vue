@@ -85,28 +85,6 @@ export default {
         name: "login",
         employee: true,
       },
-      // {
-      //   text: "Reports",
-      //   icon: "mdi-ticket",
-      //   name: "hr-bonuses",
-      //   hr: true,
-      //   approver: true,
-      // },
-
-      // {
-      //   text: 'Calendar',
-      //   icon: 'mdi-file-sign',
-      //   name: 'calendar',
-      //   hr: true,
-      //   approver: true,
-      // },
-      // {
-      //   text: 'Reports',
-      //   icon: 'mdi-ticket-outline',
-      //   name: 'hr-bonuses',
-      //   hr: true,
-      //   approver: true,
-      // },
     ],
   }),
 
@@ -136,7 +114,6 @@ export default {
 }
 .mainBox {
   background: linear-gradient(180deg, #15488f 0%, #235eb3 50%, #17396a 100%);
-  mix-blend-mode: color-blend;
 }
 .item {
   transition: 0.3s;

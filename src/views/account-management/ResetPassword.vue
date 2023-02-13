@@ -7,9 +7,9 @@
             <form @submit.prevent="handleSubmit">
               <v-card-text class="">
                 <h1 class="text-center text-default-color mb-4">
-                  {{ $t('resetPasswordTextTranslation') }} <br />
+                  {{ $t("resetPasswordTextTranslation") }} <br />
                 </h1>
-                <h4>{{ $t('pleaseEnterYourPasswordBelowText') }}</h4>
+                <h4>{{ $t("pleaseEnterYourPasswordBelowText") }}</h4>
               </v-card-text>
 
               <v-text-field
@@ -51,7 +51,7 @@
                 dark
                 block
               >
-                <strong>{{ $t('submitButtonText') }}</strong>
+                <strong>{{ $t("submitButtonText") }}</strong>
               </v-btn>
 
               <div class="mt-2 bold-underlined text-center">
@@ -66,21 +66,21 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 export default {
-  name: 'ConfirmPassword',
+  name: "ConfirmPassword",
 
   data() {
     return {
       checkbox: false,
       valid: false,
       passwordShow: false,
-      password: '',
-      password_confirm: '',
+      password: "",
+      password_confirm: "",
       passwordRules: [
-        (v) => !!v || 'Password is required',
+        (v) => !!v || "Password is required",
         (v) =>
-          (v && v.length >= 6) || 'Password must be 6  characters or more!',
+          (v && v.length >= 6) || "Password must be 6  characters or more!",
       ],
     };
   },
@@ -93,8 +93,8 @@ export default {
         token: this.$route.params.token,
       };
       try {
-        await axios.post('mmauth/api/reset-password/', data);
-        this.$router.push('/login');
+        await axios.post("mmauth/api/reset-password/", data);
+        this.$router.push("/login");
       } catch (error) {
         return error;
       }

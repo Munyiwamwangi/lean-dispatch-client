@@ -13,17 +13,17 @@ Vue.use(VueRouter);
 // which is lazy-loaded when the route is visited.
 const Login = () =>
   import(
-    /* webpackChunkName: "login" */ "../views/account-management/login.vue"
+    /* webpackChunkName: "login" */ "../views/account-management/Login.vue"
   );
 
 const ForgotPassword = () =>
   import(
-    /* webpackChunkName: "login" */ "../views/account-management/forgot-password.vue"
+    /* webpackChunkName: "login" */ "../views/account-management/ForgotPassword.vue"
   );
 
 const ResetPassword = () =>
   import(
-    /* webpackChunkName: "reset-password" */ "../views/account-management/reset-password.vue"
+    /* webpackChunkName: "reset-password" */ "../views/account-management/ResetPassword.vue"
   );
 
 const Dashboard = () =>
