@@ -1,20 +1,20 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import createPersistedState from 'vuex-persistedstate';
-import router from '../router';
-import axios from 'axios';
-import SecureLS from 'secure-ls';
-import common from './modules/common';
-import bonus_request from './modules/bonus_request.js';
-import packages from './modules/packages';
-import bonuses from './modules/bonuses';
-import logs from './modules/logs';
-import approvers from './modules/approvers';
-import welcome_messages from './modules/welcome_messages';
-import { fetchCompanies } from '../services/modules/common';
-import groups from './modules/groups';
-import users_employees from './modules/users_employees.js';
-import roles_permissions from './modules/roles_permissions';
+import Vue from "vue";
+import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
+import router from "../router";
+import axios from "axios";
+import SecureLS from "secure-ls";
+import common from "./modules/common";
+import bonus_request from "./modules/bonus_request.js";
+import packages from "./modules/packages";
+import bonuses from "./modules/bonuses";
+import logs from "./modules/logs";
+import approvers from "./modules/approvers";
+import welcome_messages from "./modules/welcome_messages";
+import { fetchCompanies } from "../services/modules/common";
+import groups from "./modules/groups";
+import users_employees from "./modules/users_employees.js";
+import roles_permissions from "./modules/roles_permissions";
 // instanstiate secure local storage
 var ls = new SecureLS({ isCompression: false });
 
@@ -33,8 +33,8 @@ const state = {
 
   // for deedback utility
   feedbackSnackShowing: false,
-  feedbackSnackColor: '',
-  feedbackSnackText: '',
+  feedbackSnackColor: "",
+  feedbackSnackText: "",
 };
 
 const defaultState = {
@@ -50,15 +50,15 @@ const defaultState = {
   notificationMessagesArray: [],
 
   feedbackSnackShowing: false,
-  feedbackSnackColor: '',
-  feedbackSnackText: '',
+  feedbackSnackColor: "",
+  feedbackSnackText: "",
 };
 
 const mutations = {
   clearError: (state) => {
     state.feedbackSnackShowing = false;
-    state.feedbackSnackColor = '';
-    state.feedbackSnackText = '';
+    state.feedbackSnackColor = "";
+    state.feedbackSnackText = "";
   },
 
   setError: (state, value) => {
@@ -82,19 +82,15 @@ const mutations = {
     state.currentUser = {};
     state.users = [];
     state.isAuthenticated = false;
-    axios.defaults.headers.common['Authorization'] = null;
-    window.localStorage.removeItem('token');
-    window.localStorage.removeItem('user');
-    window.localStorage.removeItem('employee');
+    axios.defaults.headers.common["Authorization"] = null;
+    window.localStorage.removeItem("token");
+    window.localStorage.removeItem("user");
+    window.localStorage.removeItem("employee");
   },
 
   setEmployeeBonuses: (state, value) => {
     state.employeeBonuses = value;
   },
-
-  // setPackages: (state, value) => {
-  //   state.packages = value;
-  // },
 
   clearState(state) {
     Object.assign(state, defaultState);
@@ -115,25 +111,25 @@ const mutations = {
 
 const actions = {
   clearState({ commit }) {
-    commit('clearState');
+    commit("clearState");
   },
 
   notificationsReceiver({ commit }, val) {
-    commit('notificationsReceiver', val);
+    commit("notificationsReceiver", val);
   },
 
   notificationMessages({ commit }) {
-    commit('notificationMessages');
+    commit("notificationMessages");
   },
 
   clearError({ commit }) {
-    commit('clearError');
+    commit("clearError");
   },
 
   setError({ commit, dispatch }, payload) {
-    commit('setError', payload);
+    commit("setError", payload);
     setTimeout(() => {
-      dispatch('clearError');
+      dispatch("clearError");
     }, 4000);
   },
 
@@ -141,7 +137,7 @@ const actions = {
     let payload = {};
     // using this._vm to access the current vue instance inside the store.
     return this._vm.$http
-      .post('mmauth/api/login/', user)
+      .post("mmauth/api/login/", user)
       .then((response) => {
         const { token, user, employee } = response.data;
 
@@ -151,36 +147,36 @@ const actions = {
           employeeData: employee,
         };
         //should be offloaded to a util func
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('employee', JSON.stringify(employee));
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("employee", JSON.stringify(employee));
 
-        let empLoggedIn = JSON.parse(localStorage.getItem('employee'));
+        let empLoggedIn = JSON.parse(localStorage.getItem("employee"));
         if (empLoggedIn) {
           if (
-            empLoggedIn.role === 'company_hr' ||
-            empLoggedIn.role === 'group_hr'
+            empLoggedIn.role === "company_hr" ||
+            empLoggedIn.role === "group_hr"
           ) {
             // go to hr dashboard
-            router.push({ name: 'hr-dashboard' });
-          } else if (empLoggedIn.role === 'approver') {
-            router.push({ name: 'bonus-requests' });
+            router.push({ name: "hr-dashboard" });
+          } else if (empLoggedIn.role === "approver") {
+            router.push({ name: "bonus-requests" });
           } else {
             // go to employee dashboard
-            router.push({ name: 'home' });
+            router.push({ name: "home" });
           }
-        } else router.push({ name: 'login' });
+        } else router.push({ name: "login" });
 
-        commit('doLogin', payload);
-        dispatch('setError', {
-          text: 'successfully logged in',
-          color: 'success lighten-1',
+        commit("doLogin", payload);
+        dispatch("setError", {
+          text: "successfully logged in",
+          color: "success lighten-1",
         });
 
-        return Promise.all([dispatch('fetchEmployeeBonuses')]);
+        return Promise.all([dispatch("fetchEmployeeBonuses")]);
       })
       .catch(() => {
-        return Promise.reject('invalid credentials');
+        return Promise.reject("invalid credentials");
       });
   },
 
@@ -192,7 +188,7 @@ const actions = {
       .get(`bms/api/employees/${state.employeeData.id}/bonuses/`)
       .then((res) => {
         commit(
-          'setEmployeeBonuses',
+          "setEmployeeBonuses",
           res.data.map((item) => {
             return {
               id: item.id,
@@ -250,7 +246,7 @@ const actions = {
 
     //call verify token endpoint
     this._vm.$http
-      .post('/verifyToken', null, config)
+      .post("/verifyToken", null, config)
       .post((res) => {
         const { token, employee } = res.data;
 
@@ -260,11 +256,11 @@ const actions = {
         };
 
         //should be offloaded to a util func
-        axios.defaults.headers.common['Authorization'] = 'Token' + ' ' + token;
-        localStorage.setItem('token', JSON.stringify(token));
+        axios.defaults.headers.common["Authorization"] = "Token" + " " + token;
+        localStorage.setItem("token", JSON.stringify(token));
 
-        commit('doLogin', payload);
-        router.push({ name: 'home' });
+        commit("doLogin", payload);
+        router.push({ name: "home" });
       })
       .catch((err) => {
         throw err;
@@ -272,22 +268,22 @@ const actions = {
   },
 
   logout: ({ commit }) => {
-    commit('doLogout');
-    commit('clearState');
+    commit("doLogout");
+    commit("clearState");
     // localStorage.clear();
-    commit('logout');
-    router.push({ name: 'login' });
-    window.location.href = '/login';
+    commit("logout");
+    router.push({ name: "login" });
+    window.location.href = "/login";
     window.location.reload();
-    return 'done';
+    return "done";
   },
 
   async loadCompanies({ commit }) {
     try {
       const data = await fetchCompanies();
-      commit('SET_COMPANIES_DATA', data);
+      commit("SET_COMPANIES_DATA", data);
     } catch (error) {
-      commit('SET_COMPANIES_LOADING_ERROR', error);
+      commit("SET_COMPANIES_LOADING_ERROR", error);
     }
   },
 };
