@@ -5,16 +5,10 @@ import router from "../router";
 import axios from "axios";
 import SecureLS from "secure-ls";
 import common from "./modules/common";
-import bonus_request from "./modules/bonus_request.js";
 import packages from "./modules/packages";
 import bonuses from "./modules/bonuses";
-import logs from "./modules/logs";
-import approvers from "./modules/approvers";
-import welcome_messages from "./modules/welcome_messages";
 import { fetchCompanies } from "../services/modules/common";
-import groups from "./modules/groups";
-import users_employees from "./modules/users_employees.js";
-import roles_permissions from "./modules/roles_permissions";
+
 // instanstiate secure local storage
 var ls = new SecureLS({ isCompression: false });
 
@@ -313,15 +307,8 @@ export default new Vuex.Store({
   getters,
   modules: {
     common,
-    bonus_request,
     packages,
     bonuses,
-    approvers,
-    welcome_messages,
-    groups,
-    users_employees,
-    roles_permissions,
-    logs,
   },
   plugins: [
     createPersistedState({
