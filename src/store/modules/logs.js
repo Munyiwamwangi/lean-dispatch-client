@@ -3,7 +3,7 @@ import {
   fetchLoginTrail,
   searchAuditTrail,
   searchLoginTrail,
-} from '../../services/modules/logs_service';
+} from "../../services/modules/logs_service";
 
 export default {
   namespaced: true,
@@ -25,9 +25,7 @@ export default {
           id: _trail.id,
           userName: _trail.username,
           loginTime: _trail.login_datetime,
-          logoutTime: _trail.logout_time
-            ? _trail.logout_time
-            : '--',
+          logoutTime: _trail.logout_time ? _trail.logout_time : "--",
         };
       }),
 
@@ -39,57 +37,57 @@ export default {
           userName: _trail.username,
           eventCategory: _trail.event_category,
           changedObject: _trail.changed_object,
-          summary: _trail.change_summary ? _trail.change_summary : '__',
+          summary: _trail.change_summary ? _trail.change_summary : "__",
         };
       }),
   },
 
   actions: {
     async loadLoginTrail({ commit }, payload) {
-      commit('SET_LOADING_STATUS', true);
+      commit("SET_LOADING_STATUS", true);
       try {
         const data = await fetchLoginTrail(payload);
-        commit('SET_LOGIN_TRAIL', data.data.results);
-        commit('SET_LOADING_STATUS', false);
+        commit("SET_LOGIN_TRAIL", data.data.results);
+        commit("SET_LOADING_STATUS", false);
       } catch (error) {
-        commit('SET_ERRORED', true);
-        commit('SET_ERROR', error);
+        commit("SET_ERRORED", true);
+        commit("SET_ERROR", error);
       }
     },
 
     async searchLoginTrails({ commit }, payload) {
-      commit('SET_LOADING_STATUS', true);
+      commit("SET_LOADING_STATUS", true);
       try {
         const data = await searchLoginTrail(payload);
-        commit('SET_LOGIN_TRAIL', data.data.results);
-        commit('SET_LOADING_STATUS', false);
+        commit("SET_LOGIN_TRAIL", data.data.results);
+        commit("SET_LOADING_STATUS", false);
       } catch (error) {
-        commit('SET_ERRORED', true);
-        commit('SET_ERROR', error);
+        commit("SET_ERRORED", true);
+        commit("SET_ERROR", error);
       }
     },
 
     async loadAuditTrail({ commit }, payload) {
-      commit('SET_LOADING_STATUS', true);
+      commit("SET_LOADING_STATUS", true);
       try {
         const data = await fetchAuditTrail(payload);
-        commit('SET_AUDIT_TRAIL', data.data.results);
-        commit('SET_LOADING_STATUS', false);
+        commit("SET_AUDIT_TRAIL", data.data.results);
+        commit("SET_LOADING_STATUS", false);
       } catch (error) {
-        commit('SET_ERRORED', true);
-        commit('SET_ERROR', error);
+        commit("SET_ERRORED", true);
+        commit("SET_ERROR", error);
       }
     },
 
     async searchAuditTrails({ commit }, payload) {
-      commit('SET_LOADING_STATUS', true);
+      commit("SET_LOADING_STATUS", true);
       try {
         const data = await searchAuditTrail(payload);
-        commit('SET_AUDIT_TRAIL', data.data.results);
-        commit('SET_LOADING_STATUS', false);
+        commit("SET_AUDIT_TRAIL", data.data.results);
+        commit("SET_LOADING_STATUS", false);
       } catch (error) {
-        commit('SET_ERRORED', true);
-        commit('SET_ERROR', error);
+        commit("SET_ERRORED", true);
+        commit("SET_ERROR", error);
       }
     },
   },

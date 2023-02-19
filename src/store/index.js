@@ -137,8 +137,9 @@ const actions = {
     let payload = {};
     // using this._vm to access the current vue instance inside the store.
     return this._vm.$http
-      .post("mmauth/api/login/", user)
+      .post("/api/auth/signin", user)
       .then((response) => {
+        console.log("login API response ----> ", response);
         const { token, user, employee } = response.data;
 
         payload = {
