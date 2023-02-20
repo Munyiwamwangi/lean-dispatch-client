@@ -66,7 +66,7 @@ const routes = [
   },
   {
     path: "/dashboard",
-    name: "hr-dashboard",
+    name: "dashboard",
     component: Dashboard,
     meta: {
       title: "MM Grupp - HR Dashboard",
@@ -85,16 +85,6 @@ const routes = [
       approver: true,
     },
   },
-
-  {
-    path: "/bonus/tracker",
-    name: "employee-bonus-tracker",
-    component: AccountManagement,
-    meta: {
-      title: "MM Grupp - Employee Bonus Tracker",
-      requiresAuth: true,
-    },
-  },
 ];
 
 const router = new VueRouter({
@@ -103,65 +93,65 @@ const router = new VueRouter({
   routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//   //route refresh to reuse the state's selected language
-//   i18n.locale = localStorage.getItem('language') || 'en';
+router.beforeEach((to, from, next) => {
+  //route refresh to reuse the state's selected language
 
-//   // start progress bar
-//   NProgress.start();
-//   // This goes through the matched routes from last to first, finding the closest route with a title.
-//   // e.g., if we have `/some/deep/nested/route` and `/some`, `/deep`, and `/nested` have titles,
-//   // `/nested`'s will be chosen.
-//   const nearestWithTitle = to.matched
-//     .slice()
-//     .reverse()
-//     .find((r) => r.meta && r.meta.title);
+  // start progress bar
+  NProgress.start();
+  // This goes through the matched routes from last to first, finding the closest route with a title.
+  // e.g., if we have `/some/deep/nested/route` and `/some`, `/deep`, and `/nested` have titles,
+  // `/nested`'s will be chosen.
+  const nearestWithTitle = to.matched
+    .slice()
+    .reverse()
+    .find((r) => r.meta && r.meta.title);
 
-//   const previousNearestWithTitle = from.matched
-//     .slice()
-//     .reverse()
-//     .find((r) => r.meta && r.meta.title);
+  const previousNearestWithTitle = from.matched
+    .slice()
+    .reverse()
+    .find((r) => r.meta && r.meta.title);
 
-//   // If a route with a title was found, set the document (page) title to that value.
-//   if (nearestWithTitle) {
-//     document.title = nearestWithTitle.meta.title;
-//   } else if (previousNearestWithTitle) {
-//     document.title = previousNearestWithTitle.meta.title;
-//   }
+  // If a route with a title was found, set the document (page) title to that value.
+  if (nearestWithTitle) {
+    document.title = nearestWithTitle.meta.title;
+  } else if (previousNearestWithTitle) {
+    document.title = previousNearestWithTitle.meta.title;
+  }
 
-//   // define protection and redirection for admin and employees section
-//   if (to.matched.some((record) => record.meta.requiresAuth)) {
-//     if (localStorage.getItem('token') === null) {
-//       next({
-//         path: '/login',
-//         params: { nextUrl: to.fullPath },
-//       });
-//     } else {
-//       // console.log('token found', from.path);
+  // define protection and redirection for admin and employees section
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (localStorage.getItem("token") === null) {
+      next({
+        path: "/login",
+        params: { nextUrl: to.fullPath },
+      });
+    } else {
+      next();
+      // console.log("token found", from.path);
+      // let currentUser = JSON.parse(localStorage.getItem("user"));
+      // // if (to.matched.some((record) => record.meta.hr)) {
+      // if (to.matched.some((record) => record.meta.hr)) {
+      //   if (
+      //     currentUser.role === "company_hr" ||
+      //     currentUser.role === "group_hr"
+      //   ) {
+      //     next();
+      //   } else {
+      //     // for approver bonus request route.
+      //     next();
+      //   }
+      // } else {
+      //   // normal routes accessible to everyone.
+      //   next();
+      // }
+    }
 
-//       let employeeData = JSON.parse(localStorage.getItem('employee'));
-//       if (to.matched.some((record) => record.meta.hr)) {
-//         if (
-//           employeeData.role === 'company_hr' ||
-//           employeeData.role === 'group_hr'
-//         ) {
-//           next();
-//         } else {
-//           // for approver bonus request route.
-//           next();
-//         }
-//       } else {
-//         // normal routes accessible to everyone.
-//         next();
-//       }
-//     }
-
-//     NProgress.done();
-//   } else {
-//     next();
-//   }
-//   // define protection and redirection for admin and employees ends
-// });
+    NProgress.done();
+  } else {
+    next();
+  }
+  // define protection and redirection for admin and employees ends
+});
 
 router.afterEach(() => {
   // finish progress bar

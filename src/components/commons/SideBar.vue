@@ -43,7 +43,7 @@ export default {
         {
           text: "Dashboard",
           icon: "mdi-view-dashboard",
-          name: "hr-dashboard",
+          name: "dashboard",
           page: "/hr/dashboard",
           employee: true,
           hr: true,

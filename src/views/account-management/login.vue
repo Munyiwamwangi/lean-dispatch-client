@@ -15,7 +15,7 @@
                   <v-card-text class="white--text text-uppercase">
                     <h1 class="text-center">Welcome to lean dispatch</h1>
                   </v-card-text>
-                  <hr class="horizontal-underline" />
+                  <!-- <hr class="horizontal-underline" /> -->
                 </v-row>
               </div>
             </v-col>

@@ -30,9 +30,9 @@ export default {
 
   computed: {
     ...mapGetters("logs", {
-      LoginTrailLogDetail: "loginTrailLog",
-      loading: "loadingLoginTrail",
-      auditLogDetail: "auditTrailLog",
+      // LoginTrailLogDetail: "loginTrailLog",
+      // loading: "loadingLoginTrail",
+      // auditLogDetail: "auditTrailLog",
     }),
   },
 

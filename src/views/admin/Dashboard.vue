@@ -20,8 +20,6 @@
         <OrdersComponent
           :tab="tab"
           :filter-drawer.sync="filterDrawer"
-          :trail="LoginTrailLogDetail"
-          :loading="loading"
           @show-feedback="showFeedback"
         ></OrdersComponent>
       </v-tab-item>
@@ -30,8 +28,6 @@
         <VendorsComponent
           :tab="tab"
           :filter-drawer.sync="filterDrawer"
-          :trail="LoginTrailLogDetail"
-          :loading="loading"
           @show-feedback="showFeedback"
         ></VendorsComponent>
       </v-tab-item>
@@ -39,19 +35,15 @@
       <v-tab-item>
         <DriversComponent
           :tab="tab"
-          :trail="auditLogDetail"
-          :loading="loading"
           :filter-drawer.sync="filterDrawer"
           @show-feedback="showFeedback"
         ></DriversComponent>
       </v-tab-item>
-      <!-- login trail  -->
+
       <v-tab-item>
         <CustomersComponent
           :tab="tab"
           :filter-drawer.sync="filterDrawer"
-          :trail="LoginTrailLogDetail"
-          :loading="loading"
           @show-feedback="showFeedback"
         ></CustomersComponent>
       </v-tab-item>
@@ -75,7 +67,7 @@ import { mapGetters } from "vuex";
 import FeedbackSnackBar from "@/components/FeedbackSnackBar";
 
 export default {
-  name: "LogsView",
+  name: "MainDashBoard",
   drawer: null,
   filterDrawer: false,
   components: {
@@ -105,9 +97,9 @@ export default {
 
   computed: {
     ...mapGetters("logs", {
-      LoginTrailLogDetail: "loginTrailLog",
-      loading: "loadingLoginTrail",
-      auditLogDetail: "auditTrailLog",
+      // LoginTrailLogDetail: "loginTrailLog",
+      // loading: "loadingLoginTrail",
+      // auditLogDetail: "auditTrailLog",
     }),
   },
 

@@ -1,15 +1,15 @@
 <template>
   <v-app id="app">
-    <!-- <div v-if="notAuthPage"> -->
-    <TheSideBar :drawer.sync="drawer"></TheSideBar>
-    <TheHeaderBar
-      :title="title"
-      @toggle-sidebar="toggleSidebar"
-      @markAllasRead="markAllasRead"
-      @readOneMessageInstance="readOneMessageInstance"
-      @readAndUnreadItems="readAndUnreadItems"
-    ></TheHeaderBar>
-    <!-- </div> -->
+    <div v-if="notAuthPage">
+      <TheSideBar :drawer.sync="drawer"></TheSideBar>
+      <TheHeaderBar
+        :title="title"
+        @toggle-sidebar="toggleSidebar"
+        @markAllasRead="markAllasRead"
+        @readOneMessageInstance="readOneMessageInstance"
+        @readAndUnreadItems="readAndUnreadItems"
+      ></TheHeaderBar>
+    </div>
 
     <v-main>
       <router-view />
@@ -41,37 +41,28 @@ export default {
     };
   },
 
-  // computed: {
-  //   employeeData() {
-  //     return this.$store.state.employeeData || {};
-  //   },
-  //   userInfo() {
-  //     return this.$store.state.employeeData || {};
-  //   },
+  computed: {
+    employeeData() {
+      return JSON.parse(localStorage.getItem("user")) || {};
+    },
 
-  //   notAuthPage() {
-  //     return this.$route.meta.requiresAuth !== undefined;
-  //   },
-  //   title() {
-  //     if (
-  //       this.employeeData.user_group.some(
-  //         (_property) => _property.title == 'group_hr'
-  //       ) ||
-  //       this.employeeData.user_group.some(
-  //         (_property) => _property.title == 'company_hr'
-  //       )
-  //     ) {
-  //       return 'mainHrDashTitle';
-  //     } else if (
-  //       this.employeeData.user_group.some(
-  //         (_property) => _property.title === 'approver'
-  //       )
-  //     ) {
-  //       return 'approverDashboard';
-  //     }
-  //     return 'mainEmployeeDashboard';
-  //   },
-  // },
+    notAuthPage() {
+      return this.$route.meta.requiresAuth !== undefined;
+    },
+    title() {
+      if (this.employeeData.userType === "merchant") {
+        return "Lean dispatch";
+      }
+      // else if (
+      //   this.employeeData.user_group.some(
+      //     (_property) => _property.title === "approver"
+      //   )
+      // ) {
+      //   return "approverDashboard";
+      // }
+      return "Lean dispatch";
+    },
+  },
 
   watch: {
     notificationMessages: {

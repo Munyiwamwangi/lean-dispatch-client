@@ -69,7 +69,7 @@ export default {
       {
         text: "Dashboard",
         icon: "dashboard",
-        name: "hr-dashboard",
+        name: "dashboard",
         employee: true,
         hr: true,
       },
@@ -79,12 +79,12 @@ export default {
       //   name: "accounts",
       //   employee: true,
       // },
-      {
-        text: "login page",
-        icon: "flag",
-        name: "login",
-        employee: true,
-      },
+      // {
+      //   text: "login page",
+      //   icon: "flag",
+      //   name: "login",
+      //   employee: true,
+      // },
     ],
   }),
 

@@ -8,6 +8,7 @@ import common from "./modules/common";
 import packages from "./modules/packages";
 import bonuses from "./modules/bonuses";
 import { fetchCompanies } from "../services/modules/common";
+import config from "../config";
 
 // instanstiate secure local storage
 var ls = new SecureLS({ isCompression: false });
@@ -79,7 +80,7 @@ const mutations = {
     axios.defaults.headers.common["Authorization"] = null;
     window.localStorage.removeItem("token");
     window.localStorage.removeItem("user");
-    window.localStorage.removeItem("employee");
+    window.localStorage.removeItem("refreshToken");
   },
 
   setEmployeeBonuses: (state, value) => {
@@ -128,51 +129,54 @@ const actions = {
   },
 
   login({ commit, dispatch }, user) {
+    localStorage.clear();
     let payload = {};
     // using this._vm to access the current vue instance inside the store.
-    return this._vm.$http
-      .post("/api/auth/signin", user)
-      .then((response) => {
-        console.log("login API response ----> ", response);
-        const { token, user, employee } = response.data;
+    return (
+      axios
+        .create({
+          authURL: config.BACKEND_SERVICE,
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        })
+        // .post('mmauth/api/login', user)
+        .post(config.BACKEND_SERVICE + `api/auth/signin`, user)
+        .then((response) => {
+          // console.log(JSON.stringify(response.data, null, 3));
+          const { access_token, refresh_token, user } = response.data;
 
-        payload = {
-          isAuthenticated: true,
-          currentUser: user,
-          employeeData: employee,
-        };
-        //should be offloaded to a util func
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("employee", JSON.stringify(employee));
+          payload = {
+            isAuthenticated: true,
+            currentUser: user,
+            refreshToken: refresh_token,
+          };
+          //should be offloaded to a util func
+          localStorage.setItem("token", access_token);
+          localStorage.setItem("user", JSON.stringify(user));
+          localStorage.setItem("refreshToken", JSON.stringify(refresh_token));
 
-        let empLoggedIn = JSON.parse(localStorage.getItem("employee"));
-        if (empLoggedIn) {
-          if (
-            empLoggedIn.role === "company_hr" ||
-            empLoggedIn.role === "group_hr"
-          ) {
-            // go to hr dashboard
-            router.push({ name: "hr-dashboard" });
-          } else if (empLoggedIn.role === "approver") {
-            router.push({ name: "bonus-requests" });
+          // let empLoggedIn = JSON.parse(localStorage.getItem("user"));
+          // if (empLoggedIn.discontinued === !true) {
+          if (user) {
+            console.log("redirect --------->      ");
+            router.push({ name: "dashboard" });
           } else {
-            // go to employee dashboard
-            router.push({ name: "home" });
+            this.logout();
+            router.push({ name: "login" });
           }
-        } else router.push({ name: "login" });
 
-        commit("doLogin", payload);
-        dispatch("setError", {
-          text: "successfully logged in",
-          color: "success lighten-1",
-        });
-
-        return Promise.all([dispatch("fetchEmployeeBonuses")]);
-      })
-      .catch(() => {
-        return Promise.reject("invalid credentials");
-      });
+          commit("doLogin", payload);
+          dispatch("showFeedback", {
+            status: "success",
+            message: this.$t("successfullyLoggediInText"),
+          });
+        })
+        .catch(() => {
+          return Promise.reject("Invalid username or password");
+        })
+    );
   },
 
   // fetch currentUsers bonuses
