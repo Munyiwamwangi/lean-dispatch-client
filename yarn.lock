@@ -6127,6 +6127,11 @@ npm-run-path@^4.0.0:
   dependencies:
     path-key "^3.0.0"
 
+nprogress@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/nprogress/-/nprogress-0.2.0.tgz#cb8f34c53213d895723fcbab907e9422adbcafb1"
+  integrity sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==
+
 nth-check@^1.0.2:
   version "1.0.2"
   resolved "https://registry.nlark.com/nth-check/download/nth-check-1.0.2.tgz#b2bd295c37e3dd58a3bf0700376663ba4d9cf05c"
@@ -8734,11 +8739,6 @@ vue-flag-icon@^1.0.6:
   integrity sha1-AwT9/uvZgqa/mFxjPDRv88bS+dc=
   dependencies:
     flag-icon-css "^2.8.0"
-
-vue-google-oauth2@^1.5.8:
-  version "1.5.8"
-  resolved "https://registry.yarnpkg.com/vue-google-oauth2/-/vue-google-oauth2-1.5.8.tgz#9ed963aaafc1e80a276c195499024f369b02d5c8"
-  integrity sha512-mATpPrLjzjAoUwgFC2feEZEhyoFyItPQSdEgX3m+rHI17sXLEdKzcMLmk+8B1obu4J/YVuVRR9A1afs+4VEk0Q==
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
