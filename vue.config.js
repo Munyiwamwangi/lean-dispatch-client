@@ -2,7 +2,7 @@ module.exports = {
   transpileDependencies: ['vuetify'],
 
   pwa: {
-    name: 'MM Grupp Bonuses',
+    name: 'LD',
     themeColor: '#536878',
     msTileColor: '#536878',
     appleMobileWebAppCache: 'yes',

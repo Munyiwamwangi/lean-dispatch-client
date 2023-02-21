@@ -224,7 +224,7 @@ export default {
 <style lang="scss" scoped>
 .v-application .first-col {
   // border-bottom-right-radius: 300px !important;
-  background-color: #536878;
+  background: linear-gradient(180deg, #15488f 0%, #235eb3 50%, #17396a 100%);
 }
 
 hr.horizontal-underline {
