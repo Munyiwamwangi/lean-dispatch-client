@@ -13,7 +13,7 @@ Vue.use(VueRouter);
 // which is lazy-loaded when the route is visited.
 const Login = () =>
   import(
-    /* webpackChunkName: "login" */ "../views/account-management/Login.vue"
+    /* webpackChunkName: "login" */ "../views/account-management/login.vue"
   );
 
 const ForgotPassword = () =>
