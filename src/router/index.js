@@ -44,7 +44,7 @@ const routes = [
     path: "/login",
     name: "login",
     meta: {
-      title: "MM Grupp - Login",
+      title: "LD - Login",
     },
     component: Login,
   },
@@ -52,7 +52,7 @@ const routes = [
     path: "/forgot-password",
     name: "forgot-password",
     meta: {
-      title: "MM Grupp - Forgot - Password",
+      title: "LD - Forgot - Password",
     },
     component: ForgotPassword,
   },
@@ -60,7 +60,7 @@ const routes = [
     path: "/reset-password/:token",
     name: "reset-password",
     meta: {
-      title: "MM Grupp - Reset Password",
+      title: "LD - Reset Password",
     },
     component: ResetPassword,
   },
@@ -69,7 +69,7 @@ const routes = [
     name: "dashboard",
     component: Dashboard,
     meta: {
-      title: "MM Grupp - HR Dashboard",
+      title: "LD Dashboard",
       requiresAuth: true,
       hr: true,
     },
@@ -79,7 +79,7 @@ const routes = [
     name: "accounts",
     component: AccountManagement,
     meta: {
-      title: "MM Grupp - My Bonuses",
+      title: "LD - My Bonuses",
       requiresAuth: true,
       hr: true,
       approver: true,
