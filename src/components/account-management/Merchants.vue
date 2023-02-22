@@ -29,48 +29,35 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="3">
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="editedItem.name"
-                      label="Name"
+                      outlined
+                      v-model="editedItem.businessName"
+                      label="Business Name"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="3">
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="editedItem.calories"
+                      outlined
+                      v-model="editedItem.businessPhone"
                       readonly
-                      label="Completed Orders"
+                      label="Business Phone"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="3">
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="editedItem.fat"
-                      label="Earnings"
+                      outlined
+                      v-model="editedItem.businessAddress"
+                      label="Business Adress"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="3">
+
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="editedItem.carbs"
-                      label="Company"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="City"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Status"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
+                      outlined
                       readonly
-                      v-model="editedItem.protein"
-                      label="Date Joined"
+                      v-model="editedItem.businessLogo"
+                      label="Upload Logo"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -173,11 +160,12 @@ export default {
     desserts: [],
     editedIndex: -1,
     editedItem: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+      businessName: "",
+      businessPhone: "",
+      businessAddress: "",
+      latitude: "",
+      longitude: "",
+      businessLogo: "",
     },
     defaultItem: {
       name: "",
