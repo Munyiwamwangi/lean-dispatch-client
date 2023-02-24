@@ -5,7 +5,7 @@ import router from "../router";
 import axios from "axios";
 import SecureLS from "secure-ls";
 import common from "./modules/common";
-import packages from "./modules/packages";
+import merchants from "./modules/merchants";
 import bonuses from "./modules/bonuses";
 import { fetchCompanies } from "../services/modules/common";
 import config from "../config";
@@ -311,7 +311,7 @@ export default new Vuex.Store({
   getters,
   modules: {
     common,
-    packages,
+    merchants,
     bonuses,
   },
   plugins: [

@@ -110,7 +110,7 @@ export default {
   },
 
   created() {
-    // this.$store.dispatch("logs/loadLoginTrail");
+    this.$store.dispatch("merchants/loadMerchants");
     // this.$store.dispatch("logs/loadAuditTrail");
   },
 

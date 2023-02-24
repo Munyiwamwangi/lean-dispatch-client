@@ -40,7 +40,6 @@
                     <v-text-field
                       outlined
                       v-model="editedItem.businessPhone"
-                      readonly
                       label="Business Phone"
                     ></v-text-field>
                   </v-col>
@@ -55,7 +54,6 @@
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
                       outlined
-                      readonly
                       v-model="editedItem.businessLogo"
                       label="Upload Logo"
                     ></v-text-field>
@@ -67,7 +65,9 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+              <v-btn color="blue darken-1" text @click="save(item)">
+                Save
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -302,9 +302,11 @@ export default {
     },
 
     save() {
+      // this.editedIndex = item.id;
+      console.log(this.editedItem);
       if (this.editedIndex > -1) {
         Object.assign(this.desserts[this.editedIndex], this.editedItem);
-      } else {
+
         this.desserts.push(this.editedItem);
       }
       this.close();

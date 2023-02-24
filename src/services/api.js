@@ -1,36 +1,36 @@
 // global axios instance
-import axios from 'axios';
-import store from '../store/index';
+import axios from "axios";
+import store from "../store/index";
 
-import config from '../config';
+import config from "../config";
 
-import router from '../router';
+import router from "../router";
 
 const api = axios.create({
-  baseURL: config.BASE_URL,
+  baseURL: config.BACKEND_SERVICE,
   headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
+    Accept: "application/json",
+    "Content-Type": "application/json",
   },
 });
 
 function clearStorage() {
-  store.dispatch('clearState');
-  window.localStorage.removeItem('token');
-  window.localStorage.removeItem('user');
-  window.localStorage.removeItem('employee');
+  store.dispatch("clearState");
+  window.localStorage.removeItem("token");
+  window.localStorage.removeItem("user");
+  window.localStorage.removeItem("employee");
 }
 
-function customErros(text, color = 'red lighten-1') {
-  store.dispatch('setError', { color: color, text: text });
+function customErros(text, color = "red lighten-1") {
+  store.dispatch("setError", { color: color, text: text });
 }
 
 // axios interceptors
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
-      config.headers.common['Authorization'] = 'Token ' + token;
+      config.headers.common["Authorization"] = "Token " + token;
     }
     return config;
   },
@@ -50,18 +50,18 @@ api.interceptors.response.use(
       switch (error.response.status) {
         case 400:
           // clearStorage();
-          customErros('invalid data');
+          customErros("invalid data");
           break;
         case 401:
         case 403:
-          customErros(error.response.statusText, 'red lighten-1');
-         
+          customErros(error.response.statusText, "red lighten-1");
+
           break;
         case 502:
           clearStorage();
           setTimeout(() => {
             router.replace({
-              path: '/login',
+              path: "/login",
               query: {
                 redirect: router.currentRoute.fullPath,
               },

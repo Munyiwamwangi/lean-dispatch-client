@@ -26,7 +26,7 @@
               small
               @click="openPackageDialog"
             >
-              {{ $t('addBonusPackageText') }}
+              {{ $t("addBonusPackageText") }}
             </v-btn>
             <v-spacer></v-spacer>
           </template>
@@ -83,13 +83,13 @@
                         <v-tooltip bottom open-delay="500">
                           <template v-slot:activator="{ on, attrs }">
                             <span>
-                              {{ $t('singleSelectPackageText') }}
+                              {{ $t("singleSelectPackageText") }}
                             </span>
                             <sup v-bind="attrs" v-on="on">
                               <v-icon small> mdi-help-circle </v-icon>
                             </sup>
                           </template>
-                          <span>{{ $t('singleSelectPackageInfo') }}</span>
+                          <span>{{ $t("singleSelectPackageInfo") }}</span>
                         </v-tooltip>
                       </template>
                     </v-checkbox>
@@ -101,10 +101,10 @@
                 <v-spacer></v-spacer>
 
                 <v-btn color="accent" text @click="closePackageDialogue">
-                  {{ $t('cancelButtonText') }}
+                  {{ $t("cancelButtonText") }}
                 </v-btn>
                 <v-btn color="accent" :disabled="!valid" @click="savePackage()">
-                  {{ $t('saveButtonText') }}
+                  {{ $t("saveButtonText") }}
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -115,7 +115,7 @@
       <template #[`group.header`]="{ items, isOpen, toggle }">
         <th colspan="5">
           <v-icon @click="toggle">
-            {{ isOpen ? 'mdi-minus' : 'mdi-plus' }}
+            {{ isOpen ? "mdi-minus" : "mdi-plus" }}
           </v-icon>
           <span class="text-capitalize">
             {{ items[0].company }}
@@ -128,7 +128,7 @@
       </template>
 
       <template #[`item.actions`]="{ item }">
-        <v-icon small color="green" class="mr-2" @click="editPackage(item)">
+        <v-icon small color="green" class="mr-2" @click="editMerchant(item)">
           mdi-pencil
         </v-icon>
         <v-icon small color="red" @click="launchDeleteDialog(item)">
@@ -143,15 +143,15 @@
           <v-icon color="secondary" dark size="64"> mdi-alert-outline </v-icon>
         </v-card-text>
         <v-card-text class="text-h6">
-          {{ $t('deleteItemTextTranslate') }}
+          {{ $t("deleteItemTextTranslate") }}
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="accent darken-1" text @click="dismissDelete()">
-            {{ $t('cancelButtonText') }}
+            {{ $t("cancelButtonText") }}
           </v-btn>
-          <v-btn color="secondary darken-1" text @click="deletePackage">
-            {{ $t('removeButtonText') }}
+          <v-btn color="secondary darken-1" text @click="deleteMerchant">
+            {{ $t("removeButtonText") }}
           </v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
@@ -161,12 +161,12 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
 
-import showRecordsBy from '../mixins/showRecordsBy';
+import showRecordsBy from "../mixins/showRecordsBy";
 
-import TableTopbar from './TableTopbar.vue';
-import LoadingBar from './LoadingBar.vue';
+import TableTopbar from "./TableTopbar.vue";
+import LoadingBar from "./LoadingBar.vue";
 
 export default {
   components: {
@@ -196,21 +196,21 @@ export default {
       dialog: false,
       deleteDialog: false,
       newPackage: {
-        company: '',
-        name: '',
+        company: "",
+        name: "",
         isPackageDefault: false,
         isSingleSelect: false,
       },
       defaultNewPackage: {
-        company: '',
-        name: '',
+        company: "",
+        name: "",
         isPackageDefault: false,
         isSingleSelect: false,
       },
       editedPackageIndex: -1,
 
       rules: {
-        required: (value) => !!value || 'Required.',
+        required: (value) => !!value || "Required.",
       },
     };
   },
@@ -219,48 +219,48 @@ export default {
     packageHeaders() {
       return [
         {
-          text: 'ID',
-          align: 'start',
+          text: "ID",
+          align: "start",
           sortable: false,
-          value: 'id',
-          class: 'accent--text text-subtitle-2 text-uppercase',
+          value: "id",
+          class: "accent--text text-subtitle-2 text-uppercase",
         },
         {
-          text: this.$t('packageNameTextTranslation'),
+          text: this.$t("packageNameTextTranslation"),
           sortable: true,
-          value: 'name',
-          class: 'accent--text text-subtitle-2 text-uppercase',
+          value: "name",
+          class: "accent--text text-subtitle-2 text-uppercase",
         },
         {
-          text: this.$t('company'),
+          text: this.$t("company"),
           sortable: true,
-          value: 'company',
-          class: 'accent--text text-subtitle-2 text-uppercase',
+          value: "company",
+          class: "accent--text text-subtitle-2 text-uppercase",
         },
         {
-          text: this.$t('tableActionsHeaderText'),
-          value: 'actions',
+          text: this.$t("tableActionsHeaderText"),
+          value: "actions",
           sortable: false,
-          class: 'accent--text text-subtitle-2 text-uppercase',
+          class: "accent--text text-subtitle-2 text-uppercase",
         },
       ];
     },
     formTitle() {
       return this.editedPackageIndex === -1
-        ? this.$t('createPackageHeadingText')
-        : this.$t('editPackageNameHeaderText');
+        ? this.$t("createPackageHeadingText")
+        : this.$t("editMerchantNameHeaderText");
     },
   },
 
   methods: {
-    ...mapActions('packages', {
-      createPackage: 'createPackage',
-      updatePackage: 'updatePackage',
-      removePackage: 'delPackage',
+    ...mapActions("packages", {
+      createPackage: "createPackage",
+      updatePackage: "updatePackage",
+      removePackage: "delPackage",
     }),
 
     toggleFilter() {
-      this.$emit('update:filter-drawer', !this.filterDrawer);
+      this.$emit("update:filter-drawer", !this.filterDrawer);
     },
 
     openPackageDialog() {
@@ -293,17 +293,17 @@ export default {
         this.updatePackageDetails();
       } else {
         // add new package.
-        this.addPackage();
+        this.addMerchant();
       }
 
       // dismiss dialog
       this.closePackageDialogue();
     },
 
-    addPackage() {
-      this.$emit('show-feedback', {
-        status: 'submitting',
-        message: 'submitting',
+    addMerchant() {
+      this.$emit("show-feedback", {
+        status: "submitting",
+        message: "submitting",
       });
 
       const data = {
@@ -315,20 +315,20 @@ export default {
 
       this.createPackage(data)
         .then(() => {
-          this.$emit('show-feedback', {
-            status: 'success',
-            message: 'Package created.',
+          this.$emit("show-feedback", {
+            status: "success",
+            message: "Package created.",
           });
         })
         .catch(() => {
-          this.$emit('show-feedback', {
-            status: 'fail',
-            message: 'Package creation failed.',
+          this.$emit("show-feedback", {
+            status: "fail",
+            message: "Package creation failed.",
           });
         });
     },
 
-    editPackage(item) {
+    editMerchant(item) {
       this.dialog = true;
       this.editedPackageIndex = item.id;
 
@@ -348,9 +348,9 @@ export default {
     },
 
     updatePackageDetails() {
-      this.$emit('show-feedback', {
-        status: 'submitting',
-        message: 'submitting',
+      this.$emit("show-feedback", {
+        status: "submitting",
+        message: "submitting",
       });
 
       let data = {
@@ -364,37 +364,37 @@ export default {
 
       this.updatePackage(payload)
         .then(() => {
-          this.$emit('show-feedback', {
-            status: 'success',
-            message: 'Package updated.',
+          this.$emit("show-feedback", {
+            status: "success",
+            message: "Package updated.",
           });
         })
         .catch(() => {
-          this.$emit('show-feedback', {
-            status: 'fail',
-            message: 'Package update fail.',
+          this.$emit("show-feedback", {
+            status: "fail",
+            message: "Package update fail.",
           });
         });
     },
 
-    deletePackage() {
+    deleteMerchant() {
       this.dismissDelete();
-      this.$emit('show-feedback', {
-        status: 'submitting',
-        message: 'submitting',
+      this.$emit("show-feedback", {
+        status: "submitting",
+        message: "submitting",
       });
 
       this.removePackage(this.editedPackageIndex)
         .then(() => {
-          this.$emit('show-feedback', {
-            status: 'success',
-            message: 'Package deleted.',
+          this.$emit("show-feedback", {
+            status: "success",
+            message: "Package deleted.",
           });
         })
         .catch(() => {
-          this.$emit('show-feedback', {
-            status: 'fail',
-            message: 'Package deletion failed.',
+          this.$emit("show-feedback", {
+            status: "fail",
+            message: "Package deletion failed.",
           });
         });
     },

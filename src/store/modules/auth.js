@@ -1,4 +1,4 @@
-import * as api from '../../services';
+import * as api from "../../services";
 
 export default {
   namespaced: true,
@@ -17,12 +17,12 @@ export default {
       }),
   },
   actions: {
-    async loadPackages({ commit }) {
+    async loadMerchants({ commit }) {
       try {
-        const data = await api.fetchPackages();
-        commit('SET_PACKAGES', data);
+        const data = await api.fetchMerchants();
+        commit("SET_PACKAGES", data);
       } catch (error) {
-        commit('SET_ERRORS', error);
+        commit("SET_ERRORS", error);
       }
     },
   },

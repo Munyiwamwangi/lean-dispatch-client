@@ -42,10 +42,8 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title
-                class="font-weight-bold text-capitalize"
-                v-text="$t(item.text)"
-              >
+              <v-list-item-title class="font-weight-bold text-capitalize"
+                >item.text
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
