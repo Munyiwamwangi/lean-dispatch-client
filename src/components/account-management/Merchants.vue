@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="desserts"
+    :items="allMerchants"
     sort-by="calories"
     class="elevation-1"
     hide-default-footer
@@ -143,6 +143,7 @@ export default {
         align: "start",
         sortable: false,
         value: "fullName",
+        class: "text-capitalize",
       },
       {
         text: "stores",
