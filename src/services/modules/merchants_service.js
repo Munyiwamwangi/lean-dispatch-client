@@ -2,7 +2,7 @@ import api from "../api";
 
 export function fetchMerchants() {
   return api
-    .get("/api/merchants/")
+    .get("/api/users/search/")
     .then((res) => Promise.resolve(res.data))
     .catch((err) => Promise.reject(err));
 }

@@ -90,12 +90,31 @@
         </v-dialog>
       </v-toolbar>
     </template>
-    <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+
+    <!-- status  -->
+    <template v-slot:[`item.status`]="{ item }">
+      <v-icon
+        v-if="item.status === 'active'"
+        small
+        color="success"
+        class="mr-2"
+        @click="editItem(item)"
+      >
+        mdi-check-circle
+      </v-icon>
+      <v-icon v-else small color="warning" @click="deleteItem(item)">
+        mdi-cancel
+      </v-icon>
     </template>
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize"> Reset </v-btn>
+
+    <!-- actions  -->
+    <template v-slot:[`item.actions`]="{ item }">
+      <v-icon small color="success" class="mr-2" @click="editItem(item)">
+        mdi-pencil
+      </v-icon>
+      <v-icon small color="red" @click="deleteItem(item)">
+        mdi-delete-outline
+      </v-icon>
     </template>
   </v-data-table>
 </template>
@@ -127,6 +146,7 @@ export default {
         text: "drivers",
         value: "drivers",
         class: "text-capitalize",
+        sortable: false,
       },
       {
         text: "employees",
@@ -137,22 +157,31 @@ export default {
         text: "vehicles",
         value: "vehicles",
         class: "text-capitalize",
+        sortable: false,
       },
       {
         text: "subscription",
         value: "subscription",
         class: "text-capitalize",
+        sortable: false,
       },
-      { text: "city", value: "city", class: "text-capitalize" },
+      {
+        text: "city",
+        value: "city",
+        class: "text-capitalize",
+        sortable: false,
+      },
       {
         text: "status",
         value: "status",
         class: "text-capitalize",
+        sortable: false,
       },
       {
         text: "joined on",
         value: "joinedOn",
         class: "text-capitalize",
+        sortable: false,
       },
 
       { text: "Actions", value: "actions", sortable: false },
@@ -200,7 +229,7 @@ export default {
       this.desserts = [
         {
           name: "Joe Munyi",
-          stores: 2,
+          stores: 1,
           drivers: 2,
           employees: 4,
           vehicles: 3,
@@ -211,27 +240,26 @@ export default {
         },
         {
           name: "Silvester Odera",
-          stores: 2,
+          stores: 3,
           drivers: 5,
           employees: 2,
           vehicles: 1,
           subscription: "Premium",
-          city: "Nairobi",
+          city: "Kisumu",
           status: "active",
           joinedOn: "4/07/2022",
         },
         {
           name: "Odera Silverster",
-          stores: 2,
+          stores: 5,
           drivers: 6,
           employees: 17,
           vehicles: 6,
           subscription: "Premium",
-          city: "Nairobi",
+          city: "Eldoret",
           status: "active",
           joinedOn: "12/05/2022",
         },
-
         {
           name: "Moon Rey",
           stores: 2,
@@ -245,23 +273,23 @@ export default {
         },
         {
           name: "John Doe",
-          stores: 2,
+          stores: 4,
           drivers: 3,
           employees: 4,
           vehicles: 3,
           subscription: "Silver",
-          city: "Nairobi",
-          status: "active",
+          city: "Eldoret",
+          status: "inactive",
           joinedOn: "12/05/2022",
         },
         {
-          name: "Kaimenyi Kimenyi",
-          stores: 2,
+          name: "Kaimenyi",
+          stores: 4,
           drivers: 3,
           employees: 4,
           vehicles: 3,
           subscription: "Bronze",
-          city: "Nairobi",
+          city: "Kisumu",
           status: "active",
           joinedOn: "12/05/2022",
         },
