@@ -121,6 +121,13 @@
 
 <script>
 export default {
+  props: {
+    allMerchants: {
+      type: Array,
+      required: true,
+    },
+  },
+
   data: () => ({
     dialog: false,
     dialogDelete: false,
@@ -135,7 +142,7 @@ export default {
         text: "Name",
         align: "start",
         sortable: false,
-        value: "name",
+        value: "fullName",
       },
       {
         text: "stores",

@@ -9,33 +9,43 @@ export default {
   namespaced: true,
 
   state: {
-    packages: [],
+    merchants: [],
     errors: null,
     loading: false,
     errored: false,
   },
 
   getters: {
-    loadingPackages: (state) => state.loading,
+    loadingMerchants: (state) => state.loading,
 
     allMerchants: (state) =>
-      state.packages.map((_merchant) => {
+      state.merchants.map((_merchant) => {
         return {
           id: _merchant.id,
-          name: _merchant.name,
-          company: _merchant.company,
-          is_default: _merchant.is_default,
-          is_single_select: _merchant.is_single_select,
+          firstName: _merchant.firstName,
+          lastName: _merchant.lastName,
+          fullName: _merchant.firstName + " " + _merchant.lastName,
+          userType: _merchant.userType,
+          accountState: _merchant.accountState,
+          phonenumber: _merchant.phonenumber,
+          email: _merchant.email,
+          emailVerified: _merchant.emailVerified,
+          acceptTerms: _merchant.acceptTerms,
+          joinedOn: _merchant.createdAt,
+          deletedAt: _merchant.deletedAt,
+          updatedAt: _merchant.updatedAt,
+          merchant: _merchant.merchant,
+          verified: _merchant.verified,
         };
       }),
   },
 
   actions: {
-    async createPackage({ dispatch, commit }, data) {
+    async createMerchant({ dispatch, commit }, data) {
       commit("SET_LOADING_STATUS", true);
       try {
         await addMerchant(data);
-        // refresh packages
+        // refresh Merchants
         await dispatch("loadMerchants");
       } catch (error) {
         commit("SET_ERRORED", true);
@@ -47,17 +57,18 @@ export default {
       try {
         const data = await fetchMerchants();
         commit("SET_LOADING_STATUS", false);
-        commit("SET_PACKAGES", data);
+        console.log("data.results --> ", data.results);
+        commit("SET_MERCHANTS", data.results);
       } catch (error) {
         commit("SET_ERRORED", true);
         commit("SET_ERROR", error);
       }
     },
-    async updatePackage({ dispatch, commit }, payload) {
+    async updateMerchant({ dispatch, commit }, payload) {
       commit("SET_LOADING_STATUS", true);
       try {
         await editMerchant(payload.id, payload.data);
-        // refresh packages
+        // refresh Merchants
         await dispatch("loadMerchants");
       } catch (error) {
         commit("SET_ERRORED", true);
@@ -65,10 +76,10 @@ export default {
       }
     },
 
-    async delPackage({ dispatch, commit }, id) {
+    async delMerchant({ dispatch, commit }, id) {
       try {
         await deleteMerchant(id);
-        // refresh packages
+        // refresh Merchants
         await dispatch("loadMerchants");
       } catch (error) {
         commit("SET_ERRORED", true);
@@ -82,8 +93,8 @@ export default {
       state.loading = status;
     },
 
-    SET_PACKAGES(state, data) {
-      state.packages = data;
+    SET_MERCHANTS(state, data) {
+      state.merchants = data;
     },
 
     SET_ERRORED(state, status) {
