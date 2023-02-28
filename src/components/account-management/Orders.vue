@@ -122,7 +122,7 @@
 
     <!-- statuses  -->
     <template v-slot:[`item.status`]="{ item }">
-      <v-btn flat text v-if="item.status === 'active'"
+      <v-btn text v-if="item.status === 'active'"
         ><v-icon small color="success" class="mr-2" @click="editItem(item)">
           mdi-check-circle
         </v-icon></v-btn

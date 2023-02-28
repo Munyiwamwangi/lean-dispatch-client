@@ -102,10 +102,6 @@ export default {
       },
     },
   },
-
-  created() {
-    console.log(this.employeeData);
-  },
 };
 </script>
 

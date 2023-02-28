@@ -57,7 +57,7 @@ export default {
       try {
         const data = await fetchMerchants();
         commit("SET_LOADING_STATUS", false);
-        console.log("data.results --> ", data.results);
+        // console.log("data.results --> ", data.results);
         commit("SET_MERCHANTS", data.results);
       } catch (error) {
         commit("SET_ERRORED", true);
