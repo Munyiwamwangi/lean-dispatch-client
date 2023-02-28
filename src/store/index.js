@@ -153,7 +153,7 @@ const actions = {
             refreshToken: refresh_token,
           };
           //should be offloaded to a util func
-          localStorage.setItem("token", access_token);
+          localStorage.setItem("token", JSON.stringify(access_token));
           localStorage.setItem("user", JSON.stringify(user));
           localStorage.setItem("refreshToken", JSON.stringify(refresh_token));
 
