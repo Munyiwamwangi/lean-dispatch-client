@@ -18,7 +18,7 @@
         <v-dialog v-model="dialog" max-width="700px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-              + New Driver
+              + New Order
             </v-btn>
           </template>
           <v-card>
@@ -219,7 +219,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Driver" : "Edit Driver";
+      return this.editedIndex === -1 ? "New Order" : "Edit Order";
     },
   },
 
