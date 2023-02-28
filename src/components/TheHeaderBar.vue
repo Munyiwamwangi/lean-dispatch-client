@@ -174,7 +174,7 @@
 
     <!-- notification  ends -->
 
-    <!-- <v-menu left bottom rounded offset-y min-width="200px">
+    <v-menu left bottom rounded offset-y min-width="200px">
       <template v-slot:activator="{ on, attrs }">
         <div
           v-if="$vuetify.breakpoint.mdAndUp"
@@ -183,7 +183,7 @@
           v-on="on"
         >
           <v-btn icon>
-            <v-avatar color="accent">
+            <v-avatar class="mainBox">
               <v-img :src="employeeData.profile_pic" :alt="fullName">
                 <template v-slot:placeholder>
                   <v-row
@@ -212,7 +212,7 @@
         <v-list-item-content class="justify-center">
           <div class="mx-auto text-center">
             <v-card-text>
-              <v-avatar color="accent">
+              <v-avatar class="mainBox">
                 <v-img :src="employeeData.profile_pic" alt="John">
                   <template v-slot:placeholder>
                     <v-icon color="white">mdi-account</v-icon>
@@ -236,7 +236,7 @@
           </div>
         </v-list-item-content>
       </v-card>
-    </v-menu> -->
+    </v-menu>
   </v-app-bar>
 </template>
 
@@ -409,5 +409,8 @@ div.col.col-12 {
   background-color: #cccccc;
   width: 150px;
   height: 600px;
+}
+.mainBox {
+  background: linear-gradient(180deg, #15488f 0%, #235eb3 50%, #17396a 100%);
 }
 </style>
