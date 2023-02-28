@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="desserts"
+    :items="allMerchants"
     sort-by="calories"
     class="elevation-1"
     hide-default-footer
@@ -29,48 +29,33 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="3">
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="editedItem.name"
-                      label="Name"
+                      outlined
+                      v-model="editedItem.businessName"
+                      label="Business Name"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="3">
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="editedItem.calories"
-                      readonly
-                      label="Completed Orders"
+                      outlined
+                      v-model="editedItem.businessPhone"
+                      label="Business Phone"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="3">
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="editedItem.fat"
-                      label="Earnings"
+                      outlined
+                      v-model="editedItem.businessAddress"
+                      label="Business Adress"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="3">
+
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="editedItem.carbs"
-                      label="Company"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="City"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Status"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      readonly
-                      v-model="editedItem.protein"
-                      label="Date Joined"
+                      outlined
+                      v-model="editedItem.businessLogo"
+                      label="Upload Logo"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -80,7 +65,9 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+              <v-btn color="blue darken-1" text @click="save(item)">
+                Save
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -103,18 +90,44 @@
         </v-dialog>
       </v-toolbar>
     </template>
-    <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+
+    <!-- status  -->
+    <template v-slot:[`item.status`]="{ item }">
+      <v-icon
+        v-if="item.status === 'active'"
+        small
+        color="success"
+        class="mr-2"
+        @click="editItem(item)"
+      >
+        mdi-check-circle
+      </v-icon>
+      <v-icon v-else small color="warning" @click="deleteItem(item)">
+        mdi-cancel
+      </v-icon>
     </template>
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize"> Reset </v-btn>
+
+    <!-- actions  -->
+    <template v-slot:[`item.actions`]="{ item }">
+      <v-icon small color="success" class="mr-2" @click="editItem(item)">
+        mdi-pencil
+      </v-icon>
+      <v-icon small color="red" @click="deleteItem(item)">
+        mdi-delete-outline
+      </v-icon>
     </template>
   </v-data-table>
 </template>
 
 <script>
 export default {
+  props: {
+    allMerchants: {
+      type: Array,
+      required: true,
+    },
+  },
+
   data: () => ({
     dialog: false,
     dialogDelete: false,
@@ -129,7 +142,8 @@ export default {
         text: "Name",
         align: "start",
         sortable: false,
-        value: "name",
+        value: "fullName",
+        class: "text-capitalize",
       },
       {
         text: "stores",
@@ -140,6 +154,7 @@ export default {
         text: "drivers",
         value: "drivers",
         class: "text-capitalize",
+        sortable: false,
       },
       {
         text: "employees",
@@ -150,22 +165,31 @@ export default {
         text: "vehicles",
         value: "vehicles",
         class: "text-capitalize",
+        sortable: false,
       },
       {
         text: "subscription",
         value: "subscription",
         class: "text-capitalize",
+        sortable: false,
       },
-      { text: "city", value: "city", class: "text-capitalize" },
+      {
+        text: "city",
+        value: "city",
+        class: "text-capitalize",
+        sortable: false,
+      },
       {
         text: "status",
         value: "status",
         class: "text-capitalize",
+        sortable: false,
       },
       {
         text: "joined on",
         value: "joinedOn",
         class: "text-capitalize",
+        sortable: false,
       },
 
       { text: "Actions", value: "actions", sortable: false },
@@ -173,11 +197,12 @@ export default {
     desserts: [],
     editedIndex: -1,
     editedItem: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+      businessName: "",
+      businessPhone: "",
+      businessAddress: "",
+      latitude: "",
+      longitude: "",
+      businessLogo: "",
     },
     defaultItem: {
       name: "",
@@ -212,7 +237,7 @@ export default {
       this.desserts = [
         {
           name: "Joe Munyi",
-          stores: 2,
+          stores: 1,
           drivers: 2,
           employees: 4,
           vehicles: 3,
@@ -223,27 +248,26 @@ export default {
         },
         {
           name: "Silvester Odera",
-          stores: 2,
+          stores: 3,
           drivers: 5,
           employees: 2,
           vehicles: 1,
           subscription: "Premium",
-          city: "Nairobi",
+          city: "Kisumu",
           status: "active",
           joinedOn: "4/07/2022",
         },
         {
           name: "Odera Silverster",
-          stores: 2,
+          stores: 5,
           drivers: 6,
           employees: 17,
           vehicles: 6,
           subscription: "Premium",
-          city: "Nairobi",
+          city: "Eldoret",
           status: "active",
           joinedOn: "12/05/2022",
         },
-
         {
           name: "Moon Rey",
           stores: 2,
@@ -257,23 +281,23 @@ export default {
         },
         {
           name: "John Doe",
-          stores: 2,
+          stores: 4,
           drivers: 3,
           employees: 4,
           vehicles: 3,
           subscription: "Silver",
-          city: "Nairobi",
-          status: "active",
+          city: "Eldoret",
+          status: "inactive",
           joinedOn: "12/05/2022",
         },
         {
-          name: "Kaimenyi Kimenyi",
-          stores: 2,
+          name: "Kaimenyi",
+          stores: 4,
           drivers: 3,
           employees: 4,
           vehicles: 3,
           subscription: "Bronze",
-          city: "Nairobi",
+          city: "Kisumu",
           status: "active",
           joinedOn: "12/05/2022",
         },
@@ -314,9 +338,11 @@ export default {
     },
 
     save() {
+      // this.editedIndex = item.id;
+      console.log(this.editedItem);
       if (this.editedIndex > -1) {
         Object.assign(this.desserts[this.editedIndex], this.editedItem);
-      } else {
+
         this.desserts.push(this.editedItem);
       }
       this.close();

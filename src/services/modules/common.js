@@ -7,13 +7,6 @@ export function fetchCompanies() {
     .catch((err) => Promise.reject(err));
 }
 
-export function fetchPackages() {
-  return api
-    .get('bms/api/packages/')
-    .then((res) => Promise.resolve(res.data))
-    .catch((err) => Promise.reject(err));
-}
-
 export function fetchApprovers() {
   return api
     .get('bms/api/employees/bonus/approvers/')

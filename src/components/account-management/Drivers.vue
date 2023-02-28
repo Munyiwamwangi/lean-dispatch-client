@@ -77,6 +77,7 @@
               </v-container>
             </v-card-text>
 
+            <!-- actions  -->
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
@@ -84,6 +85,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
             <v-card-title class="text-h5"
@@ -103,12 +105,45 @@
         </v-dialog>
       </v-toolbar>
     </template>
-    <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+
+    <!-- rating  -->
+    <template v-slot:[`item.rating`]="{ item }">
+      <v-rating
+        v-model="item.rating"
+        color="yellow darken-3"
+        background-color="grey darken-1"
+        empty-icon="$ratingFull"
+        half-increments
+        hover
+        x-small
+        class="pl-0"
+      ></v-rating>
     </template>
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize"> Reset </v-btn>
+
+    <!-- statuses  -->
+    <template v-slot:[`item.status`]="{ item }">
+      <v-icon
+        v-if="item.status === 'active'"
+        small
+        color="success"
+        class="mr-2"
+        @click="editItem(item)"
+      >
+        mdi-check-circle
+      </v-icon>
+      <v-icon v-else small color="warning" @click="deleteItem(item)">
+        mdi-cancel
+      </v-icon>
+    </template>
+
+    <!-- actions  -->
+    <template v-slot:[`item.actions`]="{ item }">
+      <v-icon small color="success" class="mr-2" @click="editItem(item)">
+        mdi-pencil
+      </v-icon>
+      <v-icon small color="red" @click="deleteItem(item)">
+        mdi-delete-outline
+      </v-icon>
     </template>
   </v-data-table>
 </template>
@@ -121,20 +156,58 @@ export default {
     headers: [
       {
         text: "ID",
-        align: "start",
         sortable: false,
         value: "id",
       },
       {
-        text: "Name (100g serving)",
-        align: "start",
+        text: "name",
         sortable: false,
         value: "name",
+        class: "text-capitalize",
       },
-      { text: "Calories", value: "calories" },
-      { text: "Fat (g)", value: "fat" },
-      { text: "Carbs (g)", value: "carbs" },
-      { text: "Protein (g)", value: "protein" },
+      {
+        text: "completed orders",
+        value: "complatedOrders",
+        class: "text-capitalize",
+        width: 5,
+      },
+      {
+        text: "earnings",
+        value: "earnings",
+        class: "text-capitalize",
+        sortable: false,
+      },
+      {
+        text: "rating",
+        value: "rating",
+        class: "text-capitalize",
+        sortable: false,
+      },
+      {
+        text: "company",
+        value: "company",
+        class: "text-capitalize",
+        sortable: false,
+      },
+      {
+        text: "city",
+        value: "city",
+        class: "text-capitalize",
+        sortable: false,
+      },
+      {
+        text: "status",
+        value: "status",
+        class: "text-capitalize",
+        sortable: false,
+      },
+      {
+        text: "joined on",
+        value: "joinedOn",
+        class: "text-capitalize",
+        sortable: false,
+      },
+
       { text: "Actions", value: "actions", sortable: false },
     ],
     desserts: [],
@@ -178,48 +251,65 @@ export default {
     initialize() {
       this.desserts = [
         {
-          id: 1,
           name: "Joe Munyi",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
+          complatedOrders: 256,
+          earnings: 4000,
+          rating: 5,
+          company: "Twin Courier",
+          city: "Kisumu",
+          status: "active",
+          joinedOn: "2/06/2022",
         },
         {
           name: "Silvester Odera",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
+          complatedOrders: 129,
+          earnings: 2000,
+          rating: 1.6,
+          company: "Asap Delivery",
+          city: "Nairobi",
+          status: "inactive",
+          joinedOn: "4/07/2022",
         },
         {
           name: "Odera Silverster",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
+          complatedOrders: 89,
+          earnings: 10007,
+          rating: 2.6,
+          company: "Premium Deliveries",
+          city: "Eldoret",
+          status: "active",
+          joinedOn: "12/05/2022",
         },
 
         {
           name: "Moon Rey",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
+          complatedOrders: 65,
+          earnings: 3000,
+          rating: 3.6,
+          company: "Hassler Courier",
+          city: "Kisumu",
+          status: "active",
+          joinedOn: "12/05/2022",
         },
         {
           name: "John Doe",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
+          complatedOrders: 90,
+          earnings: 4000,
+          rating: 3.6,
+          company: "Beaver Couriers",
+          city: "Nairobi",
+          status: "inactive",
+          joinedOn: "12/05/2022",
         },
         {
-          name: "Kaimenyi Kimenyi",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
+          name: "Kaimenyi",
+          complatedOrders: 112,
+          earnings: 4000,
+          rating: 4.6,
+          company: "Smart Delivery",
+          city: "Kisumu",
+          status: "active",
+          joinedOn: "12/05/2022",
         },
       ];
     },

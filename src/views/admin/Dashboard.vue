@@ -44,6 +44,7 @@
         <Merchants
           :tab="tab"
           :filter-drawer.sync="filterDrawer"
+          :allMerchants="allMerchants"
           @show-feedback="showFeedback"
         ></Merchants>
       </v-tab-item>
@@ -96,10 +97,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters("logs", {
-      // LoginTrailLogDetail: "loginTrailLog",
-      // loading: "loadingLoginTrail",
-      // auditLogDetail: "auditTrailLog",
+    ...mapGetters("merchants", {
+      allMerchants: "allMerchants",
+      loading: "loadingMerchants",
     }),
   },
 
@@ -110,7 +110,7 @@ export default {
   },
 
   created() {
-    // this.$store.dispatch("logs/loadLoginTrail");
+    this.$store.dispatch("merchants/loadMerchants");
     // this.$store.dispatch("logs/loadAuditTrail");
   },
 

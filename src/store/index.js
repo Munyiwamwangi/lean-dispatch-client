@@ -5,8 +5,7 @@ import router from "../router";
 import axios from "axios";
 import SecureLS from "secure-ls";
 import common from "./modules/common";
-import packages from "./modules/packages";
-import bonuses from "./modules/bonuses";
+import merchants from "./modules/merchants";
 import { fetchCompanies } from "../services/modules/common";
 import config from "../config";
 
@@ -216,25 +215,6 @@ const actions = {
   },
 
   async oAuthLogin() {},
-  // enter email to request password reset link
-
-  // forgotPassword: (email) => {
-  //   axios.post("mmauth/api/password-email/", email).then(response => {
-  //     console.log(response)
-  //   }).catch(error => console.log(error))
-  // },
-
-  // click link in email, then enter and confirm password
-
-  // resetPassword: (passData) => {
-  //   axios.post("mmauth/api/change-password/:token", passData).then(response => {
-  //     const { token } = response.data.token;
-  //     console.log(response)
-  //     axios.defaults.headers.common['Authorization'] = "Token" + " " + token;
-  //     router.push({ name: 'login' });
-  //   }).catch(error => console.log(error))
-
-  // },
 
   googleLogin: ({ commit }, token) => {
     const config = {
@@ -311,8 +291,7 @@ export default new Vuex.Store({
   getters,
   modules: {
     common,
-    packages,
-    bonuses,
+    merchants,
   },
   plugins: [
     createPersistedState({

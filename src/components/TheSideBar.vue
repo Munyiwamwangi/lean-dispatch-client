@@ -42,10 +42,8 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title
-                class="font-weight-bold text-capitalize"
-                v-text="$t(item.text)"
-              >
+              <v-list-item-title class="font-weight-bold text-capitalize"
+                >{{ item.text }}
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -90,7 +88,7 @@ export default {
 
   computed: {
     employeeData() {
-      return this.$store.state.employeeData || {};
+      return localStorage.getItem("user") || {};
     },
 
     // #TODO: refactor this code ;
@@ -103,6 +101,10 @@ export default {
         this.$emit("update:drawer", value);
       },
     },
+  },
+
+  created() {
+    console.log(this.employeeData);
   },
 };
 </script>
