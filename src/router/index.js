@@ -12,9 +12,7 @@ Vue.use(VueRouter);
 // this generates a separate chunk (about.[hash].js) for this route
 // which is lazy-loaded when the route is visited.
 const Login = () =>
-  import(
-    /* webpackChunkName: "login" */ "../views/account-management/Login.vue"
-  );
+  import(/* webpackChunkName: "login" */ "../views/Login.vue");
 
 const ForgotPassword = () =>
   import(
