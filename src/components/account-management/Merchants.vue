@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="allMerchants"
+    :items="dymmuMerchants"
     sort-by="calories"
     class="elevation-1"
     hide-default-footer
@@ -194,7 +194,7 @@ export default {
 
       { text: "Actions", value: "actions", sortable: false },
     ],
-    desserts: [],
+    dymmuMerchants: [],
     editedIndex: -1,
     editedItem: {
       businessName: "",
@@ -234,7 +234,7 @@ export default {
 
   methods: {
     initialize() {
-      this.desserts = [
+      this.dymmuMerchants = [
         {
           name: "Joe Munyi",
           stores: 1,

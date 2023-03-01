@@ -5,7 +5,7 @@
         <v-col>
           <div class="pa-2 ma-2">
             <v-card class="mainBox">
-              <v-list-item class="px-2">
+              <!-- <v-list-item class="px-2">
                 <v-row align="center" no-gutters> </v-row>
                 <v-list-item-avatar>
                   <v-img
@@ -13,16 +13,16 @@
                   ></v-img>
                 </v-list-item-avatar>
                 <v-row align="center" no-gutters> </v-row>
-              </v-list-item>
+              </v-list-item> -->
 
               <v-list-item link>
                 <v-list-item-content>
                   <v-list-item-title class="text-h6 text-center">
-                    Sandra Odera
+                    Lean Dispatch
                   </v-list-item-title>
-                  <v-list-item-subtitle class="text-center"
-                    >sandra_a88@gmail.com</v-list-item-subtitle
-                  >
+                  <!-- <v-list-item-subtitle class="text-center"
+                    >sandra_a88@gmail.com
+                  </v-list-item-subtitle> -->
                 </v-list-item-content>
               </v-list-item>
             </v-card>
@@ -101,10 +101,6 @@ export default {
         this.$emit("update:drawer", value);
       },
     },
-  },
-
-  created() {
-    console.log(this.employeeData);
   },
 };
 </script>
