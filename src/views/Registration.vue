@@ -21,14 +21,27 @@
               <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="submit">
                 <v-card-text>
                   <v-row no-gutters justify="center">
-                    <h1 class="accent--text">Login</h1>
+                    <h1 class="accent--text">Signup</h1>
                   </v-row>
 
                   <v-row align="center" justify="center">
                     <v-col cols="12" sm="8">
-                      <v-text-field v-model="email" ref="email" :rules="emailRules" :label="$t('emailAdressLabel')"
+                      <v-text-field v-model="user.email" ref="email" :rules="emailRules" :label="$t('emailAdressLabel')"
                         required prepend-inner-icon="person" color="blue" autocomplete="false" class="mt-8" />
-                      <v-text-field ref="password" v-model="password" :rules="passwordRules"
+
+                      <v-text-field v-model="user.firstName" ref="firstName" :rules="requiredRules" label="FirstName"
+                        required prepend-inner-icon="person" color="blue" autocomplete="false" class="mt-8" />
+
+
+                      <v-text-field v-model="user.lastName" ref="lastName" :rules="requiredRules" label="LastName"
+                        required prepend-inner-icon="person" color="blue" autocomplete="false" class="mt-8" />
+
+                      <v-text-field v-model="user.phonenumber" ref="phonenumber" :rules="requiredRules"
+                        label="Phonenumber" required prepend-inner-icon="person" color="blue" autocomplete="false"
+                        class="mt-8" />
+
+
+                      <v-text-field ref="password" v-model="user.password" :rules="passwordRules"
                         :label="$t('passwordInputFieldPlaceHolder')" :type="passwordShow ? 'text' : 'password'"
                         :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
                         @click:append="passwordShow = !passwordShow" required color="blue" autocomplete="false"
@@ -54,18 +67,13 @@
                       <v-btn rounded block :disabled="!valid" color="#536878" type="submit" class="t-white"
                         :loading="loading">
                         <h2 class="text-capitalize">
-                          {{ $t("loginText") }}
+                          Signup
                         </h2>
                       </v-btn>
 
                       <div class="mt-2 text-center bold-underlined">
                         <router-link to="/forgot-password">
                           {{ $t("forgotPassword") }}
-                        </router-link>
-                      </div>
-                      <div class="mt-3 text-center bold-underlined">
-                        <router-link to="/signup">
-                          Signup
                         </router-link>
                       </div>
                     </v-col>
@@ -92,6 +100,15 @@ export default {
       valid: false,
       passwordShow: false,
       users: null,
+      user: {
+        "email": "",
+        "password": "",
+        "acceptTerms": true,
+        "firstName": "",
+        "lastName": "",
+        "phonenumber": "",
+        "userType": "merchant"
+      },
 
       email: "",
       emailRules: [
@@ -103,6 +120,10 @@ export default {
         (v) => !!v || this.$t("passwordInputHint1"),
         (v) =>
           (v && v.length >= 6) || this.$t("minimalPasswordCharacterErrortext"),
+      ],
+
+      requiredRules: [
+        (v) => !!v || "Field is required"
       ],
 
       // form essentials
@@ -139,13 +160,12 @@ export default {
     //  email and password login
     async submit() {
       const data = {
-        email: this.email,
-        password: this.password,
+        ...this.user
       };
       if (this.$refs.form.validate()) {
         this.loading = true;
         this.$store
-          .dispatch("login", data)
+          .dispatch("signup", data)
           .then(() => {
             this.$store.dispatch("setError", {
               text: "successfully logged in",

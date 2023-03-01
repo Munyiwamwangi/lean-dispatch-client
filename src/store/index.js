@@ -178,6 +178,57 @@ const actions = {
     );
   },
 
+  signup({ commit, dispatch }, user) {
+    localStorage.clear();
+    let payload = {};
+    // using this._vm to access the current vue instance inside the store.
+    return (
+      axios
+        .create({
+          authURL: config.BACKEND_SERVICE,
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        })
+        // .post('mmauth/api/login', user)
+        .post(config.BACKEND_SERVICE + `api/auth/signup`, user)
+        .then((response) => {
+          // console.log(JSON.stringify(response.data, null, 3));
+          const { access_token, refresh_token, user } = response.data;
+
+          payload = {
+            isAuthenticated: true,
+            currentUser: user,
+            refreshToken: refresh_token,
+          };
+          //should be offloaded to a util func
+          localStorage.setItem("token", JSON.stringify(access_token));
+          localStorage.setItem("user", JSON.stringify(user));
+          localStorage.setItem("refreshToken", JSON.stringify(refresh_token));
+
+          // let empLoggedIn = JSON.parse(localStorage.getItem("user"));
+          // if (empLoggedIn.discontinued === !true) {
+          if (user) {
+            console.log("redirect --------->      ");
+            router.push({ name: "dashboard" });
+          } else {
+            this.logout();
+            router.push({ name: "login" });
+          }
+
+          commit("doLogin", payload);
+          dispatch("showFeedback", {
+            status: "success",
+            message: this.$t("successfullyLoggediInText"),
+          });
+        })
+        .catch(() => {
+          return Promise.reject("Invalid username or password");
+        })
+    );
+  },
+
   // fetch currentUsers bonuses
   fetchEmployeeBonuses({ commit, state }) {
     this.loading = true;

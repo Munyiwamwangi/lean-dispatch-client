@@ -14,6 +14,9 @@ Vue.use(VueRouter);
 const Login = () =>
   import(/* webpackChunkName: "login" */ "../views/Login.vue");
 
+const Registration = () =>
+  import(/* webpackChunkName: "login" */ "../views/Registration.vue");
+
 const ForgotPassword = () =>
   import(
     /* webpackChunkName: "login" */ "../views/account-management/ForgotPassword.vue"
@@ -45,6 +48,14 @@ const routes = [
       title: "LD - Login",
     },
     component: Login,
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    meta: {
+      title: "LD - Registration",
+    },
+    component: Registration,
   },
   {
     path: "/forgot-password",
