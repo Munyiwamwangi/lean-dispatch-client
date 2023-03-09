@@ -5,32 +5,27 @@
         <v-card class="elevation-6 mt-12">
           <v-row>
             <!-- col 1  -->
-            <v-col
-              cols="12"
-              md="6"
-              class="first-col hidden-xs-and-up hidden-sm-and-down"
-            >
-              <div class="center">
-                <v-row>
-                  <v-card-text class="white--text text-uppercase">
-                    <h1 class="text-center">Welcome to lean dispatch</h1>
-                  </v-card-text>
-                  <!-- <hr class="horizontal-underline" /> -->
-                </v-row>
-              </div>
-            </v-col>
+            <v-row no-gutters justify="center">
+              <v-col
+                cols="12"
+                class="universal-blue hidden-xs-and-up hidden-sm-and-down"
+              >
+                <div class="center">
+                  <v-row>
+                    <v-card-text class="white--text text-uppercase">
+                      <h1 class="text-center">Welcome to lean dispatch</h1>
+                    </v-card-text>
+                    <!-- <hr class="horizontal-underline" /> -->
+                  </v-row>
+                </div>
+              </v-col>
+            </v-row>
 
             <!-- col 2  -->
 
-            <v-col cols="12" md="6" sm="6" class="px-4 pl-1 pt-0">
+            <v-col cols="12" md="6" class="pt-0">
               <div>
-                <v-tabs
-                  v-model="tab"
-                  show-arrows
-                  icons-and-text
-                  dark
-                  grow
-                >
+                <v-tabs v-model="tab" show-arrows icons-and-text dark grow>
                   <v-tab
                     v-for="(item, i) in tabItems"
                     :key="i"
@@ -42,7 +37,7 @@
                   <v-tab-item>
                     <v-card class="px-4">
                       <v-card-text>
-                        <v-form ref="loginForm" v-model="valid" lazy-validation>
+                        <v-form ref="form" v-model="valid" lazy-validation>
                           <v-row>
                             <v-col cols="12">
                               <v-text-field
@@ -79,8 +74,11 @@
                           x-large
                           block
                           :disabled="!valid"
-                          color="success"
-                          @click="validate"
+                          color="#536878"
+                          type="submit"
+                          class="t-white universal-blue"
+                          :loading="loading"
+                          @click="submit"
                         >
                           Login
                         </v-btn>
@@ -94,9 +92,10 @@
                           ref="registerForm"
                           v-model="valid"
                           lazy-validation
+                          @submit.prevent="submit"
                         >
                           <v-row>
-                            <v-col cols="12" sm="6" md="6">
+                            <v-col cols="12" sm="6" md="6" class="pb-0">
                               <v-text-field
                                 v-model="firstName"
                                 :rules="[rules.required]"
@@ -107,7 +106,7 @@
                                 required
                               ></v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="6" md="6">
+                            <v-col cols="12" sm="6" md="6" class="pb-0">
                               <v-text-field
                                 v-model="lastName"
                                 dense
@@ -118,7 +117,7 @@
                                 required
                               ></v-text-field>
                             </v-col>
-                            <v-col cols="12">
+                            <v-col cols="12" class="pt-0 pb-0">
                               <v-text-field
                                 v-model="email"
                                 :rules="emailRules"
@@ -128,7 +127,7 @@
                                 required
                               ></v-text-field>
                             </v-col>
-                            <v-col cols="12">
+                            <v-col cols="12" sm="6" md="6" class="pt-0 pb-0">
                               <v-combobox
                                 v-model="userType"
                                 :rules="[rules.required]"
@@ -141,7 +140,20 @@
                                 required
                               ></v-combobox>
                             </v-col>
-                            <v-col cols="12">
+                            <v-col cols="12" sm="6" md="6" class="pt-0 pb-0">
+                              <v-text-field
+                                v-model="phoneNumber"
+                                :rules="[rules.required]"
+                                dense
+                                type="number"
+                                outlined
+                                item-text="title"
+                                item-value="id"
+                                label="Phone Number"
+                                required
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" class="pt-0 pb-0">
                               <v-text-field
                                 v-model="password"
                                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -156,29 +168,60 @@
                                 @click:append="show1 = !show1"
                               ></v-text-field>
                             </v-col>
-                            <v-col cols="12">
+                            <v-col cols="12" class="pt-0 pb-0">
                               <v-text-field
                                 block
                                 v-model="verify"
                                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                                 :rules="[rules.required, passwordMatch]"
                                 :type="show1 ? 'text' : 'password'"
+                                dense
+                                outlined
                                 name="input-10-1"
                                 label="Confirm Password"
                                 counter
                                 @click:append="show1 = !show1"
                               ></v-text-field>
                             </v-col>
+                            <v-col cols="12" class="pt-0 pb-0">
+                              <div class="mainCheckBox">
+                                <v-checkbox
+                                  v-model="checkbox"
+                                  :rules="[
+                                    (v) => !!v || 'You must agree to continue!',
+                                  ]"
+                                  required
+                                >
+                                  <template v-slot:label>
+                                    <div>
+                                      {{ $t("acceptAll") }}
+                                      <v-tooltip>
+                                        <template v-slot:activator="{ on }">
+                                          <a
+                                            class="bold-underlined"
+                                            target="_blank"
+                                            @click.stop
+                                            v-on="on"
+                                          >
+                                            {{ $t("termsAndConditions") }}
+                                          </a>
+                                        </template>
+                                      </v-tooltip>
+                                    </div>
+                                  </template>
+                                </v-checkbox>
+                              </div>
+                            </v-col>
                           </v-row>
                         </v-form>
                       </v-card-text>
                       <v-card-actions>
                         <v-btn
+                          :disabled="!valid"
                           x-large
                           block
-                          :disabled="!valid"
-                          color="success"
-                          @click="validate"
+                          class="t-white universal-blue"
+                          @click="signUp"
                           >Register</v-btn
                         >
                       </v-card-actions>
@@ -299,6 +342,7 @@ export default {
       valid: false,
       passwordShow: false,
       users: null,
+      phoneNumber: null,
 
       email: "",
 
@@ -375,8 +419,8 @@ export default {
     //  email and password login
     async submit() {
       const data = {
-        email: this.email,
-        password: this.password,
+        email: this.loginEmail,
+        password: this.loginPassword,
       };
       if (this.$refs.form.validate()) {
         this.loading = true;
@@ -416,10 +460,51 @@ export default {
       this.$router.push({ name: "password-reset" }).catch(() => {});
     },
     // new methods
-    validate() {
-      if (this.$refs.loginForm.validate()) {
-        // submit form to server/API here...
+    signUp() {
+      console.log("hitting");
+      // if (this.$refs.registerForm.validate()) {
+      // submit form to server/API here...
+      const data = {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        email: this.email,
+        userType: this.userType,
+        password: this.password,
+        verify: this.verify,
+      };
+      if (this.$refs.form.validate()) {
+        this.loading = true;
+        this.$store
+          .dispatch("signUp", data)
+          .then(() => {
+            this.$store.dispatch("setError", {
+              text: "Successfully signed up",
+              color: "success lighten-1",
+            });
+            this.loading = false;
+          })
+          .catch(() => {
+            this.emailRules = [
+              ...this.emailRules,
+              (v) => v === "invalid" || "Invalid email or password",
+            ];
+            this.passwordRules = [
+              ...this.passwordRules,
+              (v) => v === "invalid" || "Invalid email or password",
+            ];
+          })
+          .finally(() => {
+            // clear the store error if any
+            if (this.emailRules.length === 3) {
+              setTimeout(() => {
+                this.emailRules = this.emailRules.slice(0, 2);
+                this.passwordRules = this.passwordRules.slice(0, 2);
+              }, 4000);
+            }
+            this.loading = false;
+          });
       }
+      // }
     },
     reset() {
       this.$refs.form.reset();
@@ -432,11 +517,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-application .first-col {
-  // border-bottom-right-radius: 300px !important;
-  background: linear-gradient(180deg, #15488f 0%, #235eb3 50%, #17396a 100%);
-}
-
 hr.horizontal-underline {
   border: 3px solid white;
   width: 20%;

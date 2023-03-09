@@ -159,7 +159,6 @@ const actions = {
           // let empLoggedIn = JSON.parse(localStorage.getItem("user"));
           // if (empLoggedIn.discontinued === !true) {
           if (user) {
-            console.log("redirect --------->      ");
             router.push({ name: "dashboard" });
           } else {
             this.logout();
@@ -174,6 +173,32 @@ const actions = {
         })
         .catch(() => {
           return Promise.reject("Invalid username or password");
+        })
+    );
+  },
+
+  signUp({ dispatch }, user) {
+    console.log("user data", user);
+    return (
+      axios
+        .create({
+          authURL: config.BACKEND_SERVICE,
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        })
+        // .post('mmauth/api/login', user)
+        .post(config.BACKEND_SERVICE + `api/auth/signup`, user)
+        .then(() => {
+          router.push({ name: "login" });
+          dispatch("showFeedback", {
+            status: "success",
+            message: "successfully registered, proceed to login",
+          });
+        })
+        .catch(() => {
+          return Promise.reject("Registration failed");
         })
     );
   },
