@@ -1,6 +1,5 @@
 <template>
   <v-card class="d-flex flex-column flex-md-row pa-6 mb-6" elevation="1">
-    <!-- {{ userDetails }} -->
     <div class="align-self-center mb-5 mb-md-0">
       <!-- avatar div -->
       <image-input v-model="avatar">
@@ -23,7 +22,7 @@
       <v-slide-x-transition>
         <div v-if="avatar && saved === false">
           <v-btn small class="primary" :loading="saving" @click="uploadImage">
-            {{ $t("saveAvatarText") }}
+            save avatar
           </v-btn>
         </div>
       </v-slide-x-transition>
@@ -39,6 +38,10 @@
         ><span class="text-body-2">{{ user.company }}</span>
       </p>
       <p>
+        <span class="text-subtitle-2 text-capitalize"> phone number:&nbsp;</span
+        ><span class="text-body-2">{{ user.phonenumber }}</span>
+      </p>
+      <p>
         <span class="text-subtitle-2 text-capitalize">
           {{ $t("emailAdressText") }}:&nbsp;</span
         >
@@ -48,9 +51,7 @@
 
     <div class="mx-md-7">
       <p>
-        <span class="text-subtitle-2 text-capitalize">
-          {{ $t("User Type") }}:&nbsp;</span
-        >
+        <span class="text-subtitle-2 text-capitalize"> User Type:&nbsp;</span>
         <span class="text-body-2"> {{ userDetails.userType }}</span>
       </p>
       <p>

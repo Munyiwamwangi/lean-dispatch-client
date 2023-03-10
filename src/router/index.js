@@ -26,8 +26,10 @@ const ResetPassword = () =>
     /* webpackChunkName: "reset-password" */ "../views/account-management/ResetPassword.vue"
   );
 
-const Dashboard = () =>
-  import(/* webpackChunkName: "Dashboard" */ "../views/admin/Dashboard.vue");
+const MerchantDash = () =>
+  import(
+    /* webpackChunkName: "MerchantDash" */ "../views/merchant/Dashboard.vue"
+  );
 
 const AccountManagement = () =>
   import(
@@ -72,9 +74,9 @@ const routes = [
   {
     path: "/dashboard",
     name: "dashboard",
-    component: Dashboard,
+    component: MerchantDash,
     meta: {
-      title: "LD Dashboard",
+      title: "LD MerchantDash",
       requiresAuth: true,
       hr: true,
     },

@@ -7,18 +7,18 @@
     </v-toolbar>
 
     <v-container>
-      <EmployeeDetailsCard :user="user"></EmployeeDetailsCard>
+      <UserDetailsCard :user="user"></UserDetailsCard>
     </v-container>
   </div>
 </template>
 
 <script>
-import EmployeeDetailsCard from "@/components/EmployeeDetailsCard.vue";
+import UserDetailsCard from "@/components/UserDetailsCard.vue";
 
 export default {
   name: "MyAccount",
   components: {
-    EmployeeDetailsCard,
+    UserDetailsCard,
   },
 
   data: () => ({

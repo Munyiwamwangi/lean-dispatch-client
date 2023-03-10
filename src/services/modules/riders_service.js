@@ -1,8 +1,15 @@
 import api from "../api";
 
-export function fetchRiders() {
+export function fetchPrivateRiders() {
   return api
-    .get("/api/riders/")
+    .get("/api/riders/privateRiders")
+    .then((res) => Promise.resolve(res.data))
+    .catch((err) => Promise.reject(err));
+}
+
+export function fetchPublicRiders() {
+  return api
+    .get("/api/riders/privateRiders")
     .then((res) => Promise.resolve(res.data))
     .catch((err) => Promise.reject(err));
 }

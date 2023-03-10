@@ -8,7 +8,7 @@ import common from "./modules/common";
 import merchants from "./modules/merchants";
 import { fetchCompanies } from "../services/modules/common";
 import config from "../config";
-
+import api from "../services/api";
 // instanstiate secure local storage
 var ls = new SecureLS({ isCompression: false });
 
@@ -131,117 +131,58 @@ const actions = {
     localStorage.clear();
     let payload = {};
     // using this._vm to access the current vue instance inside the store.
-    return (
-      axios
-        .create({
-          authURL: config.BACKEND_SERVICE,
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        })
-        // .post('mmauth/api/login', user)
-        .post(config.BACKEND_SERVICE + `api/auth/signin`, user)
-        .then((response) => {
-          // console.log(JSON.stringify(response.data, null, 3));
-          const { access_token, refresh_token, user } = response.data;
+    return api
+      .post(config.BACKEND_SERVICE + `api/auth/signin`, user)
+      .then((response) => {
+        // console.log(JSON.stringify(response.data, null, 3));
+        const { access_token, refresh_token, user } = response.data;
 
-          payload = {
-            isAuthenticated: true,
-            currentUser: user,
-            refreshToken: refresh_token,
-          };
-          //should be offloaded to a util func
-          localStorage.setItem("token", access_token);
-          localStorage.setItem("user", JSON.stringify(user));
-          localStorage.setItem("refreshToken", JSON.stringify(refresh_token));
+        payload = {
+          isAuthenticated: true,
+          currentUser: user,
+          refreshToken: refresh_token,
+        };
+        //should be offloaded to a util func
+        localStorage.setItem("token", access_token);
+        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("refreshToken", JSON.stringify(refresh_token));
 
-          // let empLoggedIn = JSON.parse(localStorage.getItem("user"));
-          // if (empLoggedIn.discontinued === !true) {
-          if (user) {
-            router.push({ name: "dashboard" });
-          } else {
-            this.logout();
-            router.push({ name: "login" });
-          }
+        // let empLoggedIn = JSON.parse(localStorage.getItem("user"));
+        // if (empLoggedIn.discontinued === !true) {
+        if (user) {
+          router.push({ name: "dashboard" });
+        } else {
+          this.logout();
+          router.push({ name: "login" });
+        }
 
-          commit("doLogin", payload);
-          dispatch("showFeedback", {
-            status: "success",
-            message: this.$t("successfullyLoggediInText"),
-          });
-        })
-        .catch(() => {
-          return Promise.reject("Invalid username or password");
-        })
-    );
+        commit("doLogin", payload);
+        dispatch("showFeedback", {
+          status: "success",
+          message: "Successfully logged in",
+        });
+      })
+      .catch(() => {
+        return Promise.reject("Invalid username or password");
+      });
   },
 
   signUp({ dispatch }, user) {
     console.log("user data", user);
-    return (
-      axios
-        .create({
-          authURL: config.BACKEND_SERVICE,
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        })
-        // .post('mmauth/api/login', user)
-        .post(config.BACKEND_SERVICE + `api/auth/signup`, user)
-        .then(() => {
-          router.push({ name: "login" });
-
-          dispatch("showFeedback", {
-            status: "success",
-            message: "successfully registered, proceed to login",
-          });
-          router.push({ name: "dashboard" });
-        })
-        .catch(() => {
-          return Promise.reject("Registration failed");
-        })
-    );
-  },
-
-  // fetch currentUsers bonuses
-  fetchEmployeeBonuses({ commit, state }) {
-    this.loading = true;
-
-    this._vm.$http
-      .get(`bms/api/employees/${state.employeeData.id}/bonuses/`)
-      .then((res) => {
-        commit(
-          "setEmployeeBonuses",
-          res.data.map((item) => {
-            return {
-              id: item.id,
-              bonus_id: item.bonus.id,
-              bonus_code: item.bonus.bonus_id,
-              activated: item.activated,
-              company: item.bonus.company.name,
-              description: item.bonus.description,
-              package: item.bonus.package,
-              bonus_status: item.bonus.active,
-              pending_approval: item.pending_approval,
-              bonus_approver: item.bonus_approver,
-              comment: item.comment,
-              discontinued: item.discontinued,
-              requires_document_upload: item.bonus.requires_document,
-              requires_email: item.bonus.requires_email,
-              disabled: item.disabled,
-              approved_at: item.approved_at,
-              date_assigned: item.created_at,
-            };
-          })
-        );
+    return api
+      .post(config.BACKEND_SERVICE + `api/auth/signup`, user)
+      .then(() => {
+        router.push({ name: "login" });
+        dispatch("showFeedback", {
+          status: "success",
+          message: "successfully registered, proceed to login",
+        });
+        router.push({ name: "login" });
       })
-      .catch(() => {})
-      .finally(() => (this.loading = false));
+      .catch(() => {
+        return Promise.reject("Registration failed");
+      });
   },
-
-  async oAuthLogin() {},
 
   googleLogin: ({ commit }, token) => {
     const config = {

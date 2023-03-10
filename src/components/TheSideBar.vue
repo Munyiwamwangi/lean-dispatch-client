@@ -87,7 +87,7 @@ export default {
   }),
 
   computed: {
-    employeeData() {
+    userData() {
       return localStorage.getItem("user") || {};
     },
 

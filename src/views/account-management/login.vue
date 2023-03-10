@@ -38,7 +38,7 @@
                     <v-card class="px-4">
                       <v-card-text>
                         <v-form ref="form" v-model="valid" lazy-validation>
-                          <v-row>
+                          <v-row no-gutters class="pt-4">
                             <v-col cols="12">
                               <v-text-field
                                 v-model="loginEmail"
@@ -50,20 +50,6 @@
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12">
-                              <!-- <v-text-field
-                                v-model="loginPassword"
-                                :append-icon="show1 ? 'eye' : 'eye-off'"
-                                :rules="[rules.required, rules.min]"
-                                :type="show1 ? 'text' : 'password'"
-                                dense
-                                outlined
-                                name="input-10-1"
-                                label="Password"
-                                hint="At least 8 characters"
-                                counter
-                                @click:append="show1 = !show1"
-                              ></v-text-field> -->
-
                               <v-text-field
                                 v-model="loginPassword"
                                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -83,7 +69,6 @@
                       </v-card-text>
                       <v-card-text>
                         <v-spacer></v-spacer>
-
                         <v-btn
                           x-large
                           block
@@ -333,7 +318,7 @@ export default {
           .dispatch("login", data)
           .then(() => {
             this.$store.dispatch("setError", {
-              text: "successfully logged in",
+              text: "Successfully logged in",
               color: "success lighten-1",
             });
             this.loading = false;
@@ -370,7 +355,7 @@ export default {
         .dispatch("signUp", data)
         .then(() => {
           this.$store.dispatch("setError", {
-            text: "Successfully signed up",
+            text: "Successfully signed up, proceed to login",
             color: "success lighten-1",
           });
           this.loading = false;

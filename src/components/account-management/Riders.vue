@@ -12,99 +12,39 @@
 
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>My Drivers</v-toolbar-title>
-        <v-divider class="mx-4" inset vertical></v-divider>
-        <v-spacer></v-spacer>
-        <v-dialog v-model="dialog" max-width="700px">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-              + New Driver
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">{{ formTitle }}</span>
-            </v-card-title>
-
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      v-model="editedItem.name"
-                      label="Name"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      v-model="editedItem.calories"
-                      readonly
-                      label="Completed Orders"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      v-model="editedItem.fat"
-                      label="Earnings"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      v-model="editedItem.carbs"
-                      label="Company"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="City"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Status"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      readonly
-                      v-model="editedItem.protein"
-                      label="Date Joined"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-            <!-- actions  -->
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="text-h5"
-              >Are you sure you want to delete this item?</v-card-title
-            >
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
-                >Cancel</v-btn
-              >
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                >OK</v-btn
-              >
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        <v-row no-gutters>
+          <v-toolbar-title>My Riders</v-toolbar-title>
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" dark class="mb-2" @click="openDialog">
+            + New Rider
+          </v-btn>
+        </v-row>
       </v-toolbar>
+      <CreateRider
+        :dialog="dialog"
+        :formTitle="formTitle"
+        :rider="defaultRider"
+        @close-dialog="close"
+      >
+      </CreateRider>
     </template>
+
+    <v-dialog v-model="dialogDelete" max-width="500px">
+      <v-card>
+        <v-card-title class="text-h5"
+          >Are you sure you want to delete this item?</v-card-title
+        >
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+            >OK</v-btn
+          >
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <!-- rating  -->
     <template v-slot:[`item.rating`]="{ item }">
@@ -149,7 +89,10 @@
 </template>
 
 <script>
+import CreateRider from "../forms/CreateRiders.vue";
+
 export default {
+  components: { CreateRider },
   data: () => ({
     dialog: false,
     dialogDelete: false,
@@ -212,14 +155,14 @@ export default {
     ],
     desserts: [],
     editedIndex: -1,
-    editedItem: {
+    editedRider: {
       name: "",
       calories: 0,
       fat: 0,
       carbs: 0,
       protein: 0,
     },
-    defaultItem: {
+    defaultRider: {
       name: "",
       calories: 0,
       fat: 0,
@@ -230,7 +173,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Driver" : "Edit Driver";
+      return this.editedIndex === -1 ? "New Rider" : "Edit Rider";
     },
   },
 
@@ -248,6 +191,10 @@ export default {
   },
 
   methods: {
+    openDialog() {
+      this.dialog = true;
+    },
+
     initialize() {
       this.desserts = [
         {

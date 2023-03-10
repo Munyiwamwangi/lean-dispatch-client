@@ -11,8 +11,8 @@
     <v-tabs v-model="tab">
       <v-tab class="ml-4 text-uppercase">Orders</v-tab>
       <!-- <v-tab class="ml-4 text-uppercase">Vendors</v-tab> -->
-      <v-tab class="ml-4 text-uppercase">Drivers</v-tab>
-      <v-tab class="ml-4 text-uppercase">Merchants</v-tab>
+      <v-tab class="ml-4 text-uppercase">Riders</v-tab>
+      <v-tab class="ml-4 text-uppercase">customers</v-tab>
 
       <!-- audit log -->
 
@@ -25,12 +25,12 @@
       </v-tab-item>
 
       <!-- <v-tab-item>
-        <VendorsComponent
-          :tab="tab"
-          :filter-drawer.sync="filterDrawer"
-          @show-feedback="showFeedback"
-        ></VendorsComponent>
-      </v-tab-item> -->
+          <VendorsComponent
+            :tab="tab"
+            :filter-drawer.sync="filterDrawer"
+            @show-feedback="showFeedback"
+          ></VendorsComponent>
+        </v-tab-item> -->
 
       <v-tab-item>
         <DriversComponent

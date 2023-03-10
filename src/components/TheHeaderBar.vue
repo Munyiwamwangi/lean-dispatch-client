@@ -184,7 +184,7 @@
         >
           <v-btn icon>
             <v-avatar class="mainBox">
-              <v-img :src="employeeData.profile_pic" :alt="fullName">
+              <v-img :src="userDetails.profile_pic" :alt="fullName">
                 <template v-slot:placeholder>
                   <v-row
                     class="fill-height ma-0"
@@ -213,7 +213,7 @@
           <div class="mx-auto text-center">
             <v-card-text>
               <v-avatar class="mainBox">
-                <v-img :src="employeeData.profile_pic" alt="John">
+                <v-img :src="userDetails.profile_pic" alt="John">
                   <template v-slot:placeholder>
                     <v-icon color="white">mdi-account</v-icon>
                   </template>
@@ -221,7 +221,7 @@
               </v-avatar>
               <h3>{{ fullName }}</h3>
               <p class="text-caption mt-1">
-                {{ user.email }}
+                {{ userDetails.email }}
               </p>
             </v-card-text>
 
@@ -278,23 +278,15 @@ export default {
       );
     },
 
-    user() {
+    userDetails() {
       return this.$store.state.currentUser;
     },
 
-    employeeData() {
-      return {
-        first_name: "joe",
-        last_name: "Sunday",
-        email: "odera@gmail.com",
-      };
-    },
-
     fullName() {
-      return this.employeeData.first_name + " " + this.employeeData.last_name;
+      return this.userDetails.firstName + " " + this.userDetails.lastName;
     },
     initials() {
-      return this.employeeData.first_name[0] + this.employeeData.last_name[0];
+      return this.userDetails.firstname[0] + this.userDetails.lastName[0];
     },
   },
 
@@ -322,7 +314,7 @@ export default {
     },
 
     openUserBonuses(messageItem) {
-      this.$router.push(`/bonus/tracker/employee/${this.employeeData.id}`);
+      this.$router.push(`/bonus/tracker/employee/${this.userDetails.id}`);
       this.$emit("readOneMessageInstance", messageItem);
       this.closeOnContentClick = true;
     },
