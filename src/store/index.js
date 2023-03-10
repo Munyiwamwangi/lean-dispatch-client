@@ -192,10 +192,12 @@ const actions = {
         .post(config.BACKEND_SERVICE + `api/auth/signup`, user)
         .then(() => {
           router.push({ name: "login" });
+
           dispatch("showFeedback", {
             status: "success",
             message: "successfully registered, proceed to login",
           });
+          router.push({ name: "dashboard" });
         })
         .catch(() => {
           return Promise.reject("Registration failed");

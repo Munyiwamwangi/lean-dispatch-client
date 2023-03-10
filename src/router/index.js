@@ -12,7 +12,9 @@ Vue.use(VueRouter);
 // this generates a separate chunk (about.[hash].js) for this route
 // which is lazy-loaded when the route is visited.
 const Login = () =>
-  import(/* webpackChunkName: "login" */ "../views/account-management/Login.vue");
+  import(
+    /* webpackChunkName: "login" */ "../views/account-management/Login.vue"
+  );
 
 const ForgotPassword = () =>
   import(
@@ -30,6 +32,11 @@ const Dashboard = () =>
 const AccountManagement = () =>
   import(
     /* webpackChunkName: "AccountManagement" */ "../views/account-management/AccountManagement.vue"
+  );
+
+const MyAccount = () =>
+  import(
+    /* webpackChunkName: "MyAccount" */ "../views/account-management/MyAccount.vue"
   );
 
 const routes = [
@@ -81,6 +88,17 @@ const routes = [
       requiresAuth: true,
       hr: true,
       approver: true,
+    },
+  },
+
+  {
+    path: "/my-account",
+    name: "my-account",
+    component: MyAccount,
+    meta: {
+      title: "LD Account",
+      requiresAuth: true,
+      hr: true,
     },
   },
 ];

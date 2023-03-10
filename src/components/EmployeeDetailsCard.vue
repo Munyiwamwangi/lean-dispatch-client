@@ -1,5 +1,6 @@
 <template>
   <v-card class="d-flex flex-column flex-md-row pa-6 mb-6" elevation="1">
+    <!-- {{ userDetails }} -->
     <div class="align-self-center mb-5 mb-md-0">
       <!-- avatar div -->
       <image-input v-model="avatar">
@@ -22,7 +23,7 @@
       <v-slide-x-transition>
         <div v-if="avatar && saved === false">
           <v-btn small class="primary" :loading="saving" @click="uploadImage">
-            {{ $t('saveAvatarText') }}
+            {{ $t("saveAvatarText") }}
           </v-btn>
         </div>
       </v-slide-x-transition>
@@ -30,46 +31,41 @@
 
     <div class="mx-md-7">
       <p>
-        <span class="text-subtitle-2 text-capitalize"
-          >{{ $t('nameText') }}:&nbsp;</span
-        >
+        <span class="text-subtitle-2 text-capitalize">Name:&nbsp;</span>
         <span class="text-body-2">{{ fullName }}</span>
       </p>
       <p>
-        <span class="text-subtitle-2 text-capitalize">
-          {{ $t('company') }}:&nbsp;</span
-        ><span class="text-body-2">{{ company }}</span>
+        <span class="text-subtitle-2 text-capitalize"> company Name:&nbsp;</span
+        ><span class="text-body-2">{{ user.company }}</span>
       </p>
       <p>
         <span class="text-subtitle-2 text-capitalize">
-          {{ $t('emailAdressText') }}:&nbsp;</span
+          {{ $t("emailAdressText") }}:&nbsp;</span
         >
-        <span class="text-body-2">{{ employeeDetails.company_email }}</span>
+        <span class="text-body-2">{{ userDetails.email }}</span>
       </p>
     </div>
 
     <div class="mx-md-7">
       <p>
         <span class="text-subtitle-2 text-capitalize">
-          {{ $t('employeeTypeText') }}:&nbsp;</span
+          {{ $t("User Type") }}:&nbsp;</span
         >
-        <span class="text-body-2"> {{ employeeDetails.employee_type }}</span>
+        <span class="text-body-2"> {{ userDetails.userType }}</span>
       </p>
       <p>
-        <span class="text-subtitle-2 text-capitalize"
-          >{{ $t('roleTextTranslate') }}:&nbsp;</span
-        >
+        <span class="text-subtitle-2 text-capitalize">verified:&nbsp;</span>
         <span class="text-body-2">
-          {{ employeeDetails.employee_position }}
+          {{ userDetails.verified }}
         </span>
       </p>
 
       <p>
         <span class="text-subtitle-2 text-capitalize"
-          >{{ $t('hireDate') }}:&nbsp;</span
+          >registration date:&nbsp;</span
         >
         <span class="text-body-2">
-          {{ employee.join_date }}
+          {{ user.createdAt }}
         </span>
       </p>
     </div>
@@ -77,14 +73,14 @@
 </template>
 
 <script>
-import ImageInput from './ImageInput.vue';
+import ImageInput from "./ImageInput.vue";
 
 export default {
   components: {
     ImageInput,
   },
   props: {
-    employee: {
+    user: {
       type: Object,
       required: true,
     },
@@ -98,17 +94,15 @@ export default {
   }),
 
   computed: {
-    employeeDetails() {
-      return this.employee || {};
+    userDetails() {
+      return this.user || {};
     },
     fullName() {
-      return (
-        this.employeeDetails.first_name + ' ' + this.employeeDetails.last_name
-      );
+      return this.userDetails.firstName + " " + this.userDetails.lastName;
     },
-    company() {
-      return this.employeeDetails.company.name || '';
-    },
+    // company() {
+    //   return this.userDetails.company.name || "";
+    // },
   },
 
   watch: {
@@ -123,29 +117,29 @@ export default {
   methods: {
     uploadImage() {
       this.saving = true;
-      this.$emit('show-feedback', {
-        status: 'submitting',
-        message: 'uploading avatar',
+      this.$emit("show-feedback", {
+        status: "submitting",
+        message: "uploading avatar",
       });
 
       // api call
-      console.log('avatar', this.avatar);
+      console.log("avatar", this.avatar);
       this.$http
-        .post(`mmauth/api/image/upload/`, this.avatar, {
+        .post(`api/image/upload/`, this.avatar, {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
         })
         .then(() => {
-          this.$emit('show-feedback', {
-            status: 'success',
-            message: 'Avatar import successful.',
+          this.$emit("show-feedback", {
+            status: "success",
+            message: "Avatar import successful.",
           });
         })
         .catch(() => {
-          this.$emit('show-feedback', {
-            status: 'fail',
-            message: 'Avatar upload failed.',
+          this.$emit("show-feedback", {
+            status: "fail",
+            message: "Avatar upload failed.",
           });
         })
         .finally(() => {});

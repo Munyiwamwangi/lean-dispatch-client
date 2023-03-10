@@ -42,7 +42,7 @@
                             <v-col cols="12">
                               <v-text-field
                                 v-model="loginEmail"
-                                :rules="loginEmailRules"
+                                :rules="[rules.required, rules.emailRules]"
                                 dense
                                 outlined
                                 label="E-mail"
@@ -50,10 +50,24 @@
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12">
-                              <v-text-field
+                              <!-- <v-text-field
                                 v-model="loginPassword"
                                 :append-icon="show1 ? 'eye' : 'eye-off'"
                                 :rules="[rules.required, rules.min]"
+                                :type="show1 ? 'text' : 'password'"
+                                dense
+                                outlined
+                                name="input-10-1"
+                                label="Password"
+                                hint="At least 8 characters"
+                                counter
+                                @click:append="show1 = !show1"
+                              ></v-text-field> -->
+
+                              <v-text-field
+                                v-model="loginPassword"
+                                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                :rules="[rules.required, rules.passMin]"
                                 :type="show1 ? 'text' : 'password'"
                                 dense
                                 outlined
@@ -90,9 +104,9 @@
                       <v-card-text>
                         <v-form
                           ref="registerForm"
-                          v-model="valid"
+                          v-model="registerForm"
                           lazy-validation
-                          @submit.prevent="submit"
+                          @submit.prevent="signUp"
                         >
                           <v-row>
                             <v-col cols="12" sm="6" md="6" class="pb-0">
@@ -120,7 +134,7 @@
                             <v-col cols="12" class="pt-0 pb-0">
                               <v-text-field
                                 v-model="email"
-                                :rules="emailRules"
+                                :rules="[rules.required, rules.emailRules]"
                                 dense
                                 outlined
                                 label="E-mail"
@@ -143,9 +157,10 @@
                             <v-col cols="12" sm="6" md="6" class="pt-0 pb-0">
                               <v-text-field
                                 v-model="phoneNumber"
-                                :rules="[rules.required]"
+                                :rules="[rules.required, rules.phoneMin]"
                                 dense
                                 type="number"
+                                hint="Use a valid, work number"
                                 outlined
                                 item-text="title"
                                 item-value="id"
@@ -157,7 +172,7 @@
                               <v-text-field
                                 v-model="password"
                                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                                :rules="[rules.required, rules.min]"
+                                :rules="[rules.required, rules.passMin]"
                                 :type="show1 ? 'text' : 'password'"
                                 dense
                                 outlined
@@ -170,11 +185,11 @@
                             </v-col>
                             <v-col cols="12" class="pt-0 pb-0">
                               <v-text-field
-                                block
                                 v-model="verify"
                                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                                 :rules="[rules.required, passwordMatch]"
                                 :type="show1 ? 'text' : 'password'"
+                                block
                                 dense
                                 outlined
                                 name="input-10-1"
@@ -217,9 +232,10 @@
                       </v-card-text>
                       <v-card-actions>
                         <v-btn
-                          :disabled="!valid"
+                          :disabled="!registerForm"
                           x-large
                           block
+                          type="submit"
                           class="t-white universal-blue"
                           @click="signUp"
                           >Register</v-btn
@@ -229,94 +245,6 @@
                   </v-tab-item>
                 </v-tabs>
               </div>
-              <!-- <v-form
-                ref="form"
-                v-model="valid"
-                lazy-validation
-                @submit.prevent="submit"
-              >
-                <v-card-text>
-                  <v-row no-gutters justify="center">
-                    <h1 class="accent--text">Login</h1>
-                  </v-row>
-
-                  <v-row align="center" justify="center">
-                    <v-col cols="12" sm="8">
-                      <v-text-field
-                        v-model="email"
-                        ref="email"
-                        :rules="emailRules"
-                        :label="$t('emailAdressLabel')"
-                        required
-                        prepend-inner-icon="person"
-                        color="blue"
-                        autocomplete="false"
-                        class="mt-8"
-                      />
-                      <v-text-field
-                        ref="password"
-                        v-model="password"
-                        :rules="passwordRules"
-                        :label="$t('passwordInputFieldPlaceHolder')"
-                        :type="passwordShow ? 'text' : 'password'"
-                        :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
-                        @click:append="passwordShow = !passwordShow"
-                        required
-                        color="blue"
-                        autocomplete="false"
-                        placeholder="Password"
-                        prepend-inner-icon="key"
-                      />
-
-                      <div class="mainCheckBox">
-                        <v-checkbox
-                          v-model="checkbox"
-                          :rules="[(v) => !!v || 'You must agree to continue!']"
-                          required
-                        >
-                          <template v-slot:label>
-                            <div>
-                              {{ $t("acceptAll") }}
-                              <v-tooltip>
-                                <template v-slot:activator="{ on }">
-                                  <a
-                                    class="bold-underlined"
-                                    target="_blank"
-                                    @click.stop
-                                    v-on="on"
-                                  >
-                                    {{ $t("termsAndConditions") }}
-                                  </a>
-                                </template>
-                              </v-tooltip>
-                            </div>
-                          </template>
-                        </v-checkbox>
-                      </div>
-
-                      <v-btn
-                        rounded
-                        block
-                        :disabled="!valid"
-                        color="#536878"
-                        type="submit"
-                        class="t-white"
-                        :loading="loading"
-                      >
-                        <h2 class="text-capitalize">
-                          {{ $t("loginText") }}
-                        </h2>
-                      </v-btn>
-
-                      <div class="mt-2 text-center bold-underlined">
-                        <router-link to="/forgot-password">
-                          {{ $t("forgotPassword") }}
-                        </router-link>
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-card-text>
-              </v-form> -->
             </v-col>
             <!-- col 2 ends  -->
           </v-row>
@@ -333,57 +261,40 @@ export default {
   data() {
     return {
       userType: null,
-      userTypes: [
-        { id: 1, title: "merchant" },
-        { id: 2, title: "rider" },
-      ],
-      // form validation essentials
       checkbox: false,
       valid: false,
       passwordShow: false,
       users: null,
       phoneNumber: null,
-
+      registerForm: false,
+      form: false,
       email: "",
-
       password: "",
-      passwordRules: [
-        (v) => !!v || this.$t("passwordInputHint1"),
-        (v) =>
-          (v && v.length >= 6) || this.$t("minimalPasswordCharacterErrortext"),
-      ],
-
-      // form essentials
       formErrors: [false],
       loading: false,
-
       firstName: "",
       lastName: "",
 
       // new data
+      userTypes: [
+        { id: 1, title: "merchant" },
+        { id: 2, title: "rider" },
+      ],
       tab: 0,
       tabItems: [
         { id: 1, name: "Login", icon: "mdi-account" },
         { id: 2, name: "Register", icon: "mdi-account-outline" },
       ],
-
-      // new data
       verify: "",
       loginPassword: "",
       loginEmail: "",
-      loginEmailRules: [
-        (v) => !!v || "Required",
-        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-      ],
-      emailRules: [
-        (v) => !!v || "Required",
-        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-      ],
 
       show1: false,
       rules: {
         required: (value) => !!value || "Required.",
-        min: (v) => (v && v.length >= 8) || "Min 8 characters",
+        passMin: (v) => (v && v.length >= 8) || "Min 8 characters",
+        phoneMin: (v) => (v && v.length === 10) || "10 characters",
+        emailRules: (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
       },
     };
   },
@@ -399,12 +310,6 @@ export default {
       }
       return error;
     },
-  },
-
-  watch: {
-    emailRules: "validateForm",
-    email: "validateForm",
-    password: "validateForm",
   },
 
   methods: {
@@ -433,23 +338,8 @@ export default {
             });
             this.loading = false;
           })
-          .catch(() => {
-            this.emailRules = [
-              ...this.emailRules,
-              (v) => v === "invalid" || "Invalid email or password",
-            ];
-            this.passwordRules = [
-              ...this.passwordRules,
-              (v) => v === "invalid" || "Invalid email or password",
-            ];
-          })
+          .catch(() => {})
           .finally(() => {
-            if (this.emailRules.length === 3) {
-              setTimeout(() => {
-                this.emailRules = this.emailRules.slice(0, 2);
-                this.passwordRules = this.passwordRules.slice(0, 2);
-              }, 4000);
-            }
             this.loading = false;
           });
       }
@@ -461,53 +351,38 @@ export default {
     },
     // new methods
     signUp() {
-      console.log("hitting");
+      if (!this.registerForm) return;
+
       // if (this.$refs.registerForm.validate()) {
       // submit form to server/API here...
       const data = {
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
-        userType: this.userType,
+        userType: this.userType.title,
+        phonenumber: this.phoneNumber,
         password: this.password,
-        verify: this.verify,
+        acceptTerms: this.checkbox,
+        // verify: this.verify,
       };
-      if (this.$refs.form.validate()) {
-        this.loading = true;
-        this.$store
-          .dispatch("signUp", data)
-          .then(() => {
-            this.$store.dispatch("setError", {
-              text: "Successfully signed up",
-              color: "success lighten-1",
-            });
-            this.loading = false;
-          })
-          .catch(() => {
-            this.emailRules = [
-              ...this.emailRules,
-              (v) => v === "invalid" || "Invalid email or password",
-            ];
-            this.passwordRules = [
-              ...this.passwordRules,
-              (v) => v === "invalid" || "Invalid email or password",
-            ];
-          })
-          .finally(() => {
-            // clear the store error if any
-            if (this.emailRules.length === 3) {
-              setTimeout(() => {
-                this.emailRules = this.emailRules.slice(0, 2);
-                this.passwordRules = this.passwordRules.slice(0, 2);
-              }, 4000);
-            }
-            this.loading = false;
+      this.loading = true;
+      this.$store
+        .dispatch("signUp", data)
+        .then(() => {
+          this.$store.dispatch("setError", {
+            text: "Successfully signed up",
+            color: "success lighten-1",
           });
-      }
-      // }
+          this.loading = false;
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.loading = false;
+        });
     },
     reset() {
       this.$refs.form.reset();
+      this.$refs.registerForm.reset();
     },
     resetValidation() {
       this.$refs.form.resetValidation();
