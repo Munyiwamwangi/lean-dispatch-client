@@ -73,7 +73,6 @@
                           x-large
                           block
                           :disabled="!valid"
-                          color="#536878"
                           type="submit"
                           class="t-white universal-blue"
                           :loading="loading"

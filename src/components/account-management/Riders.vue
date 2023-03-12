@@ -25,7 +25,9 @@
         :dialog="dialog"
         :formTitle="formTitle"
         :rider="defaultRider"
+        :loading="loading"
         @close-dialog="close"
+        @rider-data="signUp"
       >
       </CreateRider>
     </template>
@@ -96,6 +98,7 @@ export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
+    loading: false,
     headers: [
       {
         text: "ID",
@@ -153,21 +156,25 @@ export default {
 
       { text: "Actions", value: "actions", sortable: false },
     ],
+
     desserts: [],
     editedIndex: -1,
     editedRider: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+      firstName: "",
+      lastName: "",
+      email: "",
+      userType: "",
+      phonenumber: "",
+      password: "",
     },
     defaultRider: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+      firstName: "",
+      lastName: "",
+      email: "",
+      userType: "",
+      phonenumber: "",
+      password: "",
+      acceptTerms: false,
     },
   }),
 
@@ -294,11 +301,31 @@ export default {
       });
     },
 
-    save() {
+    signUp(data) {
       if (this.editedIndex > -1) {
         Object.assign(this.desserts[this.editedIndex], this.editedItem);
       } else {
-        this.desserts.push(this.editedItem);
+        // submit form to server/API here...
+        //
+        this.loading = true;
+        this.$store
+          .dispatch("signUp", data)
+          .then(() => {
+            this.$store.dispatch("setError", {
+              text: "Successfully registered",
+              color: "success lighten-1",
+            });
+            this.loading = false;
+          })
+          .catch(() => {
+            this.$store.dispatch("setError", {
+              text: "Registration failed, please try again",
+              color: "error lighten-1",
+            });
+          })
+          .finally(() => {
+            this.loading = false;
+          });
       }
       this.close();
     },

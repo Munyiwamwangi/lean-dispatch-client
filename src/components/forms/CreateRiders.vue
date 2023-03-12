@@ -6,16 +6,11 @@
           {{ formTitle }}
         </v-card-title>
         <v-card-text>
-          <v-form
-            ref="registerForm"
-            v-model="registerForm"
-            lazy-validation
-            @submit.prevent="signUp"
-          >
+          <v-form ref="registerForm" v-model="valid" lazy-validation>
             <v-row>
               <v-col cols="12" sm="6" md="6" class="pb-0">
                 <v-text-field
-                  v-model="firstName"
+                  v-model="rider.firstName"
                   :rules="[rules.required]"
                   dense
                   outlined
@@ -26,7 +21,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="6" class="pb-0">
                 <v-text-field
-                  v-model="lastName"
+                  v-model="rider.lastName"
                   dense
                   outlined
                   :rules="[rules.required]"
@@ -37,7 +32,7 @@
               </v-col>
               <v-col cols="12" class="pt-0 pb-0">
                 <v-text-field
-                  v-model="email"
+                  v-model="rider.email"
                   :rules="[rules.required, rules.emailRules]"
                   dense
                   outlined
@@ -60,7 +55,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="6" class="pt-0 pb-0">
                 <v-text-field
-                  v-model="phoneNumber"
+                  v-model="rider.phonenumber"
                   :rules="[rules.required, rules.phoneMin]"
                   dense
                   type="number"
@@ -74,7 +69,7 @@
               </v-col>
               <v-col cols="12" class="pt-0 pb-0">
                 <v-text-field
-                  v-model="password"
+                  v-model="rider.password"
                   :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                   :rules="[rules.required, rules.passMin]"
                   :type="show1 ? 'text' : 'password'"
@@ -87,9 +82,9 @@
                   @click:append="show1 = !show1"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" class="pt-0 pb-0">
+              <!-- <v-col cols="12" class="pt-0 pb-0">
                 <v-text-field
-                  v-model="verify"
+                  v-model="rider.verify"
                   :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                   :rules="[rules.required, passwordMatch]"
                   :type="show1 ? 'text' : 'password'"
@@ -101,12 +96,12 @@
                   counter
                   @click:append="show1 = !show1"
                 ></v-text-field>
-              </v-col>
+              </v-col> -->
               <v-col cols="12" class="pt-0 pb-0">
                 <div class="mainCheckBox">
                   <v-checkbox
-                    v-model="checkbox"
-                    :rules="[(v) => !!v || 'You must agree to continue!']"
+                    v-model="rider.acceptTerms"
+                    :rules="[rules.required]"
                     required
                   >
                     <template v-slot:label>
@@ -134,14 +129,16 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-btn text class="t-white" @click="close">close </v-btn>
+          <v-btn text class="" @click="close">close </v-btn>
           <v-spacer></v-spacer>
           <v-btn
-            :disabled="!registerForm"
+            :disabled="!valid"
+            :loading="loading"
             type="submit"
             class="t-white universal-blue"
             @click="signUp"
-            >Register
+          >
+            Register
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -162,7 +159,10 @@ export default {
       type: String,
       required: true,
     },
-    // newGroup: {
+    loading: {
+      type: Boolean,
+    },
+    // rider: {
     //   type: Object,
     //   required: true,
     // },
@@ -179,15 +179,10 @@ export default {
       checkbox: false,
       passwordShow: false,
       users: null,
-      phoneNumber: null,
-      registerForm: false,
+      registerForm: true,
       form: false,
-      email: "",
-      password: "",
+
       formErrors: [false],
-      loading: false,
-      firstName: "",
-      lastName: "",
 
       // new data
       userTypes: [
@@ -200,9 +195,7 @@ export default {
         { id: 2, name: "Register", icon: "mdi-account-outline" },
       ],
       verify: "",
-      loginPassword: "",
-      loginEmail: "",
-
+ 
       show1: false,
       rules: {
         required: (value) => !!value || "Required.",
@@ -215,11 +208,11 @@ export default {
 
   computed: {
     passwordMatch() {
-      return () => this.password === this.verify || "Password must match";
+      return () => this.rider.password === this.verify || "Password must match";
     },
   },
   created() {
-    console.log(this.rider);
+    // console.log(this.rider);
   },
 
   methods: {
@@ -237,13 +230,23 @@ export default {
     },
 
     signUp() {
-      if (!this.validate()) return;
-      const data = {
-        title: this.newGroup.name,
-      };
-      this.$emit("send-group-data", data);
-      this.closeRoleCreatingDialog();
+      this.rider["userType"] = this.userType.title;
+
+      console.log(this.rider);
+      if (this.$refs.registerForm.validate()) {
+        const data = {
+          rider: this.rider,
+        };
+        this.$emit("rider-data", data);
+        this.close();
+      }
     },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.t-white {
+  color: white;
+}
+</style>
