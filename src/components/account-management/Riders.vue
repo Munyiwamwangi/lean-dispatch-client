@@ -6,9 +6,13 @@
     class="elevation-1"
     hide-default-footer
   >
-    <!-- <template #[`item.id`]="props">
+    <template slot="progress">
+      <LoadingBar></LoadingBar>
+    </template>
+
+    <template #[`item.id`]="props">
       {{ props.index + 1 }}
-    </template> -->
+    </template>
 
     <template v-slot:top>
       <v-toolbar flat>
@@ -220,9 +224,10 @@
 
 <script>
 import CreateRider from "../forms/CreateRiders.vue";
+import LoadingBar from "../LoadingBar.vue";
 import { mapActions } from "vuex";
 export default {
-  components: { CreateRider },
+  components: { CreateRider, LoadingBar },
   props: {
     privateRiders: {
       type: Array,

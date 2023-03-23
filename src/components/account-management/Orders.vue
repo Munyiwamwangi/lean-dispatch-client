@@ -2,10 +2,15 @@
   <v-data-table
     :headers="headers"
     :items="desserts"
+    :loading="loading"
     sort-by="calories"
     class="elevation-1"
     hide-default-footer
   >
+    <template slot="progress">
+      <LoadingBar></LoadingBar>
+    </template>
+
     <template #[`item.id`]="props">
       {{ props.index + 1 }}
     </template>
@@ -25,7 +30,6 @@
         :dialog="dialog"
         :formTitle="formTitle"
         :rider="defaultOrder"
-        :loading="loading"
         @close-dialog="dismissDeleteEdit"
         @rider-data="createEditOrder"
       >
@@ -95,8 +99,9 @@
 
 <script>
 import CreateOrder from "../forms/CreateOrder.vue";
+import LoadingBar from "../LoadingBar.vue";
 export default {
-  components: { CreateOrder },
+  components: { CreateOrder, LoadingBar },
 
   props: {
     orders: {

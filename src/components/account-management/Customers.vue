@@ -2,10 +2,15 @@
   <v-data-table
     :headers="headers"
     :items="dummyCustomers"
+    :loading="loading"
     sort-by="calories"
     class="elevation-1"
     hide-default-footer
   >
+    <template slot="progress">
+      <LoadingBar></LoadingBar>
+    </template>
+
     <template #[`item.id`]="props">
       {{ props.index + 1 }}
     </template>
@@ -120,7 +125,11 @@
 </template>
 
 <script>
+import LoadingBar from "../LoadingBar.vue";
+
 export default {
+  components: { LoadingBar },
+
   props: {
     allCustomers: {
       type: Array,

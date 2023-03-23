@@ -67,7 +67,6 @@ export default {
       try {
         const data = await fetchOrders();
         commit("SET_LOADING_STATUS", false);
-        // console.log("data.results --> ", data.results);
         commit("SET_RIDERS", data.results);
       } catch (error) {
         commit("SET_ERRORED", true);

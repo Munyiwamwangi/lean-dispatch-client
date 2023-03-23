@@ -20,7 +20,7 @@
         <OrdersComponent
           :tab="tab"
           :orders="orders"
-          :loading="loading"
+          :loading="ordersLoader"
           :filter-drawer.sync="filterDrawer"
           @show-feedback="showFeedback"
         ></OrdersComponent>
@@ -38,7 +38,7 @@
         <RidersComponent
           :tab="tab"
           :privateRiders="privateRiders"
-          :loading="loading"
+          :loading="ridersLoader"
           :filter-drawer.sync="filterDrawer"
           @show-feedback="showFeedback"
         ></RidersComponent>
@@ -48,6 +48,7 @@
         <Customers
           :tab="tab"
           :filter-drawer.sync="filterDrawer"
+          :loading="loadingCustomers"
           :allCustomers="allCustomers"
           @show-feedback="showFeedback"
         ></Customers>
@@ -103,15 +104,15 @@ export default {
   computed: {
     ...mapGetters("customers", {
       allCustomers: "allCustomers",
-      loading: "loadingMerchants",
+      loadingCustomers: "loadingCustomers",
     }),
     ...mapGetters("riders", {
       privateRiders: "privateRiders",
-      loading: "ridersLoader",
+      ridersLoader: "ridersLoader",
     }),
     ...mapGetters("orders", {
       orders: "allOrders",
-      loading: "ordersLoader",
+      ordersLoader: "ordersLoader",
     }),
   },
 
