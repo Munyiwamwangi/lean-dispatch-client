@@ -172,6 +172,7 @@ export default {
       formErrors: [false],
 
       // new data
+      // compute, return depending on the system user permission level 
       userTypes: [{ id: 2, title: "rider" }],
 
       tab: 0,
@@ -219,7 +220,6 @@ export default {
 
     save() {
       this.rider["userType"] = this.defaultUserType.title;
-      console.log(this.rider);
 
       if (this.$refs.registerForm.validate()) {
         this.$emit("rider-data", this.rider);

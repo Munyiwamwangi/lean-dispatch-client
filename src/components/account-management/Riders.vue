@@ -422,13 +422,7 @@ export default {
                 "Rider registered, ask them to login and change password",
             });
           })
-          .catch((e) => {
-            console.log(e);
-            this.$emit("show-feedback", {
-              status: "fail",
-              message: "Rider registration failed.",
-            });
-          })
+          .catch(() => {})
           .finally(() => {
             this.dismissDeleteEdit();
           });
@@ -436,12 +430,9 @@ export default {
     },
 
     toggleStatusOptions(item) {
-      console.log("toggling statuses, activation deactivation in progress");
       this.statusesDialog = true;
       this.editedIndex = item.riderId;
       this.editedRider = Object.assign({}, item);
-
-      console.log(JSON.stringify(this.editedRider, null, 3));
     },
 
     activateDeactivateRider() {
@@ -468,11 +459,9 @@ export default {
     },
 
     deleteItem(item) {
-      // console.log(JSON.stringify(item, null, 3));
       this.editedIndex = item.riderId;
       this.editedRider = Object.assign({}, item);
       this.dialogDelete = true;
-      console.log(item.id);
     },
 
     riderDelete() {
