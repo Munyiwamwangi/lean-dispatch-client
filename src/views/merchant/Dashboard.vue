@@ -19,6 +19,8 @@
       <v-tab-item>
         <OrdersComponent
           :tab="tab"
+          :orders="orders"
+          :loading="loading"
           :filter-drawer.sync="filterDrawer"
           @show-feedback="showFeedback"
         ></OrdersComponent>
@@ -33,20 +35,22 @@
         </v-tab-item> -->
 
       <v-tab-item>
-        <DriversComponent
+        <RidersComponent
           :tab="tab"
+          :privateRiders="privateRiders"
+          :loading="loading"
           :filter-drawer.sync="filterDrawer"
           @show-feedback="showFeedback"
-        ></DriversComponent>
+        ></RidersComponent>
       </v-tab-item>
 
       <v-tab-item>
-        <Merchants
+        <Customers
           :tab="tab"
           :filter-drawer.sync="filterDrawer"
-          :allMerchants="allMerchants"
+          :allCustomers="allCustomers"
           @show-feedback="showFeedback"
-        ></Merchants>
+        ></Customers>
       </v-tab-item>
     </v-tabs>
 
@@ -59,10 +63,10 @@
 </template>
 
 <script>
-import DriversComponent from "../../components/account-management/Riders.vue";
+import RidersComponent from "../../components/account-management/Riders.vue";
 import OrdersComponent from "../../components/account-management/Orders.vue";
 // import VendorsComponent from "../../components/account-management/Vendors.vue";
-import Merchants from "../../components/account-management/Merchants.vue";
+import Customers from "../../components/account-management/Customers.vue";
 
 import { mapGetters } from "vuex";
 import FeedbackSnackBar from "@/components/FeedbackSnackBar";
@@ -72,10 +76,10 @@ export default {
   drawer: null,
   filterDrawer: false,
   components: {
-    DriversComponent,
+    RidersComponent,
     OrdersComponent,
     // VendorsComponent,
-    Merchants,
+    Customers,
     FeedbackSnackBar,
   },
 
@@ -97,9 +101,17 @@ export default {
   },
 
   computed: {
-    ...mapGetters("merchants", {
-      allMerchants: "allMerchants",
+    ...mapGetters("customers", {
+      allCustomers: "allCustomers",
       loading: "loadingMerchants",
+    }),
+    ...mapGetters("riders", {
+      privateRiders: "privateRiders",
+      loading: "ridersLoader",
+    }),
+    ...mapGetters("orders", {
+      orders: "allOrders",
+      loading: "ordersLoader",
     }),
   },
 
@@ -110,8 +122,9 @@ export default {
   },
 
   created() {
-    this.$store.dispatch("merchants/loadMerchants");
-    // this.$store.dispatch("logs/loadAuditTrail");
+    this.$store.dispatch("riders/loadPrivateRiders");
+    this.$store.dispatch("customers/loadCustomers");
+    this.$store.dispatch("orders/loadOrders");
   },
 
   methods: {

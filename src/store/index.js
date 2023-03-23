@@ -6,6 +6,10 @@ import axios from "axios";
 import SecureLS from "secure-ls";
 import common from "./modules/common";
 import merchants from "./modules/merchants";
+import riders from "./modules/riders";
+import customers from "./modules/customers";
+import orders from "./modules/orders";
+
 import { fetchCompanies } from "../services/modules/common";
 import config from "../config";
 import api from "../services/api";
@@ -233,6 +237,22 @@ const actions = {
       commit("SET_COMPANIES_LOADING_ERROR", error);
     }
   },
+
+  showFeedback({ commit, dispatch }, { status, message }) {
+    let snackColor = "";
+    if (status === "submitting") {
+      snackColor = "info";
+    } else if (status === "success") {
+      snackColor = "success lighten-1";
+    } else if (status === "fail") {
+      snackColor = "red lighten-1";
+    }
+    commit("SET_FEEDBACK_VALUES", { snackColor, message });
+    // clear the feedback after 4 seconds
+    setTimeout(() => {
+      dispatch("resetSnackBar");
+    }, 4000);
+  },
 };
 
 const getters = {
@@ -260,6 +280,9 @@ export default new Vuex.Store({
   modules: {
     common,
     merchants,
+    riders,
+    customers,
+    orders,
   },
   plugins: [
     createPersistedState({

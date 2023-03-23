@@ -33,11 +33,11 @@
       </v-tab-item> -->
 
       <v-tab-item>
-        <DriversComponent
+        <RidersComponent
           :tab="tab"
           :filter-drawer.sync="filterDrawer"
           @show-feedback="showFeedback"
-        ></DriversComponent>
+        ></RidersComponent>
       </v-tab-item>
 
       <v-tab-item>
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import DriversComponent from "../../components/account-management/Riders.vue";
+import RidersComponent from "../../components/account-management/Riders.vue";
 import OrdersComponent from "../../components/account-management/Orders.vue";
 // import VendorsComponent from "../../components/account-management/Vendors.vue";
 import Merchants from "../../components/account-management/Merchants.vue";
@@ -72,7 +72,7 @@ export default {
   drawer: null,
   filterDrawer: false,
   components: {
-    DriversComponent,
+    RidersComponent,
     OrdersComponent,
     // VendorsComponent,
     Merchants,

@@ -53,6 +53,7 @@ export default {
       }
     },
     async loadMerchants({ commit }) {
+      console.log("loading merchants");
       commit("SET_LOADING_STATUS", true);
       try {
         const data = await fetchMerchants();

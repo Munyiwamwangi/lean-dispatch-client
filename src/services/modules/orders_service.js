@@ -1,36 +1,36 @@
 import api from "../api";
 
-export function fetchMerchants() {
+export function fetchOrders() {
   return api
-    .get("/api/users/search/")
+    .get("/api/delivery/search/")
     .then((res) => Promise.resolve(res.data))
     .catch((err) => Promise.reject(err));
 }
 
-export function addMerchant(data) {
+export function fetchOneOrder(id) {
   return api
-    .post("/api/merchant/", data)
+    .patch(`/api/delivery/${id}/`)
     .then((res) => Promise.resolve(res))
     .catch((err) => Promise.reject(err));
 }
 
-export function addPrivRider(data) {
+export function addOrder(data) {
   return api
-    .post("/api/merchants/createRider", data)
+    .post("/api/Order/", data)
     .then((res) => Promise.resolve(res))
     .catch((err) => Promise.reject(err));
 }
 
-export function editMerchant(id, data) {
+export function editOrder(id, data) {
   return api
-    .patch(`/api/merchant/${id}/`, data)
+    .patch(`/api/delivery/changeStatus/${id}/`, data)
     .then((res) => Promise.resolve(res))
     .catch((err) => Promise.reject(err));
 }
 
-export function deleteMerchant(id) {
+export function deleteOrder(id) {
   return api
-    .delete(`/api/merchant/${id}/`)
+    .delete(`/api/Order/${id}/`)
     .then((res) => Promise.resolve(res))
     .catch((err) => Promise.reject(err));
 }

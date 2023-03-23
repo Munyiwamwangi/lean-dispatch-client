@@ -9,7 +9,7 @@ export function fetchPrivateRiders() {
 
 export function fetchPublicRiders() {
   return api
-    .get("/api/riders/privateRiders")
+    .get("/api/riders/publicRiders")
     .then((res) => Promise.resolve(res.data))
     .catch((err) => Promise.reject(err));
 }
@@ -23,12 +23,19 @@ export function addRider(data) {
 
 export function editRider(id, data) {
   return api
-    .patch(`/api/riders/${id}/`, data)
+    .patch(`/api/riders/profile/${id}/`, data)
     .then((res) => Promise.resolve(res))
     .catch((err) => Promise.reject(err));
 }
 
-export function deleteRider(id) {
+export function delRider(id) {
+  return api
+    .delete(`/api/riders/${id}/`)
+    .then((res) => Promise.resolve(res))
+    .catch((err) => Promise.reject(err));
+}
+
+export function reassignRider(id) {
   return api
     .delete(`/api/riders/${id}/`)
     .then((res) => Promise.resolve(res))

@@ -42,7 +42,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="6" class="pt-0 pb-0">
                 <v-combobox
-                  v-model="userType"
+                  v-model="defaultUserType"
                   :rules="[rules.required]"
                   :items="userTypes"
                   dense
@@ -51,6 +51,7 @@
                   item-value="id"
                   label="User Type"
                   required
+                  readonly
                 ></v-combobox>
               </v-col>
               <v-col cols="12" sm="6" md="6" class="pt-0 pb-0">
@@ -67,7 +68,7 @@
                   required
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" class="pt-0 pb-0">
+              <v-col v-if="editId === -1" cols="12" class="pt-0 pb-0">
                 <v-text-field
                   v-model="rider.password"
                   :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -82,21 +83,7 @@
                   @click:append="show1 = !show1"
                 ></v-text-field>
               </v-col>
-              <!-- <v-col cols="12" class="pt-0 pb-0">
-                <v-text-field
-                  v-model="rider.verify"
-                  :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                  :rules="[rules.required, passwordMatch]"
-                  :type="show1 ? 'text' : 'password'"
-                  block
-                  dense
-                  outlined
-                  name="input-10-1"
-                  label="Confirm Password"
-                  counter
-                  @click:append="show1 = !show1"
-                ></v-text-field>
-              </v-col> -->
+
               <v-col cols="12" class="pt-0 pb-0">
                 <div class="mainCheckBox">
                   <v-checkbox
@@ -136,9 +123,9 @@
             :loading="loading"
             type="submit"
             class="t-white universal-blue"
-            @click="signUp"
+            @click="save"
           >
-            Register
+            Save
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -162,10 +149,10 @@ export default {
     loading: {
       type: Boolean,
     },
-    // rider: {
-    //   type: Object,
-    //   required: true,
-    // },
+    editId: {
+      type: Number,
+      default: -1,
+    },
     rider: {
       type: Object,
       required: true,
@@ -185,17 +172,15 @@ export default {
       formErrors: [false],
 
       // new data
-      userTypes: [
-        { id: 1, title: "merchant" },
-        { id: 2, title: "rider" },
-      ],
+      userTypes: [{ id: 2, title: "rider" }],
+
       tab: 0,
       tabItems: [
         { id: 1, name: "Login", icon: "mdi-account" },
         { id: 2, name: "Register", icon: "mdi-account-outline" },
       ],
       verify: "",
- 
+
       show1: false,
       rules: {
         required: (value) => !!value || "Required.",
@@ -209,6 +194,9 @@ export default {
   computed: {
     passwordMatch() {
       return () => this.rider.password === this.verify || "Password must match";
+    },
+    defaultUserType() {
+      return this.userTypes[0];
     },
   },
   created() {
@@ -229,15 +217,12 @@ export default {
       this.$refs.registerForm.resetValidation();
     },
 
-    signUp() {
-      this.rider["userType"] = this.userType.title;
-
+    save() {
+      this.rider["userType"] = this.defaultUserType.title;
       console.log(this.rider);
+
       if (this.$refs.registerForm.validate()) {
-        const data = {
-          rider: this.rider,
-        };
-        this.$emit("rider-data", data);
+        this.$emit("rider-data", this.rider);
         this.close();
       }
     },

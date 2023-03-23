@@ -12,98 +12,47 @@
 
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>Orders</v-toolbar-title>
-        <v-divider class="mx-4" inset vertical></v-divider>
-        <v-spacer></v-spacer>
-        <v-dialog v-model="dialog" max-width="700px">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-              + New Order
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">{{ formTitle }}</span>
-            </v-card-title>
-
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      v-model="editedItem.name"
-                      label="Name"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      v-model="editedItem.calories"
-                      readonly
-                      label="Company"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      v-model="editedItem.fat"
-                      label="orderId"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      v-model="editedItem.carbs"
-                      label="Company"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="City"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Status"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      readonly
-                      v-model="editedItem.protein"
-                      label="Date Joined"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-            <!-- actions  -->
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="text-h5"
-              >Are you sure you want to delete this item?</v-card-title
-            >
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
-                >Cancel</v-btn
-              >
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                >OK</v-btn
-              >
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        <v-row no-gutters>
+          <v-toolbar-title>My Orders</v-toolbar-title>
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" dark class="mb-2" @click="openDialog">
+            + New Order
+          </v-btn>
+        </v-row>
       </v-toolbar>
+      <CreateOrder
+        :dialog="dialog"
+        :formTitle="formTitle"
+        :rider="defaultOrder"
+        :loading="loading"
+        @close-dialog="dismissDeleteEdit"
+        @rider-data="createEditOrder"
+      >
+      </CreateOrder>
+
+      <v-dialog v-model="dialogDelete" max-width="500px">
+        <v-card class="text-center">
+          <v-card-text class="py-4">
+            <v-icon color="secondary" dark size="64">
+              mdi-alert-outline
+            </v-icon>
+          </v-card-text>
+          <v-card-text class="text-h6">
+            {{ $t("deleteItemTextTranslate") }}
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="accent darken-1" text @click="dismissDeleteEdit()">
+              close
+            </v-btn>
+            <v-btn color="secondary darken-1" text @click="orderDelete">
+              Delete
+            </v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </template>
 
     <!-- rating  -->
@@ -145,7 +94,21 @@
 </template>
 
 <script>
+import CreateOrder from "../forms/CreateOrder.vue";
 export default {
+  components: { CreateOrder },
+
+  props: {
+    orders: {
+      type: Array,
+      required: true,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
   data: () => ({
     dialog: false,
     dialogDelete: false,
@@ -208,7 +171,7 @@ export default {
       carbs: 0,
       protein: 0,
     },
-    defaultItem: {
+    defaultOrder: {
       name: "",
       calories: 0,
       fat: 0,
@@ -228,7 +191,7 @@ export default {
       val || this.close();
     },
     dialogDelete(val) {
-      val || this.closeDelete();
+      val || this.dismissDeleteEdit();
     },
   },
 
@@ -237,6 +200,10 @@ export default {
   },
 
   methods: {
+    openDialog() {
+      this.dialog = true;
+    },
+
     initialize() {
       this.desserts = [
         {
@@ -317,32 +284,74 @@ export default {
 
     deleteItemConfirm() {
       this.desserts.splice(this.editedIndex, 1);
-      this.closeDelete();
+      this.dismissDeleteEdit();
     },
 
     close() {
       this.dialog = false;
       this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedItem = Object.assign({}, this.defaultOrder);
         this.editedIndex = -1;
       });
     },
 
-    closeDelete() {
+    dismissDeleteEdit() {
+      this.dialog = false;
       this.dialogDelete = false;
       this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedRider = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       });
     },
 
-    save() {
+    createEditOrder(data) {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        Object.assign(this.desserts[this.editedIndex], this.editedRider);
       } else {
-        this.desserts.push(this.editedItem);
+        this.createPrivateRider(data)
+          .then(() => {
+            this.$emit("show-feedback", {
+              status: "success",
+              message:
+                "Rider registered, ask them to login and change password",
+            });
+          })
+          .catch((e) => {
+            console.log(e);
+            this.$emit("show-feedback", {
+              status: "fail",
+              message: "Rider registration failed.",
+            });
+          })
+          .finally(() => {
+            this.dismissDeleteEdit();
+          });
       }
-      this.close();
+    },
+
+    orderDelete() {
+      this.dismissDeleteEdit();
+      this.$emit("show-feedback", {
+        status: "submitting",
+        message: "submitting",
+      });
+
+      this.deleteRider(this.editedIndex)
+        .then(() => {
+          this.$emit("show-feedback", {
+            status: "success",
+            message: "Rider deleted.",
+          });
+        })
+        .catch(() => {
+          this.$emit("show-feedback", {
+            status: "fail",
+            message: "Rider deletion failed.",
+          });
+        })
+        .finally(() => {
+          this.closeDelete();
+        });
     },
   },
 };
