@@ -6,6 +6,8 @@
     sort-by="calories"
     class="elevation-1"
     hide-default-footer
+    show-select
+    checkbox-color="blue"
   >
     <template slot="progress">
       <LoadingBar></LoadingBar>
