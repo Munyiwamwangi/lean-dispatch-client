@@ -12,7 +12,6 @@
                 <v-combobox
                   v-model="order.customer"
                   :rules="[rules.required]"
-                  :items="customers"
                   dense
                   outlined
                   label=" Select customer"
@@ -125,10 +124,6 @@ export default {
     },
     loading: {
       type: Boolean,
-    },
-    customers: {
-      type: Array,
-      required: true,
     },
     order: {
       type: Object,

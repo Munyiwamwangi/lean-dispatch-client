@@ -7,9 +7,9 @@ export function addCustomer(data) {
     .catch((err) => Promise.reject(err));
 }
 
-export function fetchCustomers() {
+export function fetchCustomers(payload) {
   return api
-    .get("/api/customers/")
+    .get(`api/customers?page=${payload.page}&limit=${payload.limit}`)
     .then((res) => Promise.resolve(res.data))
     .catch((err) => Promise.reject(err));
 }

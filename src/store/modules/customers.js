@@ -52,10 +52,17 @@ export default {
         commit("SET_ERROR", error);
       }
     },
-    async loadCustomers({ commit }) {
+    async loadCustomers({ commit }, payload) {
+      if (payload === undefined || payload === null) {
+        payload = {
+          page: 1,
+          limit: 100,
+          status: "pending",
+        };
+      }
       commit("SET_LOADING_STATUS", true);
       try {
-        const data = await fetchCustomers();
+        const data = await fetchCustomers(payload);
         commit("SET_LOADING_STATUS", false);
         commit("SET_MERCHANTS", data.results);
       } catch (error) {

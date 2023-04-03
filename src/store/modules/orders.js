@@ -62,12 +62,19 @@ export default {
       }
     },
 
-    async loadOrders({ commit }) {
+    async loadOrders({ commit }, payload) {
+      if (payload === undefined || payload === null) {
+        payload = {
+          page: 1,
+          limit: 100,
+          status: "pending",
+        };
+      }
       commit("SET_LOADING_STATUS", true);
       try {
-        const data = await fetchOrders();
+        const data = await fetchOrders(payload);
         commit("SET_LOADING_STATUS", false);
-        commit("SET_RIDERS", data.results);
+        commit("SET_ORDERS", data.results);
       } catch (error) {
         commit("SET_ERRORED", true);
         commit("SET_ERROR", error);
@@ -114,7 +121,7 @@ export default {
       state.loading = status;
     },
 
-    SET_RIDERS(state, data) {
+    SET_ORDERS(state, data) {
       state.orders = data;
     },
 

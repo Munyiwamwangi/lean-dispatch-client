@@ -54,7 +54,7 @@ api.interceptors.response.use(
           break;
         case 401:
         case 403:
-          customErros(error.response.statusText, "red lighten-1");
+          customErros(error.response.data.message, "red lighten-1");
 
           break;
         case 502:
@@ -69,7 +69,7 @@ api.interceptors.response.use(
           }, 1000);
           break;
         default:
-          customErros(error.response.statusText);
+          customErros(error.response.data.message);
       }
       return Promise.reject(error.response);
     }

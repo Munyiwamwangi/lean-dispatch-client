@@ -1,8 +1,10 @@
 import api from "../api";
 
-export function fetchOrders() {
+export function fetchOrders(payload) {
   return api
-    .get("/api/delivery/search/")
+    .get(
+      `api/delivery/fetch/tasks?page=${payload.page}&limit=${payload.limit}&status=${payload.status}`
+    )
     .then((res) => Promise.resolve(res.data))
     .catch((err) => Promise.reject(err));
 }

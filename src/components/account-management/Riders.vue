@@ -248,11 +248,11 @@ export default {
     approved: false,
     partiallyApproved: false,
     headers: [
-      // {
-      //   text: "ID",
-      //   sortable: false,
-      //   value: "id",
-      // },
+      {
+        text: "ID",
+        sortable: false,
+        value: "id",
+      },
       {
         text: "name",
         sortable: false,

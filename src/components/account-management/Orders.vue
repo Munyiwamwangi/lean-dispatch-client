@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="desserts"
+    :items="orders"
     :loading="loading"
     sort-by="calories"
     class="elevation-1"
@@ -13,14 +13,14 @@
       <LoadingBar></LoadingBar>
     </template>
 
-    <template #[`item.id`]="props">
+    <!-- <template #[`item.id`]="props">
       {{ props.index + 1 }}
-    </template>
+    </template> -->
 
     <template v-slot:top>
       <v-toolbar flat>
         <v-row no-gutters>
-          <v-toolbar-title>My Orders</v-toolbar-title>
+          <v-toolbar-title>Orders</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-btn color="primary" dark class="mb-2" @click="openDialog">
@@ -31,9 +31,10 @@
       <CreateOrder
         :dialog="dialog"
         :formTitle="formTitle"
-        :rider="defaultOrder"
+        :order="defaultOrder"
+        :customers="customers"
         @close-dialog="dismissDeleteEdit"
-        @rider-data="createEditOrder"
+        @order-data="createEditOrder"
       >
       </CreateOrder>
 
@@ -114,34 +115,46 @@ export default {
       type: Boolean,
       default: false,
     },
+    customers: {
+      type: Array,
+      required: true,
+    },
   },
 
   data: () => ({
     dialog: false,
     dialogDelete: false,
     headers: [
+      // {
+      //   text: "ID",
+      //   sortable: false,
+      //   value: "id",
+      // },
       {
-        text: "ID",
-        sortable: false,
+        text: "order id",
         value: "id",
+        class: "text-capitalize",
+        sortable: false,
       },
       {
         text: "Customer",
         sortable: false,
-        value: "name",
+        value: "merchantId",
         class: "text-capitalize",
       },
       {
-        text: "Store Name",
-        value: "company",
-        class: "text-capitalize",
-      },
-      {
-        text: "order id",
-        value: "orderId",
+        text: "Sender Adress",
+        value: "senderAddress",
         class: "text-capitalize",
         sortable: false,
       },
+      {
+        text: "Receiver Adress",
+        value: "receiverAddress",
+        class: "text-capitalize",
+        sortable: false,
+      },
+
       {
         text: "delivery type",
         value: "deliveryType",
@@ -149,7 +162,19 @@ export default {
         sortable: false,
       },
       {
-        text: "amount",
+        text: "amount paid",
+        value: "totalAmount",
+        class: "text-capitalize",
+        sortable: false,
+      },
+      {
+        text: "balance",
+        value: "balance",
+        class: "text-capitalize",
+        sortable: false,
+      },
+      {
+        text: "order earnings",
         value: "amount",
         class: "text-capitalize",
         sortable: false,
@@ -161,7 +186,7 @@ export default {
         sortable: false,
       },
       {
-        text: "payment status",
+        text: "delivery status",
         value: "status",
         class: "text-capitalize",
         sortable: false,
@@ -172,18 +197,26 @@ export default {
     desserts: [],
     editedIndex: -1,
     editedItem: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+      customerId: 0,
+      deliveryType: "",
+      scheduledAt: 0,
+      narration: "",
+      pickupAdress: "",
+      receiverAdress: "",
+      transportationMode: "",
+      deliveryFee: 0,
+      amountReceived: 0,
     },
     defaultOrder: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+      customerId: 0,
+      deliveryType: "",
+      scheduledAt: 0,
+      narration: "",
+      pickupAdress: "",
+      receiverAdress: "",
+      transportationMode: "",
+      deliveryFee: 0,
+      amountReceived: 0,
     },
   }),
 
@@ -202,79 +235,11 @@ export default {
     },
   },
 
-  created() {
-    this.initialize();
-  },
+  created() {},
 
   methods: {
     openDialog() {
       this.dialog = true;
-    },
-
-    initialize() {
-      this.desserts = [
-        {
-          name: "Joe Munyi",
-          company: "Premium Deliveries",
-          orderId: "IFS484",
-          deliveryType: "Last Mile",
-          amount: "60 Kgs",
-          paymentType: "MPESA",
-          status: "active",
-          joinedOn: "2/06/2022",
-        },
-        {
-          name: "Silvester Odera",
-          company: "Beaver Couriers",
-          orderId: "FDHJ2000",
-          deliveryType: "Home Delivery",
-          amount: "4 Kgs",
-          paymentType: "KCB Cheque",
-          status: "50%",
-          joinedOn: "4/07/2022",
-        },
-        {
-          name: "Odera Silverster",
-          company: "Twin Courier",
-          orderId: "EFE10007",
-          deliveryType: "Office Delivery",
-          amount: "2 Kgs",
-          paymentType: "MPESA",
-          status: "30%",
-          joinedOn: "12/05/2022",
-        },
-
-        {
-          name: "Moon Rey",
-          company: "Asap Delivery",
-          orderId: "SDD3000",
-          deliveryType: "Last Mile",
-          amount: "20 Kgs",
-          paymentType: "MPESA",
-          status: "80%",
-          joinedOn: "12/05/2022",
-        },
-        {
-          name: "John Doe",
-          company: "Hassler Courier",
-          orderId: "DSAA4000",
-          deliveryType: "Last Mile",
-          amount: "25 Kgs",
-          paymentType: "EQUITY Cheque",
-          status: "active",
-          joinedOn: "12/05/2022",
-        },
-        {
-          name: "Kaimenyi",
-          company: "Beaver Couriers",
-          orderId: "ASDA4000",
-          deliveryType: "Last Mile",
-          amount: "10 Kgs",
-          paymentType: "MPESA",
-          status: "active",
-          joinedOn: "12/05/2022",
-        },
-      ];
     },
 
     editItem(item) {
@@ -306,28 +271,27 @@ export default {
       this.dialog = false;
       this.dialogDelete = false;
       this.$nextTick(() => {
-        this.editedRider = Object.assign({}, this.defaultItem);
+        this.editedOrder = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       });
     },
 
     createEditOrder(data) {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedRider);
+        Object.assign(this.desserts[this.editedIndex], this.editedOrder);
       } else {
-        this.createPrivateRider(data)
+        this.createPrivateOrder(data)
           .then(() => {
             this.$emit("show-feedback", {
               status: "success",
-              message:
-                "Rider registered, ask them to login and change password",
+              message: "order created",
             });
           })
           .catch((e) => {
             console.log(e);
             this.$emit("show-feedback", {
               status: "fail",
-              message: "Rider registration failed.",
+              message: "order created successfully.",
             });
           })
           .finally(() => {
@@ -343,17 +307,17 @@ export default {
         message: "submitting",
       });
 
-      this.deleteRider(this.editedIndex)
+      this.deleteorder(this.editedIndex)
         .then(() => {
           this.$emit("show-feedback", {
             status: "success",
-            message: "Rider deleted.",
+            message: "Order deleted.",
           });
         })
         .catch(() => {
           this.$emit("show-feedback", {
             status: "fail",
-            message: "Rider deletion failed.",
+            message: "Order deletion failed.",
           });
         })
         .finally(() => {

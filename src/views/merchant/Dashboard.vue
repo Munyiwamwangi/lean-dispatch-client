@@ -21,6 +21,7 @@
           :tab="tab"
           :orders="orders"
           :loading="ordersLoader"
+          :customers="allCustomers"
           :filter-drawer.sync="filterDrawer"
           @show-feedback="showFeedback"
         ></OrdersComponent>

@@ -17,83 +17,46 @@
 
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>Customers</v-toolbar-title>
-        <v-divider class="mx-4" inset vertical></v-divider>
-        <v-spacer></v-spacer>
-        <v-dialog v-model="dialog" max-width="700px">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-              + New Customer
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">{{ formTitle }}</span>
-            </v-card-title>
-
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-text-field
-                      outlined
-                      v-model="editedItem.businessName"
-                      label="Business Name"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-text-field
-                      outlined
-                      v-model="editedItem.businessPhone"
-                      label="Business Phone"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-text-field
-                      outlined
-                      v-model="editedItem.businessAddress"
-                      label="Business Adress"
-                    ></v-text-field>
-                  </v-col>
-
-                  <v-col cols="12" sm="6" md="6">
-                    <v-text-field
-                      outlined
-                      v-model="editedItem.businessLogo"
-                      label="Upload Logo"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="save(item)">
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="text-h5"
-              >Are you sure you want to delete this item?</v-card-title
-            >
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
-                >Cancel</v-btn
-              >
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                >OK</v-btn
-              >
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        <v-row no-gutters>
+          <v-toolbar-title>My Customers</v-toolbar-title>
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" dark class="mb-2" @click="openDialog">
+            + New Customer
+          </v-btn>
+        </v-row>
       </v-toolbar>
+      <CreateCustomer
+        :dialog="dialog"
+        :formTitle="formTitle"
+        :order="defaultItem"
+        @close-dialog="dismissDeleteEdit"
+        @order-data="createEditCustomer"
+      >
+      </CreateCustomer>
+
+      <v-dialog v-model="dialogDelete" max-width="500px">
+        <v-card class="text-center">
+          <v-card-text class="py-4">
+            <v-icon color="secondary" dark size="64">
+              mdi-alert-outline
+            </v-icon>
+          </v-card-text>
+          <v-card-text class="text-h6">
+            {{ $t("deleteItemTextTranslate") }}
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="accent darken-1" text @click="dismissDeleteEdit()">
+              close
+            </v-btn>
+            <v-btn color="secondary darken-1" text @click="customerDelete">
+              Delete
+            </v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </template>
 
     <!-- status  -->
@@ -126,9 +89,10 @@
 
 <script>
 import LoadingBar from "../LoadingBar.vue";
+import CreateCustomer from "../forms/CreateCustomer.vue";
 
 export default {
-  components: { LoadingBar },
+  components: { LoadingBar, CreateCustomer },
 
   props: {
     allCustomers: {
@@ -228,7 +192,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Merchant" : "Edit Merchant";
+      return this.editedIndex === -1 ? "New Customer" : "Edit Customer";
     },
   },
 
@@ -317,6 +281,10 @@ export default {
       ];
     },
 
+    openDialog() {
+      this.dialog = true;
+    },
+
     editItem(item) {
       this.editedIndex = this.desserts.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -331,7 +299,15 @@ export default {
 
     deleteItemConfirm() {
       this.desserts.splice(this.editedIndex, 1);
-      this.closeDelete();
+      this.dismissDeleteEdit();
+    },
+    dismissDeleteEdit() {
+      this.dialog = false;
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedOrder = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
     },
 
     close() {
@@ -350,15 +326,53 @@ export default {
       });
     },
 
-    save() {
-      // this.editedIndex = item.id;
-      console.log(this.editedItem);
+    createEditCustomer(data) {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
-
-        this.desserts.push(this.editedItem);
+        Object.assign(this.desserts[this.editedIndex], this.editedOrder);
+      } else {
+        this.createPrivateOrder(data)
+          .then(() => {
+            this.$emit("show-feedback", {
+              status: "success",
+              message: "order created",
+            });
+          })
+          .catch((e) => {
+            console.log(e);
+            this.$emit("show-feedback", {
+              status: "fail",
+              message: "order created successfully.",
+            });
+          })
+          .finally(() => {
+            this.dismissDeleteEdit();
+          });
       }
-      this.close();
+    },
+
+    customerDelete() {
+      this.dismissDeleteEdit();
+      this.$emit("show-feedback", {
+        status: "submitting",
+        message: "submitting",
+      });
+
+      this.deleteorder(this.editedIndex)
+        .then(() => {
+          this.$emit("show-feedback", {
+            status: "success",
+            message: "Order deleted.",
+          });
+        })
+        .catch(() => {
+          this.$emit("show-feedback", {
+            status: "fail",
+            message: "Order deletion failed.",
+          });
+        })
+        .finally(() => {
+          this.closeDelete();
+        });
     },
   },
 };
