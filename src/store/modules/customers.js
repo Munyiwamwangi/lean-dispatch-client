@@ -9,7 +9,7 @@ export default {
   namespaced: true,
 
   state: {
-    merchants: [],
+    customers: [],
     errors: null,
     loading: false,
     errored: false,
@@ -19,23 +19,14 @@ export default {
     loadingCustomers: (state) => state.loading,
 
     allCustomers: (state) =>
-      state.merchants.map((_customer) => {
+      state.customers.map((_customer) => {
         return {
           id: _customer.id,
-          firstName: _customer.firstName,
-          lastName: _customer.lastName,
-          fullName: _customer.firstName + " " + _customer.lastName,
-          userType: _customer.userType,
-          accountState: _customer.accountState,
-          phonenumber: _customer.phonenumber,
           email: _customer.email,
-          emailVerified: _customer.emailVerified,
-          acceptTerms: _customer.acceptTerms,
-          joinedOn: _customer.createdAt,
-          deletedAt: _customer.deletedAt,
-          updatedAt: _customer.updatedAt,
-          merchant: _customer.merchant,
-          verified: _customer.verified,
+          fullName: _customer.fullName,
+          phoneNumber: _customer.phonenumber,
+          adresses: _customer.adresses,
+          createdByMerchantId: _customer.createdByMerchantId,
         };
       }),
   },
@@ -45,7 +36,7 @@ export default {
       commit("SET_LOADING_STATUS", true);
       try {
         await addCustomer(data);
-        // refresh Merchants
+        // refresh customers
         await dispatch("loadCustomers");
       } catch (error) {
         commit("SET_ERRORED", true);
@@ -64,7 +55,7 @@ export default {
       try {
         const data = await fetchCustomers(payload);
         commit("SET_LOADING_STATUS", false);
-        commit("SET_MERCHANTS", data.results);
+        commit("SET_CUSTOMERS", data.results);
       } catch (error) {
         commit("SET_ERRORED", true);
         commit("SET_ERROR", error);
@@ -74,7 +65,7 @@ export default {
       commit("SET_LOADING_STATUS", true);
       try {
         await patchCustomer(payload.id, payload.data);
-        // refresh Merchants
+        // refresh customers
         await dispatch("loadCustomers");
       } catch (error) {
         commit("SET_ERRORED", true);
@@ -85,7 +76,7 @@ export default {
     async delCustomer({ dispatch, commit }, id) {
       try {
         await deleteCustomer(id);
-        // refresh Merchants
+        // refresh customers
         await dispatch("loadCustomers");
       } catch (error) {
         commit("SET_ERRORED", true);
@@ -99,8 +90,8 @@ export default {
       state.loading = status;
     },
 
-    SET_MERCHANTS(state, data) {
-      state.merchants = data;
+    SET_CUSTOMERS(state, data) {
+      state.customers = data;
     },
 
     SET_ERRORED(state, status) {

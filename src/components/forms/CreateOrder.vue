@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="dialog" max-width="600" persistent>
+    <v-dialog v-model="dialog" max-width="700" persistent>
       <v-card class="px-2 pl-0 pr-0">
         <v-card-title class="">
           {{ formTitle }}
@@ -13,6 +13,8 @@
                   v-model="order.customer"
                   :rules="[rules.required]"
                   :items="customers"
+                  item-text="fullName"
+                  item-value="id"
                   dense
                   outlined
                   label=" Select customer"
@@ -70,7 +72,6 @@
                   :rules="[rules.required]"
                   dense
                   type="number"
-                  hint="Use a valid, work number"
                   outlined
                   item-text="title"
                   item-value="id"
@@ -82,11 +83,96 @@
                 <v-combobox
                   v-model="order.transportationMode"
                   :rules="[rules.required]"
+                  :items="transportModes"
+                  item-text="title"
+                  item-value="id"
                   dense
                   outlined
                   label="Preferred transport mode"
                   required
                 ></v-combobox>
+              </v-col>
+
+              <v-col cols="12" sm="6" md="3" class="pb-0">
+                <v-menu
+                  ref="dateDialog"
+                  v-model="dateDialog"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="computedDateFormatted"
+                      dense
+                      readonly
+                      outlined
+                      append-icon="mdi-calendar"
+                      hint="Delivery Date"
+                      v-bind="attrs"
+                      open-on-clear
+                      v-on="on"
+                      @click:clear="picker = ''"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="picker"
+                    :allowed-dates="
+                      (date) => date > new Date().toISOString().substr(0, 10)
+                    "
+                    prev-icon="mdi-skip-previous"
+                    next-icon="mdi-skip-next"
+                    header-color="accent"
+                    color="secondary"
+                  >
+                    <v-spacer></v-spacer>
+                    <v-btn text color="accent" @click="dateDialog = false">
+                      Cancel
+                    </v-btn>
+                    <v-btn
+                      text
+                      color="accent"
+                      @click="$refs.dateDialog.save(picker)"
+                    >
+                      OK
+                    </v-btn>
+                  </v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="11" sm="5" md="3" class="pb-0">
+                <v-menu
+                  ref="menu"
+                  v-model="menu2"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  :return-value.sync="time"
+                  transition="scale-transition"
+                  offset-y
+                  max-width="290px"
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="time"
+                      label="Time"
+                      append-icon="mdi-clock-time-four-outline"
+                      readonly
+                      outlined
+                      dense
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-time-picker
+                    v-if="menu2"
+                    v-model="time"
+                    :allowed-hours="(v) => (v) => currentdate.getHours()"
+                    :allowed-minutes="(v) => (v) => currentdate.getMinutes()"
+                    full-width
+                    @click:minute="$refs.menu.save(time)"
+                  ></v-time-picker>
+                </v-menu>
               </v-col>
             </v-row>
           </v-form>
@@ -100,7 +186,7 @@
             :loading="loading"
             type="submit"
             class="t-white universal-blue"
-            @click="saveOrder"
+            @click="save"
           >
             Save
           </v-btn>
@@ -145,8 +231,22 @@ export default {
       users: null,
       registerForm: true,
       form: false,
-
+      dateDialog: false,
       formErrors: [false],
+      picker: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
+      currentdate: new Date(),
+      time: new Date().getHours() + ":" + new Date().getMinutes(),
+      menu2: false,
+      transportModes: [
+        { id: 1, title: "Walking" },
+        { id: 2, title: "Bicycle" },
+        { id: 3, title: "Motorbike" },
+        { id: 4, title: "Lorry" },
+        { id: 5, title: "Car" },
+        { id: 6, title: "Van" },
+      ],
 
       // new data
       userTypes: [
@@ -174,12 +274,54 @@ export default {
     passwordMatch() {
       return () => this.order.password === this.verify || "Password must match";
     },
+    computedDateFormatted() {
+      return this.formatDate(this.picker);
+    },
+
+    getTime: {
+      get() {
+        return (
+          this.currentdate.getHours() + ":" + this.currentdate.getMinutes()
+        );
+      },
+      set() {
+        return this.time;
+      },
+    },
   },
   created() {
-    // console.log(this.order);
+    console.log(new Date().getDate());
+
+    // console.log(
+    //   this.currentdate.getDate() +
+    //     "/" +
+    //     (this.currentdate.getMonth() + 1) +
+    //     "/" +
+    //     this.currentdate.getFullYear() +
+    //     " @ " +
+    //     this.currentdate.getHours() +
+    //     ":" +
+    //     this.currentdate.getMinutes() +
+    //     ":" +
+    //     this.currentdate.getSeconds()
+    // );
   },
 
   methods: {
+    formatDate(date) {
+      if (!date) return null;
+
+      const [year, month, day] = date.split("-");
+      return `${day}/${month}/${year}`;
+    },
+
+    getCurrentTime() {
+      let today = new Date();
+      setTimeout(() => {
+        today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      }, 1000);
+    },
+
     close() {
       this.$emit("close-dialog");
       this.resetValidation();
@@ -193,14 +335,14 @@ export default {
       this.$refs.registerForm.resetValidation();
     },
 
-    saveOrder() {
+    save() {
       // this.order["userType"] = this.userType.title;
       console.log(this.order);
 
-      // if (this.$refs.registerForm.validate()) {
-      //   this.$emit("order-data", this.order);
-      //   this.close();
-      // }
+      if (this.$refs.registerForm.validate()) {
+        this.$emit("order-data", this.order);
+        this.close();
+      }
     },
   },
 };
