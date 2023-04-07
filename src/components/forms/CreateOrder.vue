@@ -44,7 +44,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="6" class="pb-0">
                 <v-text-field
-                  v-model="order.receiverAdress"
+                  v-model="order.receiverAddress"
                   dense
                   outlined
                   :rules="[rules.required]"
@@ -93,86 +93,112 @@
                 ></v-combobox>
               </v-col>
 
-              <v-col cols="12" sm="6" md="3" class="pb-0">
-                <v-menu
-                  ref="dateDialog"
-                  v-model="dateDialog"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="auto"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="computedDateFormatted"
-                      dense
-                      readonly
-                      outlined
-                      append-icon="mdi-calendar"
-                      hint="Delivery Date"
-                      v-bind="attrs"
-                      open-on-clear
-                      v-on="on"
-                      @click:clear="picker = ''"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="picker"
-                    :allowed-dates="
-                      (date) => date > new Date().toISOString().substr(0, 10)
-                    "
-                    prev-icon="mdi-skip-previous"
-                    next-icon="mdi-skip-next"
-                    header-color="accent"
-                    color="secondary"
-                  >
-                    <v-spacer></v-spacer>
-                    <v-btn text color="accent" @click="dateDialog = false">
-                      Cancel
-                    </v-btn>
-                    <v-btn
-                      text
-                      color="accent"
-                      @click="$refs.dateDialog.save(picker)"
+              <v-col cols="6" md="6" class="pt-0 pb-0 pl-0 pr-0">
+                <div class="d-flex pl-3">
+                  <v-row>
+                    <v-col>
+                      <v-checkbox
+                        v-model="checkbox1"
+                        :disabled="checkbox2"
+                        label="Instant"
+                      ></v-checkbox>
+                    </v-col>
+                    <v-col>
+                      <v-checkbox
+                        v-model="checkbox2"
+                        :disabled="checkbox1"
+                        label="Schedule"
+                      ></v-checkbox
+                    ></v-col>
+                  </v-row>
+                </div>
+
+                <div v-if="checkbox2" class="d-flex">
+                  <v-col cols="12" sm="6" md="6" class="pb-0">
+                    <v-menu
+                      ref="dateDialog"
+                      v-model="dateDialog"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
                     >
-                      OK
-                    </v-btn>
-                  </v-date-picker>
-                </v-menu>
-              </v-col>
-              <v-col cols="11" sm="5" md="3" class="pb-0">
-                <v-menu
-                  ref="menu"
-                  v-model="menu2"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  :return-value.sync="time"
-                  transition="scale-transition"
-                  offset-y
-                  max-width="290px"
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="time"
-                      label="Time"
-                      append-icon="mdi-clock-time-four-outline"
-                      readonly
-                      outlined
-                      dense
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-time-picker
-                    v-if="menu2"
-                    v-model="time"
-                    :allowed-hours="(v) => (v) => currentdate.getHours()"
-                    :allowed-minutes="(v) => (v) => currentdate.getMinutes()"
-                    full-width
-                    @click:minute="$refs.menu.save(time)"
-                  ></v-time-picker>
-                </v-menu>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="computedDateFormatted"
+                          dense
+                          readonly
+                          outlined
+                          append-icon="mdi-calendar"
+                          hint="Delivery Date"
+                          v-bind="attrs"
+                          open-on-clear
+                          v-on="on"
+                          @click:clear="picker = ''"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                        v-model="picker"
+                        :allowed-dates="
+                          (date) =>
+                            date > new Date().toISOString().substr(0, 10)
+                        "
+                        prev-icon="mdi-skip-previous"
+                        next-icon="mdi-skip-next"
+                        header-color="accent"
+                        color="secondary"
+                      >
+                        <v-spacer></v-spacer>
+                        <v-btn text color="accent" @click="dateDialog = false">
+                          Cancel
+                        </v-btn>
+                        <v-btn
+                          text
+                          color="accent"
+                          @click="$refs.dateDialog.save(picker)"
+                        >
+                          OK
+                        </v-btn>
+                      </v-date-picker>
+                    </v-menu>
+                  </v-col>
+                  <v-col cols="11" sm="5" md="6" class="pb-0">
+                    <v-menu
+                      ref="menu"
+                      v-model="menu2"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      :return-value.sync="pickupTime"
+                      transition="scale-transition"
+                      offset-y
+                      max-width="290px"
+                      min-width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="pickupTime"
+                          label="Time"
+                          append-icon="mdi-clock-time-four-outline"
+                          readonly
+                          outlined
+                          dense
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-time-picker
+                        v-if="menu2"
+                        v-model="pickupTime"
+                        :allowed-hours="(v) => (v) => currentdate.getHours()"
+                        :allowed-minutes="
+                          (v) => (v) => currentdate.getMinutes()
+                        "
+                        full-width
+                        @click:minute="$refs.menu.save(pickupTime)"
+                      ></v-time-picker>
+                    </v-menu>
+                  </v-col>
+                </div>
               </v-col>
             </v-row>
           </v-form>
@@ -237,8 +263,10 @@ export default {
         .toISOString()
         .substr(0, 10),
       currentdate: new Date(),
-      time: new Date().getHours() + ":" + new Date().getMinutes(),
+      pickupTime: new Date().getHours() + ":" + new Date().getMinutes(),
       menu2: false,
+      checkbox1: false,
+      checkbox2: false,
       transportModes: [
         { id: 1, title: "Walking" },
         { id: 2, title: "Bicycle" },
@@ -285,13 +313,12 @@ export default {
         );
       },
       set() {
-        return this.time;
+        return this.pickupTime;
       },
     },
   },
   created() {
-    console.log(new Date().getDate());
-
+    // console.log(new Date().getDate());
     // console.log(
     //   this.currentdate.getDate() +
     //     "/" +
@@ -336,11 +363,29 @@ export default {
     },
 
     save() {
+      let payload = {
+        deliveryType: this.checkbox1 ? "instant" : "scheduled",
+        customersId: this.order.customer.id,
+        tasks: [
+          {
+            receiverLat: this.order.receiverAddress,
+            receiverLong: this.order.receiverAddress,
+            receiverAddress: this.order.receiverAddress,
+            senderAddress: this.order.senderAddress,
+            pickupLat: this.order.pickupAdress,
+            pickupDate: this.checkbox1 ? "" : this.picker,
+            pickupTime: this.checkbox1 ? "" : this.pickupTime,
+            pickupLong: this.order.pickupAdress,
+            transportationMode: this.order.transportationMode.id,
+            narration: this.order.narration,
+          },
+        ],
+      };
       // this.order["userType"] = this.userType.title;
-      console.log(this.order);
+      console.log(JSON.stringify(payload, null, 3));
 
       if (this.$refs.registerForm.validate()) {
-        this.$emit("order-data", this.order);
+        this.$emit("order-data", payload);
         this.close();
       }
     },

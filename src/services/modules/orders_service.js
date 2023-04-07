@@ -18,7 +18,7 @@ export function fetchOneOrder(id) {
 
 export function addOrder(data) {
   return api
-    .post("/api/Order/", data)
+    .post("/api/delivery/", data)
     .then((res) => Promise.resolve(res))
     .catch((err) => Promise.reject(err));
 }

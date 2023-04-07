@@ -103,6 +103,8 @@
 <script>
 import CreateOrder from "../forms/CreateOrder.vue";
 import LoadingBar from "../LoadingBar.vue";
+import { mapActions } from "vuex";
+
 export default {
   components: { CreateOrder, LoadingBar },
 
@@ -238,6 +240,11 @@ export default {
   created() {},
 
   methods: {
+    ...mapActions("orders", {
+      createOrder: "createOrder",
+      editOrder: "updateOrder",
+      deleteOrder: "delOrder",
+    }),
     openDialog() {
       this.dialog = true;
     },
@@ -277,23 +284,25 @@ export default {
     },
 
     createEditOrder(data) {
+      // editing;
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedOrder);
+        this.editOrder(data)
+          .then(() => {})
+          .catch(() => {})
+          .finally(() => {
+            this.dismissDeleteEdit();
+          });
       } else {
-        this.createPrivateOrder(data)
+        // creating;
+        this.createOrder(data)
           .then(() => {
             this.$emit("show-feedback", {
               status: "success",
-              message: "order created",
+              message:
+                "Rider registered, ask them to login and change password",
             });
           })
-          .catch((e) => {
-            console.log(e);
-            this.$emit("show-feedback", {
-              status: "fail",
-              message: "order created successfully.",
-            });
-          })
+          .catch(() => {})
           .finally(() => {
             this.dismissDeleteEdit();
           });

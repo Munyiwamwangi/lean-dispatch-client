@@ -73,9 +73,10 @@ export default {
       commit("SET_LOADING_STATUS", true);
       try {
         const data = await fetchOrders(payload);
-        commit("SET_LOADING_STATUS", false);
+        commit("SET_LOADING_STATUS", true);
         commit("SET_ORDERS", data.results);
       } catch (error) {
+        commit("SET_LOADING_STATUS", false);
         commit("SET_ERRORED", true);
         commit("SET_ERROR", error);
       }
@@ -97,14 +98,15 @@ export default {
       try {
         await editOrder(payload.id, payload.data);
         // refresh Merchants
-        await dispatch("loadMerchants");
+        await dispatch("loadOrders");
       } catch (error) {
+        commit("SET_LOADING_STATUS", false);
         commit("SET_ERRORED", true);
         commit("SET_ERROR", error);
       }
     },
 
-    async deleteOrder({ dispatch, commit }, id) {
+    async delOrder({ dispatch, commit }, id) {
       try {
         await deleteOrder(id);
         // refresh Merchants

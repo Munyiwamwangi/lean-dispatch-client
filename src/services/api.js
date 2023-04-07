@@ -50,7 +50,7 @@ api.interceptors.response.use(
       switch (error.response.status) {
         case 400:
           // clearStorage();
-          customErros("invalid data");
+          customErros("Invalid resource");
           break;
         case 401:
         case 403:
