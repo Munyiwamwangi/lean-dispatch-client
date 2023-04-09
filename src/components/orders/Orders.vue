@@ -18,15 +18,97 @@
     </template> -->
 
     <template v-slot:top>
-      <v-toolbar flat>
-        <v-row no-gutters>
-          <v-toolbar-title>Orders</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" dark class="mb-2" @click="openDialog">
-            + New Order
-          </v-btn>
+      <v-container fluid>
+        <v-row align-content="center" justify="center">
+          <v-col cols="12" md="3" sm="6">
+            <v-card shaped outlined flat class="">
+              <v-card-text>
+                <v-card-title>Ongoing</v-card-title>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" md="3" sm="6">
+            <v-card shaped outlined flat class="">
+              <v-card-text>
+                <v-card-title>Delivered</v-card-title>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" md="3" sm="6">
+            <v-card shaped outlined flat class="">
+              <v-card-text>
+                <v-card-title>Customers</v-card-title>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" md="3" sm="6">
+            <v-card shaped outlined flat class="">
+              <v-card-text>
+                <v-card-title>Drivers</v-card-title>
+              </v-card-text>
+            </v-card>
+          </v-col>
         </v-row>
+      </v-container>
+      <v-divider></v-divider>
+
+      <v-toolbar flat>
+        <v-toolbar-title>
+          <v-btn color="primary" dark @click="openDialog"> + New Order </v-btn>
+        </v-toolbar-title>
+        <v-divider class="mx-4" inset vertical></v-divider>
+        <v-spacer></v-spacer>
+
+        <v-card flat>
+          <v-menu bottom offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="primary" small icon v-bind="attrs" v-on="on">
+                <v-icon color="accent">mdi-filter-outline</v-icon>
+              </v-btn>
+            </template>
+            <v-card-text class="ml-0 mr-0">
+              <v-list dense>
+                <v-list-item
+                  class="text-capitalize"
+                  link
+                  @click="filterApprovalsByStatus('REJECTED')"
+                >
+                  Unassigned
+                </v-list-item>
+                <v-list-item
+                  class="text-capitalize"
+                  link
+                  @click="filterApprovalsByStatus('dm_pending')"
+                >
+                  In transit
+                </v-list-item>
+
+                <v-list-item
+                  class="text-capitalize"
+                  link
+                  @click="filterApprovalsByStatus('ACCEPTED')"
+                >
+                  Delivered
+                </v-list-item>
+
+                <v-list-item
+                  class="text-capitalize"
+                  link
+                  @click="filterApprovalsByStatus('PENDING')"
+                >
+                  {{ $t("pending") }}
+                </v-list-item>
+                <v-list-item
+                  class="text-capitalize"
+                  link
+                  @click="filterApprovalsByStatus('all')"
+                >
+                  All
+                </v-list-item>
+              </v-list>
+            </v-card-text>
+          </v-menu>
+        </v-card>
       </v-toolbar>
       <CreateOrder
         :dialog="dialog"
@@ -282,6 +364,39 @@ export default {
       });
     },
 
+    filterApprovalsByStatus(status) {
+      if (status === 'all') {
+        this.query = `all`;
+        this.filteredApprovals = this.approvals;
+      } else if (
+        status === 'ACCEPTED' ||
+        status === 'REJECTED' ||
+        status === 'PENDING' ||
+        status === 'dmAccepted' ||
+        status === 'dm_pending' ||
+        status === 'dmDeclined' ||
+        status === 'DECLINED'
+      ) {
+        this.query = `all/?filter=${status}`;
+      } else {
+        this.query === 'all';
+      }
+
+      let payload = {
+        query: this.query,
+      };
+
+      // call the API
+      this.filterApprovals(payload)
+        .then(() => {})
+        .catch(() => {})
+        .finally(() => {
+          this.query = '?';
+          payload = {};
+        });
+    },
+
+
     createEditOrder(data) {
       // editing;
       if (this.editedIndex > -1) {
@@ -335,3 +450,10 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.v-card__subtitle,
+.v-card__text {
+  padding: 0px;
+}
+</style>
