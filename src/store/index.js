@@ -154,7 +154,7 @@ const actions = {
         // let empLoggedIn = JSON.parse(localStorage.getItem("user"));
         // if (empLoggedIn.discontinued === !true) {
         if (user) {
-          router.push({ name: "dashboard" });
+          router.push({ name: "orders" });
         } else {
           this.logout();
           router.push({ name: "login" });

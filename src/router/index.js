@@ -41,10 +41,21 @@ const MyAccount = () =>
     /* webpackChunkName: "MyAccount" */ "../views/account-management/MyAccount.vue"
   );
 
+const Orders = () =>
+  import(/* webpackChunkName: "MyAccount" */ "../views/orders/Orders.vue");
+
+const Riders = () =>
+  import(/* webpackChunkName: "MyAccount" */ "../views/riders/Riders.vue");
+
+const Customers = () =>
+  import(
+    /* webpackChunkName: "MyAccount" */ "../views/customers/Customers.vue"
+  );
+
 const routes = [
   {
     path: "/",
-    redirect: "/dashboard",
+    redirect: "/orders",
   },
 
   {
@@ -81,15 +92,42 @@ const routes = [
       hr: true,
     },
   },
+
+  {
+    path: "/orders",
+    name: "orders",
+    component: Orders,
+    meta: {
+      title: "LD-orders",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/riders",
+    name: "riders",
+    component: Riders,
+    meta: {
+      title: "LD-riders",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/customers",
+    name: "customers",
+    component: Customers,
+    meta: {
+      title: "LD-customers",
+      requiresAuth: true,
+      hr: true,
+    },
+  },
   {
     path: "/accounts",
     name: "accounts",
     component: AccountManagement,
     meta: {
-      title: "LD - My Bonuses",
+      title: "LD - Accounts",
       requiresAuth: true,
-      hr: true,
-      approver: true,
     },
   },
 
@@ -100,7 +138,6 @@ const routes = [
     meta: {
       title: "LD Account",
       requiresAuth: true,
-      hr: true,
     },
   },
 ];
