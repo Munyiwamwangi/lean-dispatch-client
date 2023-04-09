@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import CreateOrder from "../forms/CreateOrder.vue";
+import CreateOrder from "./forms/CreateOrder.vue";
 import LoadingBar from "../LoadingBar.vue";
 import { mapActions } from "vuex";
 

@@ -65,10 +65,9 @@
 </template>
 
 <script>
-import RidersComponent from "../../components/account-management/Riders.vue";
-import OrdersComponent from "../../components/account-management/Orders.vue";
-// import VendorsComponent from "../../components/account-management/Vendors.vue";
-import Customers from "../../components/account-management/Customers.vue";
+import RidersComponent from "../../components/riders/Riders.vue";
+import OrdersComponent from "../../components/orders/Orders";
+import Customers from "../../components/customers/Customers.vue";
 
 import { mapGetters } from "vuex";
 import FeedbackSnackBar from "@/components/FeedbackSnackBar";
@@ -80,7 +79,6 @@ export default {
   components: {
     RidersComponent,
     OrdersComponent,
-    // VendorsComponent,
     Customers,
     FeedbackSnackBar,
   },

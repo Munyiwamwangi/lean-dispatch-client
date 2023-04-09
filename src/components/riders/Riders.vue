@@ -223,7 +223,7 @@
 </template>
 
 <script>
-import CreateRider from "../forms/CreateRiders.vue";
+import CreateRider from "./forms/CreateRiders.vue";
 import LoadingBar from "../LoadingBar.vue";
 import { mapActions } from "vuex";
 export default {

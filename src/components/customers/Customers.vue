@@ -89,7 +89,7 @@
 
 <script>
 import LoadingBar from "../LoadingBar.vue";
-import CreateCustomer from "../forms/CreateCustomer.vue";
+import CreateCustomer from "./forms/CreateCustomer.vue";
 
 export default {
   components: { LoadingBar, CreateCustomer },
