@@ -54,8 +54,8 @@ export default {
       commit("SET_LOADING_STATUS", true);
       try {
         await addOrder(data);
-        // refresh Merchants
-        await dispatch("loadPrivateRiders");
+        // refresh
+        await dispatch("loadOrders");
       } catch (error) {
         commit("SET_ERRORED", true);
         commit("SET_ERROR", error);
@@ -75,18 +75,18 @@ export default {
         const data = await fetchOrders(payload);
         commit("SET_LOADING_STATUS", true);
         commit("SET_ORDERS", data.results);
-      } catch (error) {
         commit("SET_LOADING_STATUS", false);
+      } catch (error) {
         commit("SET_ERRORED", true);
         commit("SET_ERROR", error);
+        commit("SET_LOADING_STATUS", false);
       }
     },
 
-    async getOneOrder({ dispatch, commit }, id) {
+    async getOneOrder({ commit }, id) {
       try {
         await fetchOneOrder(id);
         // refresh Merchants
-        await dispatch("loadPrivateRiders");
       } catch (error) {
         commit("SET_ERRORED", true);
         commit("SET_ERROR", error);
@@ -110,7 +110,7 @@ export default {
       try {
         await deleteOrder(id);
         // refresh Merchants
-        await dispatch("loadPrivateRiders");
+        await dispatch("loadOrders");
       } catch (error) {
         commit("SET_ERRORED", true);
         commit("SET_ERROR", error);
