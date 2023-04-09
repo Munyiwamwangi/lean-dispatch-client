@@ -62,8 +62,6 @@
                   type="number"
                   hint="Use a valid, work number"
                   outlined
-                  item-text="title"
-                  item-value="id"
                   label="Phone Number"
                   required
                 ></v-text-field>
@@ -172,7 +170,7 @@ export default {
       formErrors: [false],
 
       // new data
-      // compute, return depending on the system user permission level 
+      // compute, return depending on the system user permission level
       userTypes: [{ id: 2, title: "rider" }],
 
       tab: 0,

@@ -24,8 +24,9 @@ export default {
           id: _customer.id,
           email: _customer.email,
           fullName: _customer.fullName,
-          phoneNumber: _customer.phonenumber,
+          phonenumber: _customer.phonenumber,
           adresses: _customer.adresses,
+          createdAt:_customer.createdAt,
           createdByMerchantId: _customer.createdByMerchantId,
         };
       }),
@@ -54,9 +55,10 @@ export default {
       commit("SET_LOADING_STATUS", true);
       try {
         const data = await fetchCustomers(payload);
-        commit("SET_LOADING_STATUS", false);
         commit("SET_CUSTOMERS", data.results);
+        commit("SET_LOADING_STATUS", false);
       } catch (error) {
+        commit("SET_LOADING_STATUS", false);
         commit("SET_ERRORED", true);
         commit("SET_ERROR", error);
       }

@@ -140,7 +140,7 @@
                             </v-col>
                             <v-col cols="12" sm="6" md="6" class="pt-0 pb-0">
                               <v-text-field
-                                v-model="phoneNumber"
+                                v-model="phonenumber"
                                 :rules="[rules.required, rules.phoneMin]"
                                 dense
                                 type="number"
@@ -249,7 +249,7 @@ export default {
       valid: false,
       passwordShow: false,
       users: null,
-      phoneNumber: null,
+      phonenumber: null,
       registerForm: false,
       form: false,
       email: "",
@@ -344,7 +344,7 @@ export default {
         lastName: this.lastName,
         email: this.email,
         userType: this.userType.title,
-        phonenumber: this.phoneNumber,
+        phonenumber: this.phonenumber,
         password: this.password,
         acceptTerms: this.checkbox,
         // verify: this.verify,

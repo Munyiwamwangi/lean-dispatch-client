@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="dummyCustomers"
+    :items="allCustomers"
     :loading="loading"
     sort-by="calories"
     class="elevation-1"
@@ -29,9 +29,9 @@
       <CreateCustomer
         :dialog="dialog"
         :formTitle="formTitle"
-        :order="defaultItem"
+        :customer="editedItem"
         @close-dialog="dismissDeleteEdit"
-        @order-data="createEditCustomer"
+        @save="createEditCustomer"
       >
       </CreateCustomer>
 
@@ -90,6 +90,7 @@
 <script>
 import LoadingBar from "../LoadingBar.vue";
 import CreateCustomer from "./forms/CreateCustomer.vue";
+import { mapActions } from "vuex";
 
 export default {
   components: { LoadingBar, CreateCustomer },
@@ -164,7 +165,7 @@ export default {
       },
       {
         text: "joined on",
-        value: "joinedOn",
+        value: "createdAt",
         class: "text-capitalize",
         sortable: false,
       },
@@ -174,19 +175,16 @@ export default {
     dummyCustomers: [],
     editedIndex: -1,
     editedItem: {
-      businessName: "",
-      businessPhone: "",
-      businessAddress: "",
-      latitude: "",
-      longitude: "",
-      businessLogo: "",
+      fullName: "",
+      email: "",
+      phonenumber: null,
+      businessAddress: null,
     },
-    defaultItem: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+    defaultCustomer: {
+      fullName: "",
+      email: "",
+      phonenumber: null,
+      businessAddress: null,
     },
   }),
 
@@ -205,109 +203,32 @@ export default {
     },
   },
 
-  created() {
-    this.initialize();
-  },
-
   methods: {
-    initialize() {
-      this.dummyCustomers = [
-        {
-          name: "Joe Munyi",
-          stores: 1,
-          drivers: 2,
-          employees: 4,
-          vehicles: 3,
-          subscription: "Premium",
-          city: "Nairobi",
-          status: "active",
-          joinedOn: "2/06/2022",
-        },
-        {
-          name: "Silvester Odera",
-          stores: 3,
-          drivers: 5,
-          employees: 2,
-          vehicles: 1,
-          subscription: "Premium",
-          city: "Kisumu",
-          status: "active",
-          joinedOn: "4/07/2022",
-        },
-        {
-          name: "Odera Silverster",
-          stores: 5,
-          drivers: 6,
-          employees: 17,
-          vehicles: 6,
-          subscription: "Premium",
-          city: "Eldoret",
-          status: "active",
-          joinedOn: "12/05/2022",
-        },
-        {
-          name: "Moon Rey",
-          stores: 2,
-          drivers: 15,
-          employees: 3,
-          vehicles: 3,
-          subscription: "Gold",
-          city: "Nairobi",
-          status: "active",
-          joinedOn: "12/05/2022",
-        },
-        {
-          name: "John Doe",
-          stores: 4,
-          drivers: 3,
-          employees: 4,
-          vehicles: 3,
-          subscription: "Silver",
-          city: "Eldoret",
-          status: "inactive",
-          joinedOn: "12/05/2022",
-        },
-        {
-          name: "Kaimenyi",
-          stores: 4,
-          drivers: 3,
-          employees: 4,
-          vehicles: 3,
-          subscription: "Bronze",
-          city: "Kisumu",
-          status: "active",
-          joinedOn: "12/05/2022",
-        },
-      ];
-    },
+    ...mapActions("customers", {
+      createCustomer: "createCustomer",
+      editCustomer: "updateCustomer",
+      delCustomer: "delCustomer",
+    }),
 
     openDialog() {
       this.dialog = true;
     },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
       this.editedItem = Object.assign({}, item);
+      this.editedIndex = item.id;
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
       this.editedItem = Object.assign({}, item);
+      this.editedIndex = item.id;
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
+      this.allCustomers.splice(this.editedIndex, 1);
       this.dismissDeleteEdit();
-    },
-    dismissDeleteEdit() {
-      this.dialog = false;
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedOrder = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
     },
 
     close() {
@@ -318,32 +239,31 @@ export default {
       });
     },
 
-    closeDelete() {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-
     createEditCustomer(data) {
+      // edit
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedOrder);
-      } else {
-        this.createPrivateOrder(data)
+        this.editCustomer(data)
           .then(() => {
             this.$emit("show-feedback", {
               status: "success",
-              message: "order created",
+              message: "Customer details updated",
             });
           })
-          .catch((e) => {
-            console.log(e);
+          .catch(() => {})
+          .finally(() => {
+            this.dismissDeleteEdit();
+          });
+      } else {
+        // create
+        this.createCustomer(data)
+          .then(() => {
             this.$emit("show-feedback", {
-              status: "fail",
-              message: "order created successfully.",
+              status: "success",
+              message: "Customer created",
             });
           })
+          .catch(() => {})
+
           .finally(() => {
             this.dismissDeleteEdit();
           });
@@ -357,22 +277,30 @@ export default {
         message: "submitting",
       });
 
-      this.deleteorder(this.editedIndex)
-        .then(() => {
-          this.$emit("show-feedback", {
-            status: "success",
-            message: "Order deleted.",
-          });
-        })
-        .catch(() => {
-          this.$emit("show-feedback", {
-            status: "fail",
-            message: "Order deletion failed.",
-          });
-        })
+      this.delCustomer(this.editedIndex)
+        .then(() => {})
+        .catch(() => {})
         .finally(() => {
           this.closeDelete();
         });
+    },
+
+    dismissDeleteEdit() {
+      this.dialog = false;
+      this.dialogDelete = false;
+      this.statusesDialog = false;
+      this.$nextTick(() => {
+        this.editedRider = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedRider = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
     },
   },
 };

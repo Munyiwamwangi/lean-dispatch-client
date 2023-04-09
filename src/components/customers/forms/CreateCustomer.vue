@@ -9,83 +9,48 @@
           <v-form ref="registerForm" v-model="valid" lazy-validation>
             <v-row>
               <v-col cols="12" class="pb-0">
-                <v-combobox
-                  v-model="order.customer"
+                <v-text-field
+                  v-model="customer.fullName"
                   :rules="[rules.required]"
                   dense
                   outlined
-                  label=" Select customer"
+                  label="Full Name"
                   required
-                ></v-combobox>
+                ></v-text-field>
               </v-col>
               <v-col cols="12" class="pb-0">
                 <v-text-field
-                  v-model="order.narration"
-                  :rules="[rules.required]"
+                  v-model="customer.email"
+                  :rules="[rules.required, rules.emailRules]"
                   dense
                   outlined
-                  label="Order Description: Include item nature, dimensions and approximate weight"
+                  label="E-mail"
                   required
                 ></v-text-field>
               </v-col>
+
               <v-col cols="12" sm="6" md="6" class="pb-0">
                 <v-text-field
-                  v-model="order.pickupAdress"
+                  v-model="customer.businessAddress"
                   dense
                   outlined
                   :rules="[rules.required]"
-                  label="Pickup Adress"
+                  label="Business Adress"
                   maxlength="20"
                   required
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6" class="pb-0">
                 <v-text-field
-                  v-model="order.receiverAdress"
-                  dense
-                  outlined
-                  :rules="[rules.required]"
-                  label="Receiver Adress"
-                  maxlength="20"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6" class="pb-0">
-                <v-text-field
-                  v-model="order.deliveryFee"
-                  :rules="[rules.required]"
-                  dense
-                  type="number"
-                  outlined
-                  item-text="title"
-                  item-value="id"
-                  label="Delivery fee"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6" class="pb-0">
-                <v-text-field
-                  v-model="order.amountReceived"
-                  :rules="[rules.required]"
+                  v-model="customer.phonenumber"
+                  :rules="[rules.required, rules.phoneMin]"
                   dense
                   type="number"
                   hint="Use a valid, work number"
                   outlined
-                  item-text="title"
-                  item-value="id"
-                  label="Amount Received"
+                  label="Phone Number"
                   required
                 ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6" class="pb-0">
-                <v-combobox
-                  v-model="order.transportationMode"
-                  :rules="[rules.required]"
-                  dense
-                  outlined
-                  label="Preferred transport mode"
-                  required
-                ></v-combobox>
               </v-col>
             </v-row>
           </v-form>
@@ -99,7 +64,7 @@
             :loading="loading"
             type="submit"
             class="t-white universal-blue"
-            @click="saveOrder"
+            @click="save"
           >
             Save
           </v-btn>
@@ -125,7 +90,7 @@ export default {
     loading: {
       type: Boolean,
     },
-    order: {
+    customer: {
       type: Object,
       required: true,
     },
@@ -143,11 +108,6 @@ export default {
 
       formErrors: [false],
 
-      // new data
-      userTypes: [
-        { id: 1, title: "merchant" },
-        { id: 2, title: "order" },
-      ],
       tab: 0,
       tabItems: [
         { id: 1, name: "Login", icon: "mdi-account" },
@@ -165,14 +125,8 @@ export default {
     };
   },
 
-  computed: {
-    passwordMatch() {
-      return () => this.order.password === this.verify || "Password must match";
-    },
-  },
-  created() {
-    // console.log(this.order);
-  },
+  computed: {},
+  created() {},
 
   methods: {
     close() {
@@ -188,14 +142,11 @@ export default {
       this.$refs.registerForm.resetValidation();
     },
 
-    saveOrder() {
-      // this.order["userType"] = this.userType.title;
-      console.log(this.order);
-
-      // if (this.$refs.registerForm.validate()) {
-      //   this.$emit("order-data", this.order);
-      //   this.close();
-      // }
+    save() {
+      if (this.$refs.registerForm.validate()) {
+        this.$emit("save", this.customer);
+        this.close();
+      }
     },
   },
 };
