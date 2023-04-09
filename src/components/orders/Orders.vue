@@ -28,7 +28,9 @@
                   <v-spacer></v-spacer>
                   <v-icon> mdi-walk </v-icon>
                 </v-toolbar>
-                <v-card-title> {{ orders.length }} </v-card-title>
+                <v-col cols="12" md="6">
+                  <v-card-title> {{ orders.length }} </v-card-title>
+                </v-col>
               </v-card-text>
             </v-card>
           </v-col>
@@ -40,7 +42,9 @@
                   <v-spacer></v-spacer>
                   <v-icon color="green"> mdi-check-circle</v-icon>
                 </v-toolbar>
-                <v-card-title> {{ orders.length }} </v-card-title>
+                <v-col cols="12" md="6">
+                  <v-card-title> {{ orders.length }} </v-card-title>
+                </v-col>
               </v-card-text>
             </v-card>
           </v-col>
@@ -52,7 +56,9 @@
                   <v-spacer></v-spacer>
                   <v-icon color="amber"> mdi-account-circle-outline </v-icon>
                 </v-toolbar>
-                <v-card-title> {{ orders.length }} </v-card-title>
+                <v-col cols="12" md="6">
+                  <v-card-title> {{ orders.length }} </v-card-title>
+                </v-col>
               </v-card-text>
             </v-card>
           </v-col>
@@ -64,7 +70,9 @@
                   <v-spacer></v-spacer>
                   <v-icon color="primary"> mdi-car </v-icon>
                 </v-toolbar>
-                <v-card-title> {{ orders.length }} </v-card-title>
+                <v-col cols="12" md="6">
+                  <v-card-title> {{ orders.length }} </v-card-title>
+                </v-col>
               </v-card-text>
             </v-card>
           </v-col>
