@@ -21,30 +21,50 @@
       <v-container fluid>
         <v-row align-content="center" justify="center">
           <v-col cols="12" md="3" sm="6">
-            <v-card shaped outlined flat class="">
+            <v-card outlined flat>
               <v-card-text>
-                <v-card-title>Ongoing</v-card-title>
+                <v-toolbar flat>
+                  <v-card-title>Ongoing</v-card-title>
+                  <v-spacer></v-spacer>
+                  <v-icon> mdi-walk </v-icon>
+                </v-toolbar>
+                <v-card-title> {{ orders.length }} </v-card-title>
               </v-card-text>
             </v-card>
           </v-col>
           <v-col cols="12" md="3" sm="6">
-            <v-card shaped outlined flat class="">
+            <v-card outlined flat>
               <v-card-text>
-                <v-card-title>Delivered</v-card-title>
+                <v-toolbar flat>
+                  <v-card-title>Delivered</v-card-title>
+                  <v-spacer></v-spacer>
+                  <v-icon color="green"> mdi-check-circle</v-icon>
+                </v-toolbar>
+                <v-card-title> {{ orders.length }} </v-card-title>
               </v-card-text>
             </v-card>
           </v-col>
           <v-col cols="12" md="3" sm="6">
-            <v-card shaped outlined flat class="">
+            <v-card outlined flat>
               <v-card-text>
-                <v-card-title>Customers</v-card-title>
+                <v-toolbar flat>
+                  <v-card-title>Customers</v-card-title>
+                  <v-spacer></v-spacer>
+                  <v-icon color="amber"> mdi-account-circle-outline </v-icon>
+                </v-toolbar>
+                <v-card-title> {{ orders.length }} </v-card-title>
               </v-card-text>
             </v-card>
           </v-col>
           <v-col cols="12" md="3" sm="6">
-            <v-card shaped outlined flat class="">
+            <v-card outlined flat>
               <v-card-text>
-                <v-card-title>Drivers</v-card-title>
+                <v-toolbar flat>
+                  <v-card-title>Drivers</v-card-title>
+                  <v-spacer></v-spacer>
+                  <v-icon color="primary"> mdi-car </v-icon>
+                </v-toolbar>
+                <v-card-title> {{ orders.length }} </v-card-title>
               </v-card-text>
             </v-card>
           </v-col>
@@ -365,21 +385,21 @@ export default {
     },
 
     filterApprovalsByStatus(status) {
-      if (status === 'all') {
+      if (status === "all") {
         this.query = `all`;
         this.filteredApprovals = this.approvals;
       } else if (
-        status === 'ACCEPTED' ||
-        status === 'REJECTED' ||
-        status === 'PENDING' ||
-        status === 'dmAccepted' ||
-        status === 'dm_pending' ||
-        status === 'dmDeclined' ||
-        status === 'DECLINED'
+        status === "ACCEPTED" ||
+        status === "REJECTED" ||
+        status === "PENDING" ||
+        status === "dmAccepted" ||
+        status === "dm_pending" ||
+        status === "dmDeclined" ||
+        status === "DECLINED"
       ) {
         this.query = `all/?filter=${status}`;
       } else {
-        this.query === 'all';
+        this.query === "all";
       }
 
       let payload = {
@@ -391,11 +411,10 @@ export default {
         .then(() => {})
         .catch(() => {})
         .finally(() => {
-          this.query = '?';
+          this.query = "?";
           payload = {};
         });
     },
-
 
     createEditOrder(data) {
       // editing;
