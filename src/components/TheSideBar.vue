@@ -110,13 +110,13 @@ export default {
         subMenu: [
           {
             text: "orders",
-            icon: "mdi-account",
+            icon: "mdi-check-circle-outline",
             hr: true,
             name: "orders",
           },
           {
             text: "riders",
-            icon: "mdi-account-multiple-outline",
+            icon: "mdi-car",
             hr: true,
             name: "riders",
           },
@@ -129,8 +129,8 @@ export default {
         ],
       },
       {
-        text: "Dashboard",
-        icon: "dashboard",
+        text: "my account",
+        icon: "mdi-account-circle-outline",
         name: "my-account",
         employee: true,
         hr: true,

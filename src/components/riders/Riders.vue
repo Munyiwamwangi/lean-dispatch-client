@@ -20,9 +20,7 @@
           <v-toolbar-title>My Riders</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-btn color="primary" dark class="mb-2" @click="openDialog">
-            + New Rider
-          </v-btn>
+          <v-btn color="primary" dark @click="openDialog"> + New Rider </v-btn>
         </v-row>
       </v-toolbar>
       <CreateRider
@@ -73,7 +71,10 @@
               <v-col cols="12" md="4" sm="6">
                 <v-card-subtitle>Activate /Deactivate</v-card-subtitle>
                 <v-row no-gutters justify="center">
-                  <v-switch v-model="active" @click="activateDeactivateUser()">
+                  <v-switch
+                    v-model="active"
+                    @click="activateDeactivateUser()"
+                  >
                   </v-switch
                 ></v-row>
               </v-col>
@@ -145,7 +146,7 @@
         class="text-capitalize"
         @click="toggleStatusOptions(item)"
       >
-        Pending approval
+        Pending
       </v-btn>
       <v-btn
         v-else-if="item.accountState === 'partialApplication'"
@@ -276,12 +277,6 @@ export default {
         class: "text-capitalize",
         sortable: false,
       },
-      // {
-      //   text: "company",
-      //   value: "company",
-      //   class: "text-capitalize",
-      //   sortable: false,
-      // },
       {
         text: "city",
         value: "city",
@@ -400,14 +395,6 @@ export default {
       this.dialog = true;
     },
 
-    // saveRider() {
-    //   if (this.editedIndex > -1) {
-    //     Object.assign(this.desserts[this.editedIndex], this.editedRider);
-    //   } else {
-    //     this.createRider;
-    //   }
-    // },
-
     createRider(data) {
       // editing
       if (this.editedIndex > -1) {
@@ -441,6 +428,7 @@ export default {
     },
 
     activateDeactivateRider() {
+      console.log(JSON.stringify(this.editedRider, null, 3));
       this.$emit("show-feedback", {
         status: "submitting",
         message: "submitting",

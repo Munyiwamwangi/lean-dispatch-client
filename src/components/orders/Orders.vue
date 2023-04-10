@@ -57,7 +57,7 @@
                   <v-icon color="amber"> mdi-account-circle-outline </v-icon>
                 </v-toolbar>
                 <v-col cols="12" md="6">
-                  <v-card-title> {{ orders.length }} </v-card-title>
+                  <v-card-title> {{ customers.length }} </v-card-title>
                 </v-col>
               </v-card-text>
             </v-card>
