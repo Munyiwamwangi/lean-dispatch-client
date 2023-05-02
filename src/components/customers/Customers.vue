@@ -178,13 +178,21 @@ export default {
       fullName: "",
       email: "",
       phonenumber: null,
-      businessAddress: null,
+      businessAddress: [],
     },
     defaultCustomer: {
       fullName: "",
       email: "",
       phonenumber: null,
-      businessAddress: null,
+      businessAddress: [
+        {
+          name: "",
+          streetAddress1: "",
+          streetAddress2: "",
+          longitude: "",
+          latitude: "",
+        },
+      ],
     },
   }),
 

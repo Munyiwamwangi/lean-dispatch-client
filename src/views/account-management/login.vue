@@ -261,8 +261,8 @@ export default {
 
       // new data
       userTypes: [
-        { id: 1, title: "merchant" },
-        { id: 2, title: "rider" },
+        { id: 1, title: "Merchant" },
+        { id: 2, title: "Rider" },
       ],
       tab: 0,
       tabItems: [

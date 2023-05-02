@@ -8,45 +8,12 @@
         <v-card-text>
           <v-form ref="registerForm" v-model="valid" lazy-validation>
             <v-row>
-              <v-col cols="12" class="pb-0">
-                <v-text-field
-                  v-model="customer.fullName"
-                  :rules="[rules.required]"
-                  dense
-                  outlined
-                  label="Full Name"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6" class="pb-0">
-                <v-text-field
-                  v-model="customer.email"
-                  :rules="[rules.required, rules.emailRules]"
-                  dense
-                  outlined
-                  label="E-mail"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6" class="pb-0">
-                <v-text-field
-                  v-model="customer.phonenumber"
-                  :rules="[rules.required, rules.phoneMin]"
-                  dense
-                  type="number"
-                  hint="Use a valid, work number"
-                  outlined
-                  label="Phone Number"
-                  required
-                ></v-text-field>
-              </v-col>
-
               <v-toolbar flat>
-                <v-card-title> Business Address </v-card-title>
+                <v-card-subtitle> Business Adress/(es) </v-card-subtitle>
                 <v-spacer></v-spacer>
                 <!-- <v-btn text @click="trackAdresses()">
-                  <v-icon>mdi-plus</v-icon><Address>Add Address</Address>
-                </v-btn> -->
+                    <v-icon>mdi-plus</v-icon><Address>Add Address</Address>
+                  </v-btn> -->
               </v-toolbar>
               <!-- adresses aediting loop structure -->
               <!-- <div v-for="(item, index) in customer.businessAddress" :key="index"> -->

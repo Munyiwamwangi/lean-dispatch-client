@@ -71,10 +71,7 @@
               <v-col cols="12" md="4" sm="6">
                 <v-card-subtitle>Activate /Deactivate</v-card-subtitle>
                 <v-row no-gutters justify="center">
-                  <v-switch
-                    v-model="active"
-                    @click="activateDeactivateUser()"
-                  >
+                  <v-switch v-model="active" @click="activateDeactivateUser()">
                   </v-switch
                 ></v-row>
               </v-col>
@@ -216,8 +213,11 @@
       <v-icon small color="success" class="mr-2" @click="editItem(item)">
         mdi-pencil
       </v-icon>
-      <v-icon small color="red" @click="deleteItem(item)">
+      <v-icon small color="red" class="mr-2" @click="deleteItem(item)">
         mdi-delete-outline
+      </v-icon>
+      <v-icon small color="primary" @click="accountDetails(item)">
+        mdi-eye
       </v-icon>
     </template>
   </v-data-table>
@@ -393,6 +393,10 @@ export default {
       this.editedRider = Object.assign({}, item);
       this.editedIndex = item.riderId;
       this.dialog = true;
+    },
+
+    accountDetails(item) {
+      console.log(item);
     },
 
     createRider(data) {
