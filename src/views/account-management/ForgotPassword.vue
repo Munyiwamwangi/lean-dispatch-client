@@ -65,12 +65,11 @@ export default {
     async handleSubmit() {
       if (!this.validate()) return;
       try {
-        const {data} = await this.$http.post('api/auth/forgot-password/', {
+        const { data } = await this.$http.post('api/auth/forgot-password/', {
           email: this.email,
         });
-        alert(
-          data.message
-        );
+
+        this.$store.dispatch("setError", { color: "green lighten-1", text: data.message });
       } catch (error) {
         alert(error);
       } finally {

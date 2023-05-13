@@ -77,7 +77,8 @@ export default {
         token: this.$route.params.token,
       };
       try {
-        await this.$http.post("api/auth/reset-password/", payload);
+        const {data} = await this.$http.post("api/auth/reset-password/", payload);
+        this.$store.dispatch("setError", { color: "green lighten-1", text: data.message });
         this.$router.push("/login");
       } catch (error) {
         return error;
