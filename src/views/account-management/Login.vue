@@ -371,44 +371,6 @@ export default {
     resetValidation() {
       this.$refs.form.resetValidation();
     },
-    // new methods
-    signUp() {
-      if (!this.registerForm) return;
-
-      // if (this.$refs.registerForm.validate()) {
-      // submit form to server/API here...
-      const data = {
-        firstName: this.firstName,
-        lastName: this.lastName,
-        email: this.email,
-        userType: this.userType.title,
-        phonenumber: this.phonenumber,
-        password: this.password,
-        acceptTerms: this.checkbox,
-        // verify: this.verify,
-      };
-      this.loading = true;
-      this.$store
-        .dispatch("signUp", data)
-        .then(() => {
-          this.$store.dispatch("setError", {
-            text: "Successfully signed up, proceed to login",
-            color: "success lighten-1",
-          });
-          this.loading = false;
-        })
-        .catch(() => {})
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-    reset() {
-      this.$refs.form.reset();
-      this.$refs.registerForm.reset();
-    },
-    resetValidation() {
-      this.$refs.form.resetValidation();
-    },
   },
 };
 </script>
