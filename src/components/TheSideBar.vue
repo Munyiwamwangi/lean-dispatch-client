@@ -33,12 +33,12 @@
 
     <v-divider></v-divider>
 
-    <v-list v-model="selectedItem" dense rounded>
-      <v-list-item-group v-model="selectedItem" color="white" class="cont">
-        <div v-for="(item, i) in items" :key="i">
-          <v-list-item :to="{ name: item.name }" class="item">
+    <v-list v-model="selectedItem" dark dense class="mt-0">
+      <v-list-item-group v-model="selectedItem" color="white">
+        <div v-for="(item, i) in menuItems" :key="i">
+          <v-list-item v-if="!item.subMenu" :key="i" :to="{ name: item.name }">
             <v-list-item-icon>
-              <v-icon>{{ item.icon }} </v-icon>
+              <v-icon color="white">{{ item.icon }} </v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
@@ -47,6 +47,44 @@
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
+          <v-list-group
+            v-else
+            :key="item.text"
+            :value="true"
+            color="white"
+            append-icon="mdi-chevron-down"
+          >
+            <template v-slot:activator>
+              <v-list-item-icon>
+                <v-icon color="white">{{ item.icon }}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title class="font-weight-bold text-capitalize">
+                {{ item.text }}
+              </v-list-item-title>
+            </template>
+
+            <v-list-item
+              v-for="subLink in item.subMenu"
+              :key="subLink.text"
+              :to="{ name: subLink.name }"
+              class="pl-12"
+            >
+              <!-- while this is rendered to DM -->
+              <v-list-item class="pl-0 pr-0">
+                <v-list-item-icon>
+                  <v-icon color="white">
+                    {{ subLink.icon }}
+                  </v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title class="font-weight-bold text-capitalize">
+                    {{ subLink.text }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item>
+          </v-list-group>
         </div>
       </v-list-item-group>
     </v-list>
@@ -63,31 +101,45 @@ export default {
     selectedItem: 1,
     disabled: true,
 
-    items: [
+    menuItems: [
       {
         text: "Dashboard",
         icon: "dashboard",
-        name: "dashboard",
+        employee: true,
+        hr: true,
+        subMenu: [
+          {
+            text: "orders",
+            icon: "mdi-check-circle-outline",
+            hr: true,
+            name: "orders",
+          },
+          {
+            text: "riders",
+            icon: "mdi-car",
+            hr: true,
+            name: "riders",
+          },
+          {
+            text: "customers",
+            icon: "mdi-account-multiple-outline",
+            hr: true,
+            name: "customers",
+          },
+        ],
+      },
+      {
+        text: "my account",
+        icon: "mdi-account-circle-outline",
+        name: "my-account",
         employee: true,
         hr: true,
       },
-      // {
-      //   text: "Account Management",
-      //   icon: "dashboard",
-      //   name: "accounts",
-      //   employee: true,
-      // },
-      // {
-      //   text: "login page",
-      //   icon: "flag",
-      //   name: "login",
-      //   employee: true,
-      // },
     ],
   }),
 
   computed: {
-    employeeData() {
+    userData() {
       return localStorage.getItem("user") || {};
     },
 

@@ -12,7 +12,9 @@ Vue.use(VueRouter);
 // this generates a separate chunk (about.[hash].js) for this route
 // which is lazy-loaded when the route is visited.
 const Login = () =>
-  import(/* webpackChunkName: "login" */ "../views/Login.vue");
+  import(
+    /* webpackChunkName: "login" */ "../views/account-management/Login.vue"
+  );
 
 const Registration = () =>
   import(/* webpackChunkName: "login" */ "../views/Registration.vue");
@@ -27,18 +29,36 @@ const ResetPassword = () =>
     /* webpackChunkName: "reset-password" */ "../views/account-management/ResetPassword.vue"
   );
 
-const Dashboard = () =>
-  import(/* webpackChunkName: "Dashboard" */ "../views/admin/Dashboard.vue");
+const MerchantDash = () =>
+  import(
+    /* webpackChunkName: "MerchantDash" */ "../views/merchant/Dashboard.vue"
+  );
 
 const AccountManagement = () =>
   import(
     /* webpackChunkName: "AccountManagement" */ "../views/account-management/AccountManagement.vue"
   );
 
+const MyAccount = () =>
+  import(
+    /* webpackChunkName: "MyAccount" */ "../views/account-management/MyAccount.vue"
+  );
+
+const Orders = () =>
+  import(/* webpackChunkName: "MyAccount" */ "../views/orders/Orders.vue");
+
+const Riders = () =>
+  import(/* webpackChunkName: "MyAccount" */ "../views/riders/Riders.vue");
+
+const Customers = () =>
+  import(
+    /* webpackChunkName: "MyAccount" */ "../views/customers/Customers.vue"
+  );
+
 const routes = [
   {
     path: "/",
-    redirect: "/dashboard",
+    redirect: "/orders",
   },
 
   {
@@ -76,9 +96,38 @@ const routes = [
   {
     path: "/dashboard",
     name: "dashboard",
-    component: Dashboard,
+    component: MerchantDash,
     meta: {
-      title: "LD Dashboard",
+      title: "LD MerchantDash",
+      requiresAuth: true,
+      hr: true,
+    },
+  },
+
+  {
+    path: "/orders",
+    name: "orders",
+    component: Orders,
+    meta: {
+      title: "LD-orders",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/riders",
+    name: "riders",
+    component: Riders,
+    meta: {
+      title: "LD-riders",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/customers",
+    name: "customers",
+    component: Customers,
+    meta: {
+      title: "LD-customers",
       requiresAuth: true,
       hr: true,
     },
@@ -88,10 +137,18 @@ const routes = [
     name: "accounts",
     component: AccountManagement,
     meta: {
-      title: "LD - My Bonuses",
+      title: "LD - Accounts",
       requiresAuth: true,
-      hr: true,
-      approver: true,
+    },
+  },
+
+  {
+    path: "/my-account",
+    name: "my-account",
+    component: MyAccount,
+    meta: {
+      title: "LD Account",
+      requiresAuth: true,
     },
   },
 ];

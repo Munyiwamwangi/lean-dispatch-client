@@ -1,77 +1,234 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <v-col cols="12" sm="8" class="mt-4 mb-4">
+      <v-col cols="12" sm="9" class="mt-4 mb-4">
         <v-card class="elevation-6 mt-12">
           <v-row>
             <!-- col 1  -->
-            <v-col cols="12" md="6" class="first-col hidden-xs-and-up hidden-sm-and-down">
-              <div class="center">
-                <v-row>
-                  <v-card-text class="white--text text-uppercase">
-                    <h1 class="text-center">Welcome to lean dispatch</h1>
-                  </v-card-text>
-                  <!-- <hr class="horizontal-underline" /> -->
-                </v-row>
-              </div>
-            </v-col>
+            <v-row no-gutters justify="center">
+              <v-col
+                cols="12"
+                class="universal-blue hidden-xs-and-up hidden-sm-and-down"
+              >
+                <div class="center">
+                  <v-row>
+                    <v-card-text class="white--text text-uppercase">
+                      <h1 class="text-center">Welcome to lean dispatch</h1>
+                    </v-card-text>
+                    <!-- <hr class="horizontal-underline" /> -->
+                  </v-row>
+                </div>
+              </v-col>
+            </v-row>
 
             <!-- col 2  -->
-            <v-col cols="12" md="6">
-              <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="submit">
-                <v-card-text>
-                  <v-row no-gutters justify="center">
-                    <h1 class="accent--text">Login</h1>
-                  </v-row>
 
-                  <v-row align="center" justify="center">
-                    <v-col cols="12" sm="8">
-                      <v-text-field v-model="email" ref="email" :rules="emailRules" :label="$t('emailAdressLabel')"
-                        required prepend-inner-icon="person" color="blue" autocomplete="false" class="mt-8" />
-                      <v-text-field ref="password" v-model="password" :rules="passwordRules"
-                        :label="$t('passwordInputFieldPlaceHolder')" :type="passwordShow ? 'text' : 'password'"
-                        :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
-                        @click:append="passwordShow = !passwordShow" required color="blue" autocomplete="false"
-                        placeholder="Password" prepend-inner-icon="key" />
-
-                      <div class="mainCheckBox">
-                        <v-checkbox v-model="checkbox" :rules="[(v) => !!v || 'You must agree to continue!']" required>
-                          <template v-slot:label>
-                            <div>
-                              {{ $t("acceptAll") }}
-                              <v-tooltip>
-                                <template v-slot:activator="{ on }">
-                                  <a class="bold-underlined" target="_blank" @click.stop v-on="on">
-                                    {{ $t("termsAndConditions") }}
-                                  </a>
-                                </template>
-                              </v-tooltip>
-                            </div>
-                          </template>
-                        </v-checkbox>
-                      </div>
-
-                      <v-btn rounded block :disabled="!valid" color="#536878" type="submit" class="t-white"
-                        :loading="loading">
-                        <h2 class="text-capitalize">
-                          {{ $t("loginText") }}
-                        </h2>
-                      </v-btn>
-
-                      <div class="mt-2 text-center bold-underlined">
-                        <router-link to="/forgot-password">
-                          {{ $t("forgotPassword") }}
-                        </router-link>
-                      </div>
-                      <div class="mt-3 text-center bold-underlined">
-                        <router-link to="/signup">
-                          Signup
-                        </router-link>
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-card-text>
-              </v-form>
+            <v-col cols="12" md="6" class="pt-0">
+              <div>
+                <v-tabs v-model="tab" show-arrows icons-and-text dark grow>
+                  <v-tab
+                    v-for="(item, i) in tabItems"
+                    :key="i"
+                    class="universal-blue"
+                  >
+                    <v-icon large>{{ item.icon }}</v-icon>
+                    <div class="caption py-1">{{ item.name }}</div>
+                  </v-tab>
+                  <v-tab-item>
+                    <v-card class="px-4">
+                      <v-card-text>
+                        <v-form ref="form" v-model="valid" lazy-validation>
+                          <v-row no-gutters class="pt-4">
+                            <v-col cols="12">
+                              <v-text-field
+                                v-model="loginEmail"
+                                :rules="[rules.required, rules.emailRules]"
+                                dense
+                                outlined
+                                label="E-mail"
+                                required
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                              <v-text-field
+                                v-model="loginPassword"
+                                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                :rules="[rules.required, rules.passMin]"
+                                :type="show1 ? 'text' : 'password'"
+                                dense
+                                outlined
+                                name="input-10-1"
+                                label="Password"
+                                hint="At least 8 characters"
+                                counter
+                                @click:append="show1 = !show1"
+                              ></v-text-field>
+                            </v-col>
+                          </v-row>
+                        </v-form>
+                      </v-card-text>
+                      <v-card-text>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          x-large
+                          block
+                          :disabled="!valid"
+                          type="submit"
+                          class="t-white universal-blue"
+                          :loading="loading"
+                          @click="submit"
+                        >
+                          Login
+                        </v-btn>
+                      </v-card-text>
+                    </v-card>
+                  </v-tab-item>
+                  <v-tab-item>
+                    <v-card class="px-4">
+                      <v-card-text>
+                        <v-form
+                          ref="registerForm"
+                          v-model="registerForm"
+                          lazy-validation
+                          @submit.prevent="signUp"
+                        >
+                          <v-row>
+                            <v-col cols="12" sm="6" md="6" class="pb-0">
+                              <v-text-field
+                                v-model="firstName"
+                                :rules="[rules.required]"
+                                dense
+                                outlined
+                                label="First Name"
+                                maxlength="20"
+                                required
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="6" class="pb-0">
+                              <v-text-field
+                                v-model="lastName"
+                                dense
+                                outlined
+                                :rules="[rules.required]"
+                                label="Last Name"
+                                maxlength="20"
+                                required
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" class="pt-0 pb-0">
+                              <v-text-field
+                                v-model="email"
+                                :rules="[rules.required, rules.emailRules]"
+                                dense
+                                outlined
+                                label="E-mail"
+                                required
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="6" class="pt-0 pb-0">
+                              <v-combobox
+                                v-model="userType"
+                                :rules="[rules.required]"
+                                :items="userTypes"
+                                dense
+                                outlined
+                                item-text="title"
+                                item-value="id"
+                                label="User Type"
+                                required
+                              ></v-combobox>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="6" class="pt-0 pb-0">
+                              <v-text-field
+                                v-model="phonenumber"
+                                :rules="[rules.required, rules.phoneMin]"
+                                dense
+                                type="number"
+                                hint="Use a valid, work number"
+                                outlined
+                                item-text="title"
+                                item-value="id"
+                                label="Phone Number"
+                                required
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" class="pt-0 pb-0">
+                              <v-text-field
+                                v-model="password"
+                                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                :rules="[rules.required, rules.passMin]"
+                                :type="show1 ? 'text' : 'password'"
+                                dense
+                                outlined
+                                name="input-10-1"
+                                label="Password"
+                                hint="At least 8 characters"
+                                counter
+                                @click:append="show1 = !show1"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" class="pt-0 pb-0">
+                              <v-text-field
+                                v-model="verify"
+                                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                :rules="[rules.required, passwordMatch]"
+                                :type="show1 ? 'text' : 'password'"
+                                block
+                                dense
+                                outlined
+                                name="input-10-1"
+                                label="Confirm Password"
+                                counter
+                                @click:append="show1 = !show1"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" class="pt-0 pb-0">
+                              <div class="mainCheckBox">
+                                <v-checkbox
+                                  v-model="checkbox"
+                                  :rules="[
+                                    (v) => !!v || 'You must agree to continue!',
+                                  ]"
+                                  required
+                                >
+                                  <template v-slot:label>
+                                    <div>
+                                      {{ $t("acceptAll") }}
+                                      <v-tooltip>
+                                        <template v-slot:activator="{ on }">
+                                          <a
+                                            class="bold-underlined"
+                                            target="_blank"
+                                            @click.stop
+                                            v-on="on"
+                                          >
+                                            {{ $t("termsAndConditions") }}
+                                          </a>
+                                        </template>
+                                      </v-tooltip>
+                                    </div>
+                                  </template>
+                                </v-checkbox>
+                              </div>
+                            </v-col>
+                          </v-row>
+                        </v-form>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-btn
+                          :disabled="!registerForm"
+                          x-large
+                          block
+                          type="submit"
+                          class="t-white universal-blue"
+                          @click="signUp"
+                          >Register</v-btn
+                        >
+                      </v-card-actions>
+                    </v-card>
+                  </v-tab-item>
+                </v-tabs>
+              </div>
             </v-col>
             <!-- col 2 ends  -->
           </v-row>
@@ -87,31 +244,49 @@ export default {
 
   data() {
     return {
-      // form validation essentials
+      userType: null,
       checkbox: false,
       valid: false,
       passwordShow: false,
       users: null,
-
+      phonenumber: null,
+      registerForm: false,
+      form: false,
       email: "",
-      emailRules: [
-        (v) => !!v || this.$t("emailIputHint"),
-        (v) => /.+@.+\..+/.test(v) || this.$t("emailmustBeValidText"),
-      ],
       password: "",
-      passwordRules: [
-        (v) => !!v || this.$t("passwordInputHint1"),
-        (v) =>
-          (v && v.length >= 6) || this.$t("minimalPasswordCharacterErrortext"),
-      ],
-
-      // form essentials
       formErrors: [false],
       loading: false,
+      firstName: "",
+      lastName: "",
+
+      // new data
+      userTypes: [
+        { id: 1, title: "Merchant" },
+        { id: 2, title: "Rider" },
+      ],
+      tab: 0,
+      tabItems: [
+        { id: 1, name: "Login", icon: "mdi-account" },
+        { id: 2, name: "Register", icon: "mdi-account-outline" },
+      ],
+      verify: "",
+      loginPassword: "",
+      loginEmail: "",
+
+      show1: false,
+      rules: {
+        required: (value) => !!value || "Required.",
+        passMin: (v) => (v && v.length >= 8) || "Min 8 characters",
+        phoneMin: (v) => (v && v.length === 10) || "10 characters",
+        emailRules: (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+      },
     };
   },
 
   computed: {
+    passwordMatch() {
+      return () => this.password === this.verify || "Password must match";
+    },
     showError() {
       const error = this.$store.getters["getError"].error;
       if (!error) {
@@ -121,26 +296,20 @@ export default {
     },
   },
 
-  watch: {
-    emailRules: "validateForm",
-    email: "validateForm",
-    password: "validateForm",
-  },
-
   methods: {
     validateForm() {
       this.$refs.form.validate();
     },
 
-    resetValidation() {
-      this.$refs.form.valid;
-    },
+    // resetValidation() {
+    //   this.$refs.form.valid;
+    // },
 
     //  email and password login
     async submit() {
       const data = {
-        email: this.email,
-        password: this.password,
+        email: this.loginEmail,
+        password: this.loginPassword,
       };
       if (this.$refs.form.validate()) {
         this.loading = true;
@@ -148,28 +317,13 @@ export default {
           .dispatch("login", data)
           .then(() => {
             this.$store.dispatch("setError", {
-              text: "successfully logged in",
+              text: "Successfully logged in",
               color: "success lighten-1",
             });
             this.loading = false;
           })
-          .catch(() => {
-            this.emailRules = [
-              ...this.emailRules,
-              (v) => v === "invalid" || "Invalid email or password",
-            ];
-            this.passwordRules = [
-              ...this.passwordRules,
-              (v) => v === "invalid" || "Invalid email or password",
-            ];
-          })
+          .catch(() => {})
           .finally(() => {
-            if (this.emailRules.length === 3) {
-              setTimeout(() => {
-                this.emailRules = this.emailRules.slice(0, 2);
-                this.passwordRules = this.passwordRules.slice(0, 2);
-              }, 4000);
-            }
             this.loading = false;
           });
       }
@@ -179,16 +333,87 @@ export default {
     passReset() {
       this.$router.push({ name: "password-reset" }).catch(() => { });
     },
+    // new methods
+    signUp() {
+      if (!this.registerForm) return;
+
+      // if (this.$refs.registerForm.validate()) {
+      // submit form to server/API here...
+      const data = {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        email: this.email,
+        userType: this.userType.title,
+        phonenumber: this.phonenumber,
+        password: this.password,
+        acceptTerms: this.checkbox,
+        // verify: this.verify,
+      };
+      this.loading = true;
+      this.$store
+        .dispatch("signUp", data)
+        .then(() => {
+          this.$store.dispatch("setError", {
+            text: "Successfully signed up, proceed to login",
+            color: "success lighten-1",
+          });
+          this.loading = false;
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    reset() {
+      this.$refs.form.reset();
+      this.$refs.registerForm.reset();
+    },
+    resetValidation() {
+      this.$refs.form.resetValidation();
+    },
+    // new methods
+    signUp() {
+      if (!this.registerForm) return;
+
+      // if (this.$refs.registerForm.validate()) {
+      // submit form to server/API here...
+      const data = {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        email: this.email,
+        userType: this.userType.title,
+        phonenumber: this.phonenumber,
+        password: this.password,
+        acceptTerms: this.checkbox,
+        // verify: this.verify,
+      };
+      this.loading = true;
+      this.$store
+        .dispatch("signUp", data)
+        .then(() => {
+          this.$store.dispatch("setError", {
+            text: "Successfully signed up, proceed to login",
+            color: "success lighten-1",
+          });
+          this.loading = false;
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    reset() {
+      this.$refs.form.reset();
+      this.$refs.registerForm.reset();
+    },
+    resetValidation() {
+      this.$refs.form.resetValidation();
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.v-application .first-col {
-  // border-bottom-right-radius: 300px !important;
-  background: linear-gradient(180deg, #15488f 0%, #235eb3 50%, #17396a 100%);
-}
-
 hr.horizontal-underline {
   border: 3px solid white;
   width: 20%;

@@ -1,42 +1,39 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="orders"
+    :items="allCustomers"
     :loading="loading"
     sort-by="calories"
     class="elevation-1"
     hide-default-footer
-    show-select
-    checkbox-color="blue"
   >
     <template slot="progress">
       <LoadingBar></LoadingBar>
     </template>
 
-    <!-- <template #[`item.id`]="props">
+    <template #[`item.id`]="props">
       {{ props.index + 1 }}
-    </template> -->
+    </template>
 
     <template v-slot:top>
       <v-toolbar flat>
         <v-row no-gutters>
-          <v-toolbar-title>Orders</v-toolbar-title>
+          <v-toolbar-title>My Customers</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-btn color="primary" dark class="mb-2" @click="openDialog">
-            + New Order
+            + New Customer
           </v-btn>
         </v-row>
       </v-toolbar>
-      <CreateOrder
+      <CreateCustomer
         :dialog="dialog"
         :formTitle="formTitle"
-        :order="defaultOrder"
-        :customers="customers"
+        :customer="editedItem"
         @close-dialog="dismissDeleteEdit"
-        @order-data="createEditOrder"
+        @save="createEditCustomer"
       >
-      </CreateOrder>
+      </CreateCustomer>
 
       <v-dialog v-model="dialogDelete" max-width="500px">
         <v-card class="text-center">
@@ -53,7 +50,7 @@
             <v-btn color="accent darken-1" text @click="dismissDeleteEdit()">
               close
             </v-btn>
-            <v-btn color="secondary darken-1" text @click="orderDelete">
+            <v-btn color="secondary darken-1" text @click="customerDelete">
               Delete
             </v-btn>
             <v-spacer></v-spacer>
@@ -62,30 +59,20 @@
       </v-dialog>
     </template>
 
-    <!-- rating  -->
-    <template v-slot:[`item.rating`]="{ item }">
-      <v-rating
-        v-model="item.rating"
-        color="yellow darken-3"
-        background-color="grey darken-1"
-        empty-icon="$ratingFull"
-        half-increments
-        hover
-        x-small
-        class="pl-0"
-      ></v-rating>
-    </template>
-
-    <!-- statuses  -->
+    <!-- status  -->
     <template v-slot:[`item.status`]="{ item }">
-      <v-btn text v-if="item.status === 'active'"
-        ><v-icon small color="success" class="mr-2" @click="editItem(item)">
-          mdi-check-circle
-        </v-icon></v-btn
+      <v-icon
+        v-if="item.status === 'active'"
+        small
+        color="success"
+        class="mr-2"
+        @click="editItem(item)"
       >
-      <v-btn v-else small color="warning" @click="deleteItem(item)">
-        {{ item.status }}
-      </v-btn>
+        mdi-check-circle
+      </v-icon>
+      <v-icon v-else small color="warning" @click="deleteItem(item)">
+        mdi-cancel
+      </v-icon>
     </template>
 
     <!-- actions  -->
@@ -101,15 +88,15 @@
 </template>
 
 <script>
-import CreateOrder from "../forms/CreateOrder.vue";
 import LoadingBar from "../LoadingBar.vue";
+import CreateCustomer from "./forms/CreateCustomer.vue";
 import { mapActions } from "vuex";
 
 export default {
-  components: { CreateOrder, LoadingBar },
+  components: { LoadingBar, CreateCustomer },
 
   props: {
-    orders: {
+    allCustomers: {
       type: Array,
       required: true,
     },
@@ -117,114 +104,101 @@ export default {
       type: Boolean,
       default: false,
     },
-    customers: {
-      type: Array,
-      required: true,
-    },
   },
 
   data: () => ({
     dialog: false,
     dialogDelete: false,
     headers: [
-      // {
-      //   text: "ID",
-      //   sortable: false,
-      //   value: "id",
-      // },
       {
-        text: "order id",
+        text: "ID",
+        align: "start",
+        sortable: false,
         value: "id",
+      },
+      {
+        text: "Name",
+        align: "start",
+        sortable: false,
+        value: "fullName",
+        class: "text-capitalize",
+      },
+      {
+        text: "stores",
+        value: "stores",
+        class: "text-capitalize",
+      },
+      {
+        text: "drivers",
+        value: "drivers",
         class: "text-capitalize",
         sortable: false,
       },
       {
-        text: "Customer",
-        sortable: false,
-        value: "merchantId",
+        text: "employees",
+        value: "employees",
         class: "text-capitalize",
       },
       {
-        text: "Sender Adress",
-        value: "senderAddress",
-        class: "text-capitalize",
-        sortable: false,
-      },
-      {
-        text: "Receiver Adress",
-        value: "receiverAddress",
-        class: "text-capitalize",
-        sortable: false,
-      },
-
-      {
-        text: "delivery type",
-        value: "deliveryType",
+        text: "vehicles",
+        value: "vehicles",
         class: "text-capitalize",
         sortable: false,
       },
       {
-        text: "amount paid",
-        value: "totalAmount",
+        text: "subscription",
+        value: "subscription",
         class: "text-capitalize",
         sortable: false,
       },
       {
-        text: "balance",
-        value: "balance",
+        text: "city",
+        value: "city",
         class: "text-capitalize",
         sortable: false,
       },
       {
-        text: "order earnings",
-        value: "amount",
-        class: "text-capitalize",
-        sortable: false,
-      },
-      {
-        text: "payment type",
-        value: "paymentType",
-        class: "text-capitalize",
-        sortable: false,
-      },
-      {
-        text: "delivery status",
+        text: "status",
         value: "status",
+        class: "text-capitalize",
+        sortable: false,
+      },
+      {
+        text: "joined on",
+        value: "createdAt",
         class: "text-capitalize",
         sortable: false,
       },
 
       { text: "Actions", value: "actions", sortable: false },
     ],
-    desserts: [],
+    dummyCustomers: [],
     editedIndex: -1,
     editedItem: {
-      customerId: 0,
-      deliveryType: "",
-      scheduledAt: 0,
-      narration: "",
-      pickupAdress: "",
-      receiverAdress: "",
-      transportationMode: "",
-      deliveryFee: 0,
-      amountReceived: 0,
+      fullName: "",
+      email: "",
+      phonenumber: null,
+      businessAddress: [],
     },
-    defaultOrder: {
-      customerId: 0,
-      deliveryType: "",
-      scheduledAt: 0,
-      narration: "",
-      pickupAdress: "",
-      receiverAdress: "",
-      transportationMode: "",
-      deliveryFee: 0,
-      amountReceived: 0,
+    defaultCustomer: {
+      fullName: "",
+      email: "",
+      phonenumber: null,
+      businessAddress: [
+        {
+          name: "",
+          streetAddress1: "",
+          streetAddress2: "",
+          longitude: "",
+          latitude: "",
+        },
+      ],
     },
   }),
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Order" : "Edit Order";
+      return this.editedIndex === -1 ? "New Customer" : "Edit Customer";
     },
   },
 
@@ -233,105 +207,108 @@ export default {
       val || this.close();
     },
     dialogDelete(val) {
-      val || this.dismissDeleteEdit();
+      val || this.closeDelete();
     },
   },
 
-  created() {},
-
   methods: {
-    ...mapActions("orders", {
-      createOrder: "createOrder",
-      editOrder: "updateOrder",
-      deleteOrder: "delOrder",
+    ...mapActions("customers", {
+      createCustomer: "createCustomer",
+      editCustomer: "updateCustomer",
+      delCustomer: "delCustomer",
     }),
+
     openDialog() {
       this.dialog = true;
     },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
       this.editedItem = Object.assign({}, item);
-      // this.dialog = true;
+      this.editedIndex = item.id;
+      this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
       this.editedItem = Object.assign({}, item);
+      this.editedIndex = item.id;
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
+      this.allCustomers.splice(this.editedIndex, 1);
       this.dismissDeleteEdit();
     },
 
     close() {
       this.dialog = false;
       this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultOrder);
+        this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       });
     },
 
-    dismissDeleteEdit() {
-      this.dialog = false;
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedOrder = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-
-    createEditOrder(data) {
-      // editing;
+    createEditCustomer(data) {
+      // edit
       if (this.editedIndex > -1) {
-        this.editOrder(data)
-          .then(() => {})
-          .catch(() => {})
-          .finally(() => {
-            this.dismissDeleteEdit();
-          });
-      } else {
-        // creating;
-        this.createOrder(data)
+        this.editCustomer(data)
           .then(() => {
             this.$emit("show-feedback", {
               status: "success",
-              message:
-                "Rider registered, ask them to login and change password",
+              message: "Customer details updated",
             });
           })
           .catch(() => {})
           .finally(() => {
             this.dismissDeleteEdit();
           });
+      } else {
+        // create
+        this.createCustomer(data)
+          .then(() => {
+            this.$emit("show-feedback", {
+              status: "success",
+              message: "Customer created",
+            });
+          })
+          .catch(() => {})
+
+          .finally(() => {
+            this.dismissDeleteEdit();
+          });
       }
     },
 
-    orderDelete() {
+    customerDelete() {
       this.dismissDeleteEdit();
       this.$emit("show-feedback", {
         status: "submitting",
         message: "submitting",
       });
 
-      this.deleteorder(this.editedIndex)
-        .then(() => {
-          this.$emit("show-feedback", {
-            status: "success",
-            message: "Order deleted.",
-          });
-        })
-        .catch(() => {
-          this.$emit("show-feedback", {
-            status: "fail",
-            message: "Order deletion failed.",
-          });
-        })
+      this.delCustomer(this.editedIndex)
+        .then(() => {})
+        .catch(() => {})
         .finally(() => {
           this.closeDelete();
         });
+    },
+
+    dismissDeleteEdit() {
+      this.dialog = false;
+      this.dialogDelete = false;
+      this.statusesDialog = false;
+      this.$nextTick(() => {
+        this.editedRider = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedRider = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
     },
   },
 };

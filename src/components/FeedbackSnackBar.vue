@@ -3,16 +3,17 @@
     v-model="showSnackBar"
     :timeout="5000"
     :color="showColor"
-    shaped
     app
     top
+    dense
+    border="left"
     class="subtitle-2 text-truncate"
   >
     {{ $t(showText) }}
 
     <template v-slot:action="{ attrs }">
       <v-btn v-bind="attrs" text @click="snackShowing = false">
-        {{ $t('closeButtonText') }}
+        {{ $t("closeButtonText") }}
       </v-btn>
     </template>
   </v-snackbar>
@@ -27,11 +28,11 @@ export default {
     },
     snackText: {
       type: String,
-      default: '',
+      default: "",
     },
     snackColor: {
       type: String,
-      default: '',
+      default: "",
     },
   },
   computed: {
@@ -46,7 +47,7 @@ export default {
           : this.error.feedbackSnackShowing;
       },
       set(value) {
-        this.$emit('update:show-snack', value);
+        this.$emit("update:show-snack", value);
       },
     },
 
@@ -62,7 +63,7 @@ export default {
         return this.showSnack;
       },
       set(value) {
-        this.$emit('update:show-snack', value);
+        this.$emit("update:show-snack", value);
       },
     },
   },
