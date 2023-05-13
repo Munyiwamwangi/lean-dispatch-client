@@ -149,13 +149,14 @@
                                 v-model="phonenumber"
                                 :rules="[rules.required, rules.phoneMin]"
                                 dense
-                                type="number"
-                                hint="Use a valid, work number"
+                                type="text"
                                 outlined
                                 item-text="title"
                                 item-value="id"
                                 label="Phone Number"
                                 required
+                                hint="+254714382366"
+                                persistent-hint
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12" class="pt-0 pb-0">
@@ -283,7 +284,7 @@ export default {
       rules: {
         required: (value) => !!value || "Required.",
         passMin: (v) => (v && v.length >= 8) || "Min 8 characters",
-        phoneMin: (v) => (v && v.length === 10) || "10 characters",
+        phoneMin: (v) => (/^\+[1-9]\d{10,14}$/g.test(v)) || "phone number is not valid",
         emailRules: (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
       },
     };
