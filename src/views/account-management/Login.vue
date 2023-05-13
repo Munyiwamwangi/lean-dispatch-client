@@ -80,6 +80,12 @@
                         >
                           Login
                         </v-btn>
+
+                        <v-row class="mt-2 bold-underlined text-center">
+                          <v-col cols="12">
+                            <router-link to="/forgot-password"> Forgot Password </router-link>
+                          </v-col>   
+                        </v-row>
                       </v-card-text>
                     </v-card>
                   </v-tab-item>
@@ -331,7 +337,7 @@ export default {
 
     // reset password
     passReset() {
-      this.$router.push({ name: "password-reset" }).catch(() => {});
+      this.$router.push({ name: "password-reset" }).catch(() => { });
     },
     // new methods
     signUp() {
@@ -386,21 +392,26 @@ hr.horizontal-underline {
 .mainCheckBox {
   margin-top: -1em;
 }
+
 .v-application .text-center {
   text-align: left;
   margin-top: 5;
   margin-left: 3;
 }
+
 .center {
   text-align: center;
   padding: 180px 0;
 }
+
 .t-white {
   color: white;
 }
+
 .place-center {
   margin: 0 auto;
 }
+
 h1 {
   line-height: 1.1em;
 }

@@ -12,7 +12,7 @@
       <v-tab class="ml-4 text-uppercase">Orders</v-tab>
       <!-- <v-tab class="ml-4 text-uppercase">Vendors</v-tab> -->
       <v-tab class="ml-4 text-uppercase">Drivers</v-tab>
-      <v-tab class="ml-4 text-uppercase">Merchants</v-tab>
+      <v-tab class="ml-4 text-uppercase">Clients</v-tab>
 
       <!-- audit log -->
 
