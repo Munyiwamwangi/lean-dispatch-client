@@ -80,6 +80,12 @@
                         >
                           Login
                         </v-btn>
+
+                        <v-row class="mt-2 bold-underlined text-center">
+                          <v-col cols="12">
+                            <router-link to="/forgot-password"> Forgot Password </router-link>
+                          </v-col>   
+                        </v-row>
                       </v-card-text>
                     </v-card>
                   </v-tab-item>
