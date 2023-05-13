@@ -149,13 +149,14 @@
                                 v-model="phonenumber"
                                 :rules="[rules.required, rules.phoneMin]"
                                 dense
-                                type="number"
+                                type="text"
                                 outlined
                                 item-text="title"
                                 item-value="id"
                                 label="Phone Number"
                                 required
                                 hint="+254714382366"
+                                persistent-hint
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12" class="pt-0 pb-0">
