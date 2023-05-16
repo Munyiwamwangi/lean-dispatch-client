@@ -26,7 +26,7 @@ export default {
     data() {
         return {
             loading: true,
-            message: "Veryfying Email...Please wait!"
+            message: "Veryfying Email..."
         }
     },
 
@@ -40,7 +40,6 @@ export default {
                 this.$store.dispatch("setError", { color: "green lighten-1", text: data.message });
                 this.$router.push("/login");
             } catch (error) {
-                alert(JSON.stringify(error, null, 3))
                 this.message = error.data.message
                 return error;
             } finally {
