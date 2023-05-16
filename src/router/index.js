@@ -19,6 +19,11 @@ const Login = () =>
 const Registration = () =>
   import(/* webpackChunkName: "login" */ "../views/Registration.vue");
 
+const VerifyEmail = () =>
+  import(
+    /* webpackChunkName: "login" */ "../views/account-management/VerifyEmail.vue"
+  );
+
 const ForgotPassword = () =>
   import(
     /* webpackChunkName: "login" */ "../views/account-management/ForgotPassword.vue"
@@ -92,6 +97,14 @@ const routes = [
       title: "LD - Reset Password",
     },
     component: ResetPassword,
+  },
+  {
+    path: "/verify-email/:token",
+    name: "verify-email",
+    meta: {
+      title: "LD - Verify Email",
+    },
+    component: VerifyEmail,
   },
   {
     path: "/dashboard",
